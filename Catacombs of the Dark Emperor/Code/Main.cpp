@@ -3,11 +3,14 @@
 //
 
 #include "Stdafx.h"
+#include "Player.h"
 
 int main(int, char**)
 {
 	sf::RenderWindow window(sf::VideoMode(1024, 576), "Catacombs of the Dark Emperor");
 	window.setVerticalSyncEnabled(true);
+
+	Player player = Player();
 
 	// Game loop.
 	while (window.isOpen())
@@ -23,6 +26,9 @@ int main(int, char**)
 
 		// Clear the screen to a black color.
 		window.clear(sf::Color::Black);
+
+		player.Draw(window);
+
 		window.display();
 	}
 

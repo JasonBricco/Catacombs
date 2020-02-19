@@ -9,6 +9,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+#include <Windows.h>
+
 #define GLM_FORCE_AVX2
 #define GLM_FORCE_INLINE
 #define GLM_FORCE_NO_CTOR_INIT
