@@ -2,6 +2,7 @@
 #include "Stdafx.h"
 #include "Player.h"
 
+
 Player::Player()
 {
 	if (!texture.loadFromFile("Assets/hero-idle-front.png"))
@@ -11,6 +12,27 @@ Player::Player()
 
 void Player::Draw(sf::RenderWindow& window)
 {
-	sprite.setPosition(sf::Vector2(100.0f, 100.0f));
+	sprite.setPosition(sf::Vector2(changeX, changeY));
 	window.draw(sprite);
 }
+
+void Player::move(int x)
+{
+	if (x == 1)
+	{
+		changeY = changeY - speed;
+	}
+	else if (x == 2)
+	{
+		changeX = changeX - speed;
+	}
+	else if (x == 3)
+	{
+		changeY = changeY + speed;
+	}
+	else if (x == 4)
+	{
+		changeX = changeX + speed;
+	}
+}
+

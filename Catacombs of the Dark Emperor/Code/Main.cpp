@@ -4,6 +4,7 @@
 
 #include "Stdafx.h"
 #include "Player.h"
+#include "iostream"
 
 int main(int, char**)
 {
@@ -26,6 +27,27 @@ int main(int, char**)
 
 		// Clear the screen to a black color.
 		window.clear(sf::Color::Black);
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) 
+		{
+			// 1 is for up
+			player.move(1);
+		} 
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			// 2 is for left
+			player.move(2);
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		{
+			// 3 is for down
+			player.move(3);
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		{
+			// 4 is for right
+			player.move(4);
+		}
 
 		player.Draw(window);
 
