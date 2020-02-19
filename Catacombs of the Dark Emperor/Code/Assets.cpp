@@ -1,6 +1,7 @@
 
 #include "Stdafx.h"
 #include "Assets.h"
+#include "Utils.h"
 
 Assets* Assets::instance = nullptr;
 
@@ -16,7 +17,7 @@ sf::Texture& Assets::GetTexture(std::string name)
 		sf::Texture tex;
 
 		if (!tex.loadFromFile(name))
-			OutputDebugStringA("Failed to load player texture.");
+			Print("Failed to load texture %s.", name.c_str());
 
 		textures.insert(std::make_pair(name, tex));
 		return textures[name];
