@@ -4,14 +4,23 @@
 
 #include "Stdafx.h"
 #include "Player.h"
-#include "iostream"
+#include "Level.h"
+#include "Generator.h"
 
 int main(int, char**)
 {
 	sf::RenderWindow window(sf::VideoMode(1024, 576), "Catacombs of the Dark Emperor");
 	window.setVerticalSyncEnabled(true);
 
-	Player player = Player();
+	Level* level = new Level();
+
+	BasicGenerator* generator = new BasicGenerator();
+	generator->Build(level);
+
+	// Tracks frame time so we can use it for updating entities
+	// in a framerate independent manner.
+	sf::Clock clock;
+	sf::Time elapsed;
 
 	// Game loop.
 	while (window.isOpen())
@@ -28,30 +37,12 @@ int main(int, char**)
 		// Clear the screen to a black color.
 		window.clear(sf::Color::Black);
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) 
-		{
-			// 1 is for up
-			player.move(1);
-		} 
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		{
-			// 2 is for left
-			player.move(2);
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		{
-			// 3 is for down
-			player.move(3);
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		{
-			// 4 is for right
-			player.move(4);
-		}
-
-		player.Draw(window);
+		level->Update(elapsed.asSeconds());
+		level->Draw(window);
 
 		window.display();
+
+		elapsed = clock.restart();
 	}
 
 	return 0;

@@ -1,17 +1,17 @@
 #pragma once
 
-class Player
+#include "Entity.h"
+
+class Player : public Entity
 {
-	sf::Texture texture;
-	sf::Sprite sprite;
+	void move(int x);
+
 	float changeX = 100.0f;
 	float changeY = 100.0f;
 	float speed = 4.0f;
 
 public:
-	Player();
+	Player() : Entity("Assets/hero-idle-front.png") {}
 
-	void Draw(sf::RenderWindow& window);
-
-	void move(int x);
+	void Update(float elapsed) override;
 };

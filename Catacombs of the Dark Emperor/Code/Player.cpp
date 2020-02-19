@@ -1,20 +1,7 @@
 
 #include "Stdafx.h"
 #include "Player.h"
-
-
-Player::Player()
-{
-	if (!texture.loadFromFile("Assets/hero-idle-front.png"))
-		OutputDebugStringA("Failed to load player texture.");
-	else sprite.setTexture(texture);
-}
-
-void Player::Draw(sf::RenderWindow& window)
-{
-	sprite.setPosition(sf::Vector2(changeX, changeY));
-	window.draw(sprite);
-}
+#include "Assets.h"
 
 void Player::move(int x)
 {
@@ -34,5 +21,30 @@ void Player::move(int x)
 	{
 		changeX = changeX + speed;
 	}
+
+	position = sf::Vector2f(changeX, changeY);
 }
 
+void Player::Update(float elapsed)
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		// 1 is for up
+		move(1);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		// 2 is for left
+		move(2);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	{
+		// 3 is for down
+		move(3);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		// 4 is for right
+		move(4);
+	}
+}
