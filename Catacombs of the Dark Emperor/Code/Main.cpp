@@ -2,9 +2,7 @@
 // Catacombs of the Dark Emperor
 //
 
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
+#include "Stdafx.h"
 
 int main(int, char**)
 {
