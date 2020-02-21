@@ -8,7 +8,7 @@ class Player : public Entity
 
 	float changeX = 100.0f;
 	float changeY = 100.0f;
-	float speed = 4.0f;
+	float speed = 3.0f;
 
 public:
 	Player() : Entity("Assets/hero-idle-front.png") {}

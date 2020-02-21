@@ -18,3 +18,9 @@ public:
 	virtual void Update(float) {}
 	void Draw(sf::RenderWindow& window);
 };
+
+class FloorTile : public Entity
+{
+public:
+	FloorTile() : Entity("Assets/BlueFloorTile.png") {}
+};
