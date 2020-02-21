@@ -22,6 +22,9 @@ void Player::move(int x)
 		changeX = changeX + speed;
 	}
 
+	changeX = std::clamp(changeX, 0.0f, 992.0f);
+	changeY = std::clamp(changeY, 0.0f, 544.0f);
+
 	position = sf::Vector2f(changeX, changeY);
 }
 
