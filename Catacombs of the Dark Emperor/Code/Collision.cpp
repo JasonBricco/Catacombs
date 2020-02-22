@@ -42,7 +42,7 @@ AABB AABBFromBottomCenter(Vector2f bc, Vector2f size)
 // wallP is the wall position along the specified axis (axis0).
 // wMin and wMax are wall positions of the axis we're not checking against, used for bounding.
 // This function treats each wall as being infinitely long. The function will return a time
-// of collision delta faces the direction of the wall regardless. We bound using wMin and wMax
+// of collision if delta faces the direction of the wall regardless. We bound using wMin and wMax
 // to ensure we actually collided with the visible section of wall. 
 static bool TestWall(Vector2f delta, Vector2f p, float wallP, Vector2f wMin, Vector2f wMax, int axis0, int axis1, float& tMin)
 {
@@ -68,7 +68,7 @@ static bool TestWall(Vector2f delta, Vector2f p, float wallP, Vector2f wMin, Vec
 	return false;
 }
 
-static bool TestTileCollision(Entity* entity, AABB a, AABB b, Vector2f delta, float& tMin, Vector2f& normal)
+static bool TestEntityCollision(Entity* entity, AABB a, AABB b, Vector2f delta, float& tMin, Vector2f& normal)
 {
 	bool result = false;
 
@@ -135,7 +135,7 @@ void CollisionStep(Entity* entity, Vector2f delta, std::vector<AABB>& collides)
 
 		for (AABB targetBB : collides)
 		{
-			bool result = TestTileCollision(entity, bb, targetBB, delta, tMin, normal);
+			bool result = TestEntityCollision(entity, bb, targetBB, delta, tMin, normal);
 
 			if (result)
 				hit = true;
