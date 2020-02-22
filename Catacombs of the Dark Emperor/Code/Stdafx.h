@@ -19,3 +19,5 @@
 #include <algorithm>
 
 #pragma warning(pop)
+
+using namespace sf;

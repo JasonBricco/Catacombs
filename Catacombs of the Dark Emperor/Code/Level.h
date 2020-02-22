@@ -40,6 +40,11 @@ public:
 	// created. Returns the new or existing room.
 	Room* GetOrCreateRoom(int x, int y);
 
+	inline Room* GetCurrentRoom()
+	{
+		return currentRoom;
+	}
+
 	inline void SetCurrentRoom(Room* room)
 	{
 		currentRoom = room;

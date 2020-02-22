@@ -2,52 +2,28 @@
 #include "Stdafx.h"
 #include "Player.h"
 #include "Assets.h"
+#include "Utils.h"
 
-void Player::move(int x)
+void Player::Update(Level* level, float elapsed)
 {
-	if (x == 1)
-	{
-		changeY = changeY - speed;
-	}
-	else if (x == 2)
-	{
-		changeX = changeX - speed;
-	}
-	else if (x == 3)
-	{
-		changeY = changeY + speed;
-	}
-	else if (x == 4)
-	{
-		changeX = changeX + speed;
-	}
+	Vector2f accel = Vector2(0.0f, 0.0f);
 
-	changeX = std::clamp(changeX, 0.0f, 992.0f);
-	changeY = std::clamp(changeY, 0.0f, 544.0f);
+	if (Keyboard::isKeyPressed(Keyboard::W))
+		accel.y -= 1.0f;
 
-	position = sf::Vector2f(changeX, changeY);
-}
+	if (Keyboard::isKeyPressed(Keyboard::A))
+		accel.x -= 1.0f;
 
-void Player::Update(float elapsed)
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-	{
-		// 1 is for up
-		move(1);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-	{
-		// 2 is for left
-		move(2);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		// 3 is for down
-		move(3);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		// 4 is for right
-		move(4);
-	}
+	if (Keyboard::isKeyPressed(Keyboard::S))
+		accel.y += 1.0f;
+
+	if (Keyboard::isKeyPressed(Keyboard::D))
+		accel.x += 1.0f;
+
+	// Ensure the movement vector is at most length 1,
+	// to prevent moving faster on diagonals.
+	if (accel != Vector2f(0.0f, 0.0f))
+		accel = Normalize(accel);
+
+	Move(level, accel, elapsed);
 }

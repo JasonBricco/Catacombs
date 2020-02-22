@@ -20,7 +20,7 @@ Room* Level::GetOrCreateRoom(int x, int y)
 void Level::Update(float elapsed)
 {
 	assert(currentRoom != nullptr);
-	currentRoom->Update(elapsed);
+	currentRoom->Update(this, elapsed);
 }
 
 void Level::Draw(sf::RenderWindow& window)

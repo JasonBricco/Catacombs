@@ -4,14 +4,13 @@
 
 class Player : public Entity
 {
-	void move(int x);
-
-	float changeX = 100.0f;
-	float changeY = 100.0f;
-	float speed = 3.0f;
-
 public:
-	Player() : Entity("Assets/hero-idle-front.png") {}
+	Player() : Entity("Assets/hero-idle-front.png") 
+	{
+		speed = 100.0f;
+		size = Vector2f(1.0f, 0.5f);
+		offset = Vector2f(0.5f, 1.5f);
+	}
 
-	void Update(float elapsed) override;
+	void Update(Level* level, float elapsed) override;
 };

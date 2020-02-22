@@ -2,13 +2,13 @@
 #include "Stdafx.h"
 #include "Room.h"
 
-void Room::Update(float elapsed)
+void Room::Update(Level* level, float elapsed)
 {
 	for (Entity* entity : entities)
-		entity->Update(elapsed);
+		entity->Update(level, elapsed);
 }
 
-void Room::Draw(sf::RenderWindow& window)
+void Room::Draw(RenderWindow& window)
 {
 	for (Entity* entity : entities)
 		entity->Draw(window);

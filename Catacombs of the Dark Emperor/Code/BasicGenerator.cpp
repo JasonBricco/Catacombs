@@ -2,14 +2,11 @@
 #include "Stdafx.h"
 #include "Generator.h"
 #include "Player.h"
+#include "Tiles.h"
 
 void BasicGenerator::Build(Level* level)
 {
 	Room* room = level->GetOrCreateRoom(0, 0);
-
-	Player* player = new Player();
-	
-	player->SetPosition(100.0f, 100.0f);
 
 	level->SetCurrentRoom(room);
 
@@ -18,46 +15,50 @@ void BasicGenerator::Build(Level* level)
 	WallUpLeft* upLeft = new WallUpLeft();
 	WallDownLeft* downLeft = new WallDownLeft();
 
-	upRight->SetPosition(960.0f, 0.0f);
-	downRight->SetPosition(960.0f, 512.0f);
-	upLeft->SetPosition(0.0f, 0.0f);
-	downLeft->SetPosition(0.0f, 512.0f);
+	upRight->SetPosition(Room::Width - 2, 0);
+	downRight->SetPosition(Room::Width - 2, Room::Height - 2);
+	upLeft->SetPosition(0, 0);
+	downLeft->SetPosition(0, Room::Height - 2);
 
 	room->AddEntity(upRight);
 	room->AddEntity(downRight);
 	room->AddEntity(upLeft);
 	room->AddEntity(downLeft);
 
-	for (int x = 2; x < 30; ++x)
+	for (int x = 2; x < Room::Width - 2; ++x)
 	{
 		WallUp* wallUp = new WallUp();
-		wallUp->SetPosition(x * 32.0f, 0.0f);
+		wallUp->SetPosition(x, 0);
 		room->AddEntity(wallUp);
 
 		WallDown* wallDown = new WallDown();
-		wallDown->SetPosition(x * 32.0f, 512.0f);
+		wallDown->SetPosition(x, Room::Height - 2);
 		room->AddEntity(wallDown);
 	}
 
-	for (int y = 2; y < 16; ++y)
+	for (int y = 2; y < Room::Height - 2; ++y)
 	{
 		WallLeft* wallLeft = new WallLeft();
-		wallLeft->SetPosition(0.0f, y * 32.0f);
+		wallLeft->SetPosition(0, y);
 		room->AddEntity(wallLeft);
 
 		WallRight* wallRight = new WallRight();
-		wallRight->SetPosition(960.0f, y * 32.0f);
+		wallRight->SetPosition(Room::Width - 2, y);
 		room->AddEntity(wallRight);
 	}
 
-	for (int y = 2; y < 16; ++y)
+	for (int y = 2; y < Room::Height - 2; ++y)
 	{
-		for (int x = 2; x < 30; ++x)
+		for (int x = 2; x < Room::Width - 2; ++x)
 		{
 			FloorTile* tile = new FloorTile();
-			tile->SetPosition(x * 32.0f, y * 32.0f);
+			tile->SetPosition(x, y);
 			room->AddEntity(tile);
 		}
 	}
+
+	Player* player = new Player();
+
+	player->SetPosition(8, 5);
 	room->AddEntity(player);
 }
