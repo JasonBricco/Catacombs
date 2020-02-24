@@ -1,7 +1,3 @@
-// 
-// Catacombs of the Dark Emperor
-//
-
 #include "Stdafx.h"
 #include "Player.h"
 #include "Level.h"

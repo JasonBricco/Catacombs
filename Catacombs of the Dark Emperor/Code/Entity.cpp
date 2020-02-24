@@ -1,4 +1,3 @@
-
 #include "Stdafx.h"
 #include "Entity.h"
 #include "Assets.h"
