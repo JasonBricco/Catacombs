@@ -7,14 +7,19 @@
 #include "Collision.h"
 #include "Globals.h"
 
-std::vector<AABB> Entity::collides;
+std::vector<AABB> DynamicEntity::collides;
 
 Entity::Entity(std::string name)
+{
+	LoadTexture(sprite, name);
+}
+
+void Entity::LoadTexture(Sprite& spriteToSet, std::string name)
 {
 	Assets* assets = Assets::Instance();
 	sf::Texture& tex = assets->GetTexture(name);
 
-	sprite.setTexture(tex);
+	spriteToSet.setTexture(tex);
 	Vector2u texSize = tex.getSize();
 
 	// By default, use the size of the image to figure out
@@ -32,7 +37,7 @@ void Entity::Draw(sf::RenderWindow& window)
 	window.draw(sprite);
 }
 
-void Entity::Move(Level* level, Vector2f accel, float elapsed)
+void DynamicEntity::Move(Level* level, Vector2f accel, float elapsed)
 {
 	accel *= speed;
 	accel += velocity * -16.0f;

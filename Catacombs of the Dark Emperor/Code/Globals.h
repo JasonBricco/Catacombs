@@ -6,4 +6,4 @@
 static constexpr float PIXELS_PER_UNIT = 32.0f;
 
 // Used to prevent floating precision errors during collision.
-constexpr float EPSILON = 0.0001f;
+static constexpr float EPSILON = 0.0001f;

@@ -1,5 +1,13 @@
 #pragma once
 
+enum Direction
+{
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN
+};
+
 // Macro to make it easier to print to the Visual Studio console.
 // Printf will not print to this console (we don't run via command line).
 #define Print(...) { \

@@ -68,7 +68,7 @@ static bool TestWall(Vector2f delta, Vector2f p, float wallP, Vector2f wMin, Vec
 	return false;
 }
 
-static bool TestEntityCollision(Entity* entity, AABB a, AABB b, Vector2f delta, float& tMin, Vector2f& normal)
+static bool TestEntityCollision(DynamicEntity* entity, AABB a, AABB b, Vector2f delta, float& tMin, Vector2f& normal)
 {
 	bool result = false;
 
@@ -115,7 +115,7 @@ static bool TestEntityCollision(Entity* entity, AABB a, AABB b, Vector2f delta, 
 	return result;
 }
 
-void CollisionStep(Entity* entity, Vector2f delta, std::vector<AABB>& collides)
+void CollisionStep(DynamicEntity* entity, Vector2f delta, std::vector<AABB>& collides)
 {
 	float tRemaining = 1.0f;
 

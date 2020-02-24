@@ -1,6 +1,6 @@
 #pragma once
 
-class Entity;
+class DynamicEntity;
 
 enum CollisionFlags : uint32_t
 {
@@ -11,6 +11,9 @@ enum CollisionFlags : uint32_t
 	CF_RIGHT = 8
 };
 
+// Axis-aligned bounding box. Represents a square
+// that can be used for collision detection or overlap
+// detection.
 struct AABB
 {
 	Vector2f center;
@@ -37,7 +40,7 @@ struct AABB
 	}
 };
 
-void CollisionStep(Entity* entity, Vector2f delta, std::vector<AABB>& collides);
+void CollisionStep(DynamicEntity* entity, Vector2f delta, std::vector<AABB>& collides);
 
 // Helper functions to create AABBs.
 // These are used instead of constructors since
