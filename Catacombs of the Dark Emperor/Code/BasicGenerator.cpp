@@ -3,9 +3,11 @@
 #include "Generator.h"
 #include "Player.h"
 #include "Tiles.h"
+#include "Chest.h"
 
 void BasicGenerator::Build(Level* level)
 {
+
 	Room* room = level->GetOrCreateRoom(0, 0);
 
 	level->SetCurrentRoom(room);
@@ -58,6 +60,10 @@ void BasicGenerator::Build(Level* level)
 	}
 
 	Player* player = new Player();
+	Chest* chest = new Chest();
+
+	chest->spawn();
+	room->AddEntity(chest);
 
 	player->SetPosition(8, 5);
 	room->AddEntity(player);

@@ -44,6 +44,11 @@ public:
 		SetPosition((float)x, (float)y);
 	}
 
+	inline const sf::Vector2f GetPosition()
+	{
+		return sprite.getPosition();
+	}
+
 	inline bool IsPassable()
 	{
 		return passable;

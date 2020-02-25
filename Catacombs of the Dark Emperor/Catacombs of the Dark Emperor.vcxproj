@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="Code\Assets.cpp" />
     <ClCompile Include="Code\BasicGenerator.cpp" />
+    <ClCompile Include="Code\Chest.cpp" />
     <ClCompile Include="Code\Collision.cpp" />
     <ClCompile Include="Code\Entity.cpp" />
     <ClCompile Include="Code\Level.cpp" />
@@ -176,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Assets.h" />
+    <ClInclude Include="Code\Chest.h" />
     <ClInclude Include="Code\Collision.h" />
     <ClInclude Include="Code\Entity.h" />
     <ClInclude Include="Code\Generator.h" />
