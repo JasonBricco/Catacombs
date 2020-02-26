@@ -5,7 +5,7 @@
 
 Assets* Assets::instance = nullptr;
 
-sf::Texture& Assets::GetTexture(std::string name)
+Texture& Assets::GetTexture(std::string name)
 {
 	// Returns an iterator pointing to the found element
 	// of the hash table. If this equals textures.end(),
@@ -14,7 +14,7 @@ sf::Texture& Assets::GetTexture(std::string name)
 
 	if (it == textures.end())
 	{
-		sf::Texture tex;
+		Texture tex;
 
 		if (!tex.loadFromFile(name))
 			Print("Failed to load texture %s.", name.c_str());

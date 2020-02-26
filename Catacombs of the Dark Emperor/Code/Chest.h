@@ -2,8 +2,8 @@
 
 #include "Entity.h"
 
-class Chest : public DynamicEntity {
-
+class Chest : public DynamicEntity 
+{
 public:
 
 	Chest() 

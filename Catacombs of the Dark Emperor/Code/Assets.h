@@ -5,7 +5,7 @@ class Assets
 	// A hash table that maps a name to a texture. If a texture is requested that 
 	// isn't in the table, the texture is loaded from disk. Otherwise we return the 
 	// requested texture. This allows sharing textures without loading them multiple times.
-	std::unordered_map<std::string, sf::Texture> textures;
+	std::unordered_map<std::string, Texture> textures;
 
 	// Singleton instance.
 	static Assets* instance;
@@ -19,5 +19,5 @@ public:
 		return instance;
 	}
 
-	sf::Texture& GetTexture(std::string name);
+	Texture& GetTexture(std::string name);
 };

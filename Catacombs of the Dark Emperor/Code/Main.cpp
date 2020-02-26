@@ -5,6 +5,8 @@
 
 int main(int, char**)
 {
+	srand((uint32_t)time(NULL));
+
 	int width = 1024, height = 576;
 
 	RenderWindow window(VideoMode(width, height), "Catacombs of the Dark Emperor");

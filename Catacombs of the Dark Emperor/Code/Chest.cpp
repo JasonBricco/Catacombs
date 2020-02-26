@@ -12,7 +12,7 @@ void Chest::spawn()
 	this->SetPosition(x, y);
 }
 
-void Chest::Update(Level* level, float elapsed)
+void Chest::Update(Level*, float)
 {
 	if (Keyboard::isKeyPressed(Keyboard::E))
 	{

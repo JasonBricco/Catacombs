@@ -60,6 +60,5 @@ inline Vector2f Normalize(Vector2f v)
 
 inline int randomInRange(int a, int b)
 {
-    srand(time(NULL));
     return (rand() % (b + 1 - a)) + a;
 }

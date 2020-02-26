@@ -4,7 +4,7 @@
 
 Room* Level::GetOrCreateRoom(int x, int y)
 {
-	sf::Vector2i pos(x, y);
+	Vector2i pos(x, y);
 	auto it = rooms.find(pos);
 
 	if (it == rooms.end())
