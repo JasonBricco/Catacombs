@@ -26,20 +26,36 @@ public:
 
 	TEST_METHOD(TestSquare)
 	{
-		Assert::AreEqual(Square(5.0f), 25.0f);
-		Assert::AreEqual(Square(1.0f), 1.0f);
-		Assert::AreEqual(Square(-1.0f), 1.0f);
+		float Test = 2;
+		float result = 4;
+		Assert::AreEqual(Square(Test), result);
+		Test = 0;
+		result = 0;
+		Assert::AreEqual(Square(Test), result);
 	}
 
 	TEST_METHOD(TestMul)
 	{
-		Vector2f a(2.0f, 2.0f);
-		Vector2f b(3.0f, 3.0f);
+		Vector2f TestA(1.0f, 1.0f);
+		Vector2f TestB(5.0f, 3.0f);
+		Vector2f result1 = Mul(TestA, TestB);
 
-		Vector2f c = Mul(a, b);
+		Assert::AreEqual(result1.x, 5.0f);
+		Assert::AreEqual(result1.y, 3.0f);
 
-		Assert::AreEqual(c.x, 6.0f);
-		Assert::AreEqual(c.y, 6.0f);
+		Vector2f TestC(0.0f, 2.0f);
+		Vector2f TestD(100.0f, 5.0f);
+		Vector2f result2 = Mul(TestC, TestD);
+
+		Assert::AreEqual(result2.x, 0.0f);
+		Assert::AreEqual(result2.y, 10.0f);
+
+		Vector2f TestE(0.5f, 1.5f);
+		Vector2f TestF(5.0f, 3.0f);
+		Vector2f result3 = Mul(TestE, TestF);
+
+		Assert::AreEqual(result3.x, 2.5f);
+		Assert::AreEqual(result3.y, 4.5f);
 	}
 
 	TEST_METHOD(TestRandomInRange)
