@@ -1,11 +1,13 @@
 #pragma 
 
 #include "Entity.h"
+#include "Player.h"
 
 class Chest : public DynamicEntity 
 {
-public:
+	Player* player;
 
+public:
 	Chest() 
 	{
 		LoadTexture(sprites[DOWN], "Assets/redchestclosed.png");
@@ -13,7 +15,7 @@ public:
 		sprite = sprites[DOWN];
 	}
 
-	void spawn();
+	void spawn(Player* player);
 
 	void Update(Level* level, float elapsed) override;
 

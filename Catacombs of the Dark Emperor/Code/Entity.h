@@ -36,7 +36,7 @@ public:
 
 	inline void SetPosition(float x, float y)
 	{
-		position = sf::Vector2f(x, y);
+		position = Vector2f(x, y);
 	}
 
 	inline void SetPosition(int x, int y)
@@ -44,9 +44,9 @@ public:
 		SetPosition((float)x, (float)y);
 	}
 
-	inline const sf::Vector2f GetPosition()
+	inline const Vector2f GetPosition()
 	{
-		return sprite.getPosition();
+		return position;
 	}
 
 	inline bool IsPassable()

@@ -48,6 +48,11 @@ inline float Distance2(Vector2f a, Vector2f b)
     return Length2(b - a);
 }
 
+inline float Distance(Vector2f a, Vector2f b)
+{
+    return sqrtf(Distance2(a, b));
+}
+
 inline float InverseSqrt(float v)
 {
     return 1.0f / sqrtf(v);
