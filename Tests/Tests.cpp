@@ -67,3 +67,11 @@ public:
 		}
 	}
 };
+
+TEST_CLASS(TestCollision)
+{
+	TEST_METHOD(TestTestWall)
+	{
+
+	}
+};

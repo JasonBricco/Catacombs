@@ -14,7 +14,7 @@ int main(int, char**)
 
 	Level* level = new Level();
 
-	BasicGenerator* generator = new BasicGenerator();
+	LevelGenerator* generator = new LevelGenerator();
 	generator->Build(level);
 
 	// Tracks frame time so we can use it for updating entities

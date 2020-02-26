@@ -5,6 +5,8 @@
 
 class Player : public DynamicEntity
 {
+	void ChangeRooms(Level* level, int offX, int offY);
+
 public:
 	Player()
 	{
@@ -20,5 +22,6 @@ public:
 		offset = Vector2f(0.5f, 1.5f);
 	}
 
+	void HandleOverlaps(Level* level) override;
 	void Update(Level* level, float elapsed) override;
 };

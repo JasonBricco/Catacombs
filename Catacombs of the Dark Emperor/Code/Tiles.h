@@ -7,7 +7,7 @@ class FloorTile : public Entity
 public:
 	FloorTile() : Entity("Assets/BlueFloorTile.png")
 	{
-		passable = true;
+		collideType = CollideType::Passable;
 	}
 };
 
@@ -57,4 +57,24 @@ class WallDownLeft : public Entity
 {
 public:
 	WallDownLeft() : Entity("Assets/DungeonCorner3.png") {}
+};
+
+class DoorUp : public Entity
+{
+public: 
+	DoorUp() : Entity("Assets/DungeonDoor0.png") 
+	{
+		collideType = CollideType::Overlap;
+		id = EntityID::DoorUp;
+	}
+};
+
+class DoorDown : public Entity
+{
+public:
+	DoorDown() : Entity("Assets/DungeonDoor2.png")
+	{
+		collideType = CollideType::Overlap;
+		id = EntityID::DoorDown;
+	}
 };

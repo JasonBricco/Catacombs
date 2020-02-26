@@ -10,6 +10,7 @@ Room* Level::GetOrCreateRoom(int x, int y)
 	if (it == rooms.end())
 	{
 		Room* room = new Room();
+		room->SetPosition(x, y);
 		rooms.insert(std::make_pair(pos, room));
 		return room;
 	}

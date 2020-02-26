@@ -4,9 +4,9 @@
 #include "Chest.h"
 #include "Room.h"
 
-void Chest::spawn(Player* player)
+void Chest::spawn(Player* playerPtr)
 {
-	this->player = player;
+	player = playerPtr;
 
 	int x = randomInRange(2, Room::Width - 3);
 	int y = randomInRange(2, Room::Height - 3);

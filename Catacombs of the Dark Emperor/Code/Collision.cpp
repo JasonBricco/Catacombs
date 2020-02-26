@@ -35,6 +35,17 @@ AABB AABBFromBottomCenter(Vector2f bc, Vector2f size)
 	return bb;
 }
 
+bool TestOverlap(AABB a, AABB b)
+{
+	Vector2f minA = a.center - a.radius, maxA = a.center + a.radius;
+	Vector2f minB = b.center - b.radius, maxB = b.center + b.radius;
+
+	bool overlapX = minA.x <= maxB.x && maxA.x >= minB.x;
+	bool overlapY = minA.y <= maxB.y && maxA.y >= minB.y;
+
+	return overlapX && overlapY;
+}
+
 // Tests for line collision against a wall by solving for the time of collision.
 // Delta is the length of the line.
 // p is the position to start at.

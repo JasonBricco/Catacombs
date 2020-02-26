@@ -51,5 +51,5 @@ public:
 	}
 
 	void Update(float elapsed);
-	void Draw(sf::RenderWindow& window);
+	void Draw(RenderWindow& window);
 };

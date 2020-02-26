@@ -7,7 +7,6 @@
 
 void BasicGenerator::Build(Level* level)
 {
-
 	Room* room = level->GetOrCreateRoom(0, 0);
 
 	level->SetCurrentRoom(room);

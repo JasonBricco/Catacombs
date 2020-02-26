@@ -7,6 +7,7 @@
 #include "Globals.h"
 
 std::vector<AABB> DynamicEntity::collides;
+std::vector<std::pair<Entity*, AABB>> DynamicEntity::overlaps;
 
 Entity::Entity(std::string name)
 {
@@ -64,10 +65,22 @@ void DynamicEntity::Move(Level* level, Vector2f accel, float elapsed)
 	// this entity itself for collision.
 	for (Entity* entity : room->GetEntities())
 	{
-		if (entity != this && !entity->IsPassable())
+		if (entity != this)
 		{
-			AABB bb = entity->BoundingBox();
-			collides.push_back(bb);
+			CollideType otherCollide = entity->GetCollideType();
+
+			if (otherCollide == CollideType::Solid)
+			{
+				AABB bb = entity->BoundingBox();
+				collides.push_back(bb);
+			}
+			else if (otherCollide == CollideType::Overlap)
+			{
+				AABB bb = entity->BoundingBox();
+
+				if (TestOverlap(BoundingBox(), bb))
+					overlaps.push_back(std::make_pair(entity, bb));
+			}
 		}
 	}
 
@@ -79,5 +92,9 @@ void DynamicEntity::Move(Level* level, Vector2f accel, float elapsed)
 	});
 
 	CollisionStep(this, delta, collides);
+
+	HandleOverlaps(level);
+
 	collides.clear();
+	overlaps.clear();
 }

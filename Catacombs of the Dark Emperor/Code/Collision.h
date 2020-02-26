@@ -50,3 +50,5 @@ AABB AABBFromCorner(Vector2f corner, Vector2f size);
 AABB AABBFromMinMax(Vector2f min, Vector2f max);
 AABB AABBFromCenter(Vector2f center, Vector2f radius);
 AABB AABBFromBottomCenter(Vector2f bc, Vector2f size);
+
+bool TestOverlap(AABB a, AABB b);

@@ -14,3 +14,8 @@ struct BasicGenerator : public Generator
 {
 	void Build(Level*) override;
 };
+
+struct LevelGenerator : public Generator
+{
+	void Build(Level*) override;
+};

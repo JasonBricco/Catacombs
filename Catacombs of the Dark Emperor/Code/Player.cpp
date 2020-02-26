@@ -2,11 +2,12 @@
 #include "Player.h"
 #include "Assets.h"
 #include "Utils.h"
+#include "Room.h"
+#include "Level.h"
 
 void Player::Update(Level* level, float elapsed)
 {
 	Vector2f accel = Vector2(0.0f, 0.0f);
-
 
 	if (Keyboard::isKeyPressed(Keyboard::A))
 	{
@@ -32,12 +33,44 @@ void Player::Update(Level* level, float elapsed)
 		accel.y -= 1.0f;
 	}
 
-	
-
 	// Ensure the movement vector is at most length 1,
 	// to prevent moving faster on diagonals.
 	if (accel != Vector2f(0.0f, 0.0f))
 		accel = Normalize(accel);
 
 	Move(level, accel, elapsed);
+}
+
+void Player::ChangeRooms(Level* level, int offX, int offY)
+{
+	Room* current = level->GetCurrentRoom();
+
+	Vector2i nextP = current->GetPosition();
+	nextP.x += offX;
+	nextP.y += offY;
+
+	Room* next = level->GetOrCreateRoom(nextP.x, nextP.y);
+	level->SetCurrentRoom(next);
+
+	current->RemoveEntity(this);
+	next->AddEntity(this);
+}
+
+void Player::HandleOverlaps(Level* level)
+{
+	for (std::pair<Entity*, AABB> pair : overlaps)
+	{
+		Entity* e = pair.first;
+
+		if (e->ID() == EntityID::DoorUp)
+		{
+			ChangeRooms(level, 0, 1);
+			position.y = Room::Height - 4.15f;
+		}
+		else if (e->ID() == EntityID::DoorDown)
+		{
+			ChangeRooms(level, 0, -1);
+			position.y = 1.0f;
+		}
+	}
 }
