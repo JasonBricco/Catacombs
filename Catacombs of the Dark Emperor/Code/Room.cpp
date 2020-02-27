@@ -11,5 +11,8 @@ void Room::Update(Level* level, float elapsed)
 void Room::Draw(RenderWindow& window)
 {
 	for (Entity* entity : entities)
-		entity->Draw(window);
+	{
+		if (entity->Visible())
+			entity->Draw(window);
+	}
 }

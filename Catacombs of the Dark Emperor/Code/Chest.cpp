@@ -8,8 +8,8 @@ void Chest::spawn(Player* playerPtr)
 {
 	player = playerPtr;
 
-	int x = randomInRange(2, Room::Width - 3);
-	int y = randomInRange(2, Room::Height - 3);
+	int x = randomInRange(3, Room::Width - 4);
+	int y = randomInRange(3, Room::Height - 4);
 	this->SetPosition(x, y);
 }
 

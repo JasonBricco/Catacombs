@@ -67,3 +67,8 @@ inline int randomInRange(int a, int b)
 {
     return (rand() % (b + 1 - a)) + a;
 }
+
+inline float randomUnit()
+{
+    return rand() / (float)RAND_MAX;
+}

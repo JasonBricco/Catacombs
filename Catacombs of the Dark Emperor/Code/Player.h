@@ -18,8 +18,8 @@ public:
 		sprite = sprites[DOWN];
 
 		speed = 100.0f;
-		size = Vector2f(1.0f, 0.5f);
-		offset = Vector2f(0.5f, 1.5f);
+		size = Vector2f(0.95f, 0.5f);
+		offset = Vector2f(0.525f, 1.5f);
 	}
 
 	void HandleOverlaps(Level* level) override;

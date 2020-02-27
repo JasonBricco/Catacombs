@@ -78,3 +78,14 @@ public:
 		id = EntityID::DoorDown;
 	}
 };
+
+class Barrier : public Entity
+{
+public:
+	Barrier(float width, float height, float offsetX = 0.0f, float offsetY = 0.0f)
+	{
+		visible = false;
+		size = Vector2f(width, height);
+		offset = Vector2f(offsetX, offsetY);
+	}
+};

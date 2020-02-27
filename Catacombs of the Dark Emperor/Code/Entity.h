@@ -26,6 +26,8 @@ protected:
 	EntityID id = EntityID::None;
 	Sprite sprite;
 
+	bool visible = true;
+
 	// Size is used for collision. It's the size in world units. A 32x32 pixel
 	// entity would have a size here of 1x1. Offset is the relative position 
 	// from the entity's pivot point for the collision box to be.
@@ -54,6 +56,11 @@ public:
 	inline AABB BoundingBox()
 	{
 		return AABBFromCorner(position + offset, size);
+	}
+
+	inline bool Visible()
+	{
+		return visible;
 	}
 
 	inline void SetPosition(float x, float y)
