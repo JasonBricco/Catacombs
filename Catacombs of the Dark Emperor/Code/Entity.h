@@ -43,7 +43,6 @@ protected:
 public:
 	// Name is the name of the texture to load for this entity.
 	// By default, the pivot is the upper-left corner. 
-	// Setting useBottomCenterPivot makes it the bottom center.
 	Entity(std::string name);
 
 	Entity() {}
