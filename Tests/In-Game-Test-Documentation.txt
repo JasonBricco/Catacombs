@@ -1,0 +1,55 @@
+TEST_PLAYER_MOVEMENT
+	TEST_UP: Press W (Up player movement)
+		Pass: Player Sprite turns into the Sprite that has their back to you AND Player moves Vertically UP
+		Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically up
+	TEST_DOWN: Press S (Down player movement)
+		Pass: Player Sprite turns into the Sprite that has their front to you AND Player moves Vertically DOWN
+		Fail: Player sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically down
+	TEST_RIGHT: Press D (Right Player movement)
+		Pass: Player sprite turns into the Sprite that faces RIGHT AND Player moves Horizontally RIGHT
+		Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move horizontally right
+	TEST_LEFT: Press A (Left Player movement)
+		Pass: Player sprite turns into the Sprite that faces LEFT AND Player move Horizontally LEFT
+		Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move horizontally left
+	TEST_UPLEFT_DIAG: Press W and A at the same time (Diagonal movement Up and Left)
+		Pass: Player Sprite turns into the Sprite that has their back to you AND Player moves vertically UP and horizontally LEFT
+		Fail: Player sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically up and horizontally left
+	TEST_UPRIGHT_DIAG: Press W and D at the same time (Diagonal movement Up and Right)
+		Pass: Player Sprite turns into the Sprite that has their back to you AND Player moves Vertically UP and Horizontally RIGHT
+		Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically up and horizontally right
+	TEST_DOWNLEFT_DIAG: Press S and A at the same time (Diagonal movement Down and Left)
+		Pass: Player Sprite turns into the Sprite that has their front to you AND Player moves Vertically DOWN and Horizontally LEFT
+		Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically down and horizontally left
+	TEST_DOWNRIGHT_DIAG: Press S and D at the same time (Diagonal movement Down and Right)
+		Pass: Player Sprite turns into the Sprite that has their front to you AND Player moves Vertically DOWN and Horizontally RIGHT
+		Fail: Player sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically down and horizontally right
+TEST_COLLISION
+	TEST_TOP_WALL: Move into a wall at the top of the screen
+		Pass: Player does not move through the wall (Note sprites will overlap here, that is normal)
+		Fail: Player moves through the wall
+	TEST_LEFT_WALL: Move into a wall at the left of the screen
+		Pass: Player does not move through the wall
+		Fail: Player moves through the wall
+	TEST_RIGHT_WALL: Move into a wall at the right of the screen
+		Pass: Player does not move through the wall
+		Fail: Player moves through the wall
+	TEST_BOTTOM_WALL: Move into a wall at the bottom of the screen
+		Pass: Player does not move through the wall
+		Fail: Player moves through the wall
+	TEST_DOOR: Move into a door
+		Pass: Player successfully moves to a different room
+		Fail: Player moves through the door in the current room (No new room is moved into)
+	TEST_CHEST: Move into the chest from all 4 sides
+		Pass: Player does not move through the chest (Note from the bottom of the chest the sprites will overlap, this is normal)
+		Fail: Player moves through the chest
+TEST_CHEST
+	TEST_OPEN: Press E when at the side, or in front of the chest
+		Pass: Chest sprite changes to an Open Chest sprite
+		Fail: Chest does not change to the Open Chest sprite
+TEST_GENERATOR
+	TEST_DOOR
+		Pass: Doors spawn in random different positions from room to room
+		Fail: Doors are fixed to the same spot room to room
+	TEST_CHEST:
+		Pass: Chest either doesn’t spawn, or spawns in a random position from room to room
+		Fail: Chest either never spawns, or spawns in a fixed place from room to room
