@@ -66,7 +66,7 @@ void Chest::Draw(RenderWindow& window)
 	if (IsChestContentOpen == true)
 	{
 		window.draw(ChestContents);
-		if (Keyboard::isKeyPressed(Keyboard::E))
+		if (Keyboard::isKeyPressed(Keyboard::F))
 		{
 			IsChestContentOpen = false;
 		}
