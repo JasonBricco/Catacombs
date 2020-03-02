@@ -22,7 +22,7 @@ struct BasicGenerator : public Generator
 
 struct LevelGenerator : public Generator
 {
-	std::unordered_set<Vector2i> roomsAdded;
+	Vector2iSet roomsAdded;
 	void Build(Level*) override;
 };
 

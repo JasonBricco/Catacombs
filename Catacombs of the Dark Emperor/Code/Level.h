@@ -8,7 +8,7 @@
 // They are passed as template parameters when declaring the map.
 struct Vector2iHash
 {
-    int operator()(sf::Vector2i v) const
+    int operator()(Vector2i v) const
     {
 		return v.y * 31 + v.x;
     }
@@ -16,13 +16,14 @@ struct Vector2iHash
 
 struct Vector2iCompare
 {
-    bool operator()(sf::Vector2i a, sf::Vector2i b) const
+    bool operator()(Vector2i a, Vector2i b) const
     {
 		return a.x == b.x && a.y == b.y;
     }
 };
 
-typedef std::unordered_map<sf::Vector2i, Room*, Vector2iHash, Vector2iCompare> RoomMap;
+typedef std::unordered_map<Vector2i, Room*, Vector2iHash, Vector2iCompare> RoomMap;
+typedef std::unordered_set<Vector2i, Vector2iHash, Vector2iCompare> Vector2iSet;
 
 class Level
 {
