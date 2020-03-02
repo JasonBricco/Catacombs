@@ -72,3 +72,16 @@ inline float randomUnit()
 {
     return rand() / (float)RAND_MAX;
 }
+
+template <typename T>
+inline void Shuffle(T* arr, int n)
+{
+    while (n > 1)
+    {
+        n--;
+        int k = randomInRange(0, n);
+        T value = arr[k];
+        arr[k] = arr[n];
+        arr[n] = value;
+    }
+}

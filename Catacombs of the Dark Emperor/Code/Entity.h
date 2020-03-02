@@ -17,7 +17,9 @@ enum class EntityID
 {
 	None,
 	DoorUp,
-	DoorDown
+	DoorDown,
+	DoorLeft,
+	DoorRight
 };
 
 class Entity

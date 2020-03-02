@@ -79,6 +79,26 @@ public:
 	}
 };
 
+class DoorLeft : public Entity
+{
+public:
+	DoorLeft() : Entity("Assets/DungeonDoor3.png")
+	{
+		collideType = CollideType::Overlap;
+		id = EntityID::DoorLeft;
+	}
+};
+
+class DoorRight : public Entity
+{
+public:
+	DoorRight() : Entity("Assets/DungeonDoor1.png")
+	{
+		collideType = CollideType::Overlap;
+		id = EntityID::DoorRight;
+	}
+};
+
 class Barrier : public Entity
 {
 public:

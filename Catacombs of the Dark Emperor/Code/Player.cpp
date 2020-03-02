@@ -62,15 +62,27 @@ void Player::HandleOverlaps(Level* level)
 	{
 		Entity* e = pair.first;
 
-		if (e->ID() == EntityID::DoorUp)
+		switch (e->ID())
 		{
+		case EntityID::DoorUp:
 			ChangeRooms(level, 0, 1);
 			position.y = Room::Height - 4.15f;
-		}
-		else if (e->ID() == EntityID::DoorDown)
-		{
+			break;
+
+		case EntityID::DoorDown:
 			ChangeRooms(level, 0, -1);
 			position.y = 1.0f;
+			break;
+
+		case EntityID::DoorLeft:
+			ChangeRooms(level, -1, 0);
+			position.x = Room::Width - 3.65f;
+			break;
+
+		case EntityID::DoorRight:
+			ChangeRooms(level, 1, 0);
+			position.x = 1.5f;
+			break;
 		}
 	}
 }

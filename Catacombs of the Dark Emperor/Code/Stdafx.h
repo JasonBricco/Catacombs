@@ -17,6 +17,7 @@
 #include <string>
 #include <cassert>
 #include <algorithm>
+#include <unordered_set>
 
 #pragma warning(pop)
 
