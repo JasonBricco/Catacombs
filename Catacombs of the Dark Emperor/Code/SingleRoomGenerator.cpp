@@ -61,7 +61,7 @@ void SingleRoomGenerator::Build(Level* level)
 	Player* player = new Player();
 	Chest* chest = new Chest();
 
-	chest->spawn(player);
+	chest->spawn(player, 1);
 	room->AddEntity(chest);
 
 	player->SetPosition(8, 5);

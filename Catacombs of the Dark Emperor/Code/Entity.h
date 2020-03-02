@@ -90,7 +90,7 @@ public:
 	}
 
 	virtual void Update(Level*, float) {}
-	void Draw(sf::RenderWindow& window);
+	virtual void Draw(sf::RenderWindow& window);
 };
 
 class DynamicEntity : public Entity

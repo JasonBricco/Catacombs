@@ -6,18 +6,26 @@
 class Chest : public DynamicEntity 
 {
 	Player* player;
+	bool IsChestOpen = false;
+	sf::RectangleShape ChestContents;
+	float dist;
+	bool IsChestContentOpen = false;
 
 public:
 	Chest() 
 	{
-		LoadTexture(sprites[DOWN], "Assets/redchestclosed.png");
-		LoadTexture(sprites[UP], "Assets/redchestopen.png");
-		sprite = sprites[DOWN];
+		ChestContents.setSize(sf::Vector2f(800, 390));
+		ChestContents.setPosition(Vector2f(100, 100));
+		ChestContents.setFillColor(Color::Black);
+		ChestContents.setOutlineThickness(10);
+		ChestContents.setOutlineColor(Color::Yellow);
 	}
 
-	void spawn(Player* player);
+	void spawn(Player* player, int type);
 
 	void Update(Level* level, float elapsed) override;
 
 	void open();
+
+	void Draw(RenderWindow& window) override;
 };

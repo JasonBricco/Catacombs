@@ -149,12 +149,20 @@ void LevelGenerator::Build(Level* level)
 		}
 		else
 		{
-			// 50% (for now) chance of spawning a chest in this room.
-			if (randomUnit() <= 0.5f)
+			// 50% (for now) chance of spawning a red chest in this room.
+			if (randomUnit() <= 0.9f)
 			{
 				Chest* chest = new Chest();
 
-				chest->spawn(player);
+				chest->spawn(player, 1);
+				room->AddEntity(chest);
+			}
+			// 10% (for now) chance of spawning a blue chest in this room.
+			if (randomUnit() <= 0.9f)
+			{
+				Chest* chest = new Chest();
+
+				chest->spawn(player, 2);
 				room->AddEntity(chest);
 			}
 		}

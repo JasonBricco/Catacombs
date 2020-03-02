@@ -78,7 +78,7 @@ void BasicGenerator::Build(Level* level)
 		{
 			Chest* chest = new Chest();
 
-			chest->spawn(player);
+			chest->spawn(player, 1);
 			room->AddEntity(chest);
 		}
 	}
