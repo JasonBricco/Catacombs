@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Level.h"
+#include "Player.h"
 
 // Base class for a level generator.
 class Generator
@@ -22,8 +23,16 @@ struct BasicGenerator : public Generator
 
 struct LevelGenerator : public Generator
 {
+	Player* player;
 	Vector2iSet roomsAdded;
+
+	// Stores the first room for each branching path.
+	std::vector<Vector2i> branches;
+
 	void Build(Level*) override;
+
+private:
+	void GeneratePath(Level* level, Vector2i start, Vector2i end, bool mainPath = false);
 };
 
 template <typename T, typename... Args>

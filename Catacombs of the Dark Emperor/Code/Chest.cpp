@@ -28,7 +28,7 @@ void Chest::spawn(Player* playerPtr, int type)
 	this->SetPosition(x, y);
 }
 
-void Chest::Update(Level* level, float elapsed)
+void Chest::Update(Level*, float)
 {
 	Vector2f chestP = Vector2f(position.x + 0.5f, position.y + 0.5f);
 

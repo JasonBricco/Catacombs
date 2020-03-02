@@ -76,10 +76,8 @@ static Room* CreateRoom(Level* level, int x, int y, bool* dirs, bool* prevDirs)
 	return room;
 }
 
-void LevelGenerator::Build(Level* level)
+void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, bool mainPath)
 {
-	Player* player = new Player();
-
 	// Store directions as vectors for convenience.
 	Vector2i vecDirs[5];
 	vecDirs[UP] = Vector2i(0, 1);
@@ -87,23 +85,11 @@ void LevelGenerator::Build(Level* level)
 	vecDirs[LEFT] = Vector2i(-1, 0);
 	vecDirs[RIGHT] = Vector2i(1, 0);
 
-	// The number of rooms away from the origin our ending
-	// room can be in either axis.
-	int radius = 5;
-
-	Vector2i start = Vector2i(0, 0);
-
-	// Ensure the room is at the edge of the area to consider.
-	int x = randomInRange(0, 1) == 0 ? radius : randomInRange(-radius, radius);
-	int y = x == radius ? randomInRange(-radius, radius) : radius;
-
-	Vector2i end = Vector2i(x, y);
-	
-	bool initial = true;
-
 	Vector2i cur = start;
-
 	bool prevDirs[4] = {};
+
+	bool initial = true;
+	Room* initialRoom = nullptr;
 
 	// Loop until we reach the end room.
 	// When we do, the loop will exit via a break.
@@ -122,14 +108,39 @@ void LevelGenerator::Build(Level* level)
 			dirs[LEFT] = diffX < 0;
 			dirs[RIGHT] = diffX > 0;
 
-			do { choice = randomInRange(0, 3); }
-			while (!dirs[choice]);
+			int tries = 32;
+			bool validDir = false;
+
+			do
+			{
+				choice = randomInRange(0, 3);
+
+				Vector2i nextP = cur + vecDirs[choice];
+				auto it = roomsAdded.find(nextP);
+
+				if (dirs[choice] && it == roomsAdded.end())
+					validDir = true;
+
+				// Stop if we tried too many times.
+				// Assume there's no possible direction to go.
+				if (--tries == 0)
+					break;
+			} while (!validDir);
 
 			// Ensure only one direction is chosen.
 			for (int i = 0; i < 4; ++i)
 			{
 				if (i != choice)
 					dirs[i] = false;
+			}
+
+			// 25% chance of generating a new path 
+			// from here.
+			if (mainPath && randomInRange(0, 4) == 0)
+			{
+				// TODO: Figure out its direction, 
+				// enable that direction, and add it
+				// to the branches list for later generation.
 			}
 		}
 
@@ -141,10 +152,15 @@ void LevelGenerator::Build(Level* level)
 
 		if (initial)
 		{
-			player->SetPosition(8, 5);
-			room->AddEntity(player);
+			if (mainPath)
+			{
+				player->SetPosition(8, 5);
+				room->AddEntity(player);
 
-			level->SetCurrentRoom(room);
+				level->SetCurrentRoom(room);
+			}
+
+			initialRoom = room;
 			initial = false;
 		}
 		else
@@ -170,4 +186,23 @@ void LevelGenerator::Build(Level* level)
 		if (cur == end) break;
 		else cur += vecDirs[choice];
 	}
+}
+
+void LevelGenerator::Build(Level* level)
+{
+	player = new Player();
+
+	// The number of rooms away from the origin our ending
+	// room can be in either axis.
+	int radius = 5;
+
+	Vector2i start = Vector2i(0, 0);
+
+	// Ensure the room is at the edge of the area to consider.
+	int x = randomInRange(0, 1) == 0 ? radius : randomInRange(-radius, radius);
+	int y = x == radius ? randomInRange(-radius, radius) : radius;
+
+	Vector2i end = Vector2i(x, y);
+
+	GeneratePath(level, start, end, true);
 }
