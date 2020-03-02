@@ -2,23 +2,24 @@
 
 #include "Entity.h"
 #include "Player.h"
+#include "Assets.h"
 
+
+//Color(11, 89, 87)
 class Chest : public DynamicEntity 
 {
 	Player* player;
 	bool IsChestOpen = false;
-	sf::RectangleShape ChestContents;
+	sf::Sprite ChestContents;
 	float dist;
 	bool IsChestContentOpen = false;
+	sf::Sprite ChestImage;
 
 public:
 	Chest() 
 	{
-		ChestContents.setSize(sf::Vector2f(800, 390));
+		LoadTexture(ChestContents, "Assets/ChestInterfaceFull.png");
 		ChestContents.setPosition(Vector2f(100, 100));
-		ChestContents.setFillColor(Color::Black);
-		ChestContents.setOutlineThickness(10);
-		ChestContents.setOutlineColor(Color::Yellow);
 	}
 
 	void spawn(Player* player, int type);
