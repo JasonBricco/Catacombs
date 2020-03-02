@@ -5,7 +5,7 @@
 #include "Tiles.h"
 #include "Chest.h"
 
-static Room* CreateRoom(Level* level, int x, int y, bool* dirs, bool* prevDirs)
+static Room* CreateRoom(Level* level, int x, int y, bool* dirs, int prevDir)
 {
 	Room* room = level->GetOrCreateRoom(x, y);
 
@@ -19,7 +19,7 @@ static Room* CreateRoom(Level* level, int x, int y, bool* dirs, bool* prevDirs)
 	int doorY = Room::Height / 2;
 
 	// Top row of walls.
-	if (dirs[UP] || prevDirs[DOWN])
+	if (dirs[UP] || prevDir == DOWN)
 	{
 		AddRect<WallUp>(room, 2, 0, doorX - 2, 0);
 		AddRect<WallUp>(room, doorX + 2, 0, Room::Width - 3, 0);
@@ -34,7 +34,7 @@ static Room* CreateRoom(Level* level, int x, int y, bool* dirs, bool* prevDirs)
 	else AddRect<WallUp>(room, 2, 0, Room::Width - 3, 0);
 
 	// Add bottom row of walls.
-	if (dirs[DOWN] || prevDirs[UP])
+	if (dirs[DOWN] || prevDir == UP)
 	{
 		AddRect<WallDown>(room, 2, Room::Height - 2, doorX - 2, Room::Height - 2);
 		AddRect<WallDown>(room, doorX + 2, Room::Height - 2, Room::Width - 3, Room::Height - 2);
@@ -47,7 +47,7 @@ static Room* CreateRoom(Level* level, int x, int y, bool* dirs, bool* prevDirs)
 	else AddRect<WallDown>(room, 2, Room::Height - 2, Room::Width - 3, Room::Height - 2);
 
 	// Add left row of walls.
-	if (dirs[LEFT] || prevDirs[RIGHT])
+	if (dirs[LEFT] || prevDir == RIGHT)
 	{
 		AddRect<WallLeft>(room, 0, 2, 0, doorY - 2);
 		AddRect<WallLeft>(room, 0, doorY + 2, 0, Room::Height - 3);
@@ -59,7 +59,7 @@ static Room* CreateRoom(Level* level, int x, int y, bool* dirs, bool* prevDirs)
 	else AddRect<WallLeft>(room, 0, 2, 0, Room::Height - 3);
 
 	// Add right row of walls.
-	if (dirs[RIGHT] || prevDirs[LEFT])
+	if (dirs[RIGHT] || prevDir == LEFT)
 	{
 		AddRect<WallRight>(room, Room::Width - 2, 2, Room::Width - 2, doorY - 2);
 		AddRect<WallRight>(room, Room::Width - 2, doorY + 2, Room::Width - 2, Room::Height - 3);
@@ -76,7 +76,7 @@ static Room* CreateRoom(Level* level, int x, int y, bool* dirs, bool* prevDirs)
 	return room;
 }
 
-void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, bool mainPath)
+void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, int prevDir, bool mainPath)
 {
 	// Store directions as vectors for convenience.
 	Vector2i vecDirs[5];
@@ -86,7 +86,6 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, bo
 	vecDirs[RIGHT] = Vector2i(1, 0);
 
 	Vector2i cur = start;
-	bool prevDirs[4] = {};
 
 	bool initial = true;
 	Room* initialRoom = nullptr;
@@ -100,6 +99,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, bo
 
 		bool dirs[4] = {};
 		int choice = 0;
+		bool noValidChoices = false;
 
 		if (cur != end)
 		{
@@ -124,8 +124,12 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, bo
 				// Stop if we tried too many times.
 				// Assume there's no possible direction to go.
 				if (--tries == 0)
+				{
+					noValidChoices = true;
 					break;
-			} while (!validDir);
+				}
+			} 
+			while (!validDir);
 
 			// Ensure only one direction is chosen.
 			for (int i = 0; i < 4; ++i)
@@ -134,21 +138,27 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, bo
 					dirs[i] = false;
 			}
 
-			// 25% chance of generating a new path 
-			// from here.
-			if (mainPath && randomInRange(0, 4) == 0)
+			if (mainPath && randomInRange(0, 2) == 0)
 			{
-				// TODO: Figure out its direction, 
-				// enable that direction, and add it
-				// to the branches list for later generation.
+				int dir = randomInRange(0, 3);
+
+				// Don't generate a branching path in the direction
+				// we're already going on the main path, or in the
+				// direction we came from.
+				if (!dirs[dir] && prevDir != GetOppositeDir(dir))
+				{
+					BranchStart branch = { cur, vecDirs[dir], dir };
+					branches.push_back(branch);
+					dirs[dir] = true;
+				}
 			}
 		}
 
-		Room* room = CreateRoom(level, cur.x, cur.y, dirs, prevDirs);
+		Room* room = CreateRoom(level, cur.x, cur.y, dirs, prevDir);
 		roomsAdded.insert(cur);
 
 		// Copy current directions to the previous directions.
-		memcpy(prevDirs, dirs, sizeof(dirs));
+		prevDir = choice;
 
 		if (initial)
 		{
@@ -183,7 +193,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, bo
 			}
 		}
 
-		if (cur == end) break;
+		if (cur == end || noValidChoices) break;
 		else cur += vecDirs[choice];
 	}
 }
@@ -204,5 +214,24 @@ void LevelGenerator::Build(Level* level)
 
 	Vector2i end = Vector2i(x, y);
 
-	GeneratePath(level, start, end, true);
+	GeneratePath(level, start, end, -1, true);
+
+	for (BranchStart branch : branches)
+	{
+		do
+		{
+			int endX = randomInRange(-radius, radius);
+			int endY = randomInRange(-radius, radius);
+
+			end = Vector2i(endX, endY);
+		} 
+		while (roomsAdded.find(end) != roomsAdded.end());
+
+		// Make sure the previous direction is set for the
+		// first room of the path, so it connects back
+		// to the main path.
+		int prevDir = branch.dirIndex;
+
+		GeneratePath(level, branch.start + branch.dir, end, prevDir, false);
+	}
 }

@@ -5,7 +5,10 @@
 
 int main(int, char**)
 {
-	srand((uint32_t)time(NULL));
+	uint32_t seed = (uint32_t)time(NULL);
+	srand(seed);
+
+	Print("Level seed: %u\n", seed);
 
 	int width = 1024, height = 576;
 

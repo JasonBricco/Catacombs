@@ -21,18 +21,25 @@ struct BasicGenerator : public Generator
 	void Build(Level*) override;
 };
 
+struct BranchStart
+{
+	Vector2i start;
+	Vector2i dir;
+	int dirIndex;
+};
+
 struct LevelGenerator : public Generator
 {
 	Player* player;
 	Vector2iSet roomsAdded;
 
 	// Stores the first room for each branching path.
-	std::vector<Vector2i> branches;
+	std::vector<BranchStart> branches;
 
 	void Build(Level*) override;
 
 private:
-	void GeneratePath(Level* level, Vector2i start, Vector2i end, bool mainPath = false);
+	void GeneratePath(Level* level, Vector2i start, Vector2i end, int prevDir, bool mainPath = false);
 };
 
 template <typename T, typename... Args>

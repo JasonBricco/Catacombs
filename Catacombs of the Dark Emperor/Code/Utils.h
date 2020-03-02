@@ -8,6 +8,19 @@ enum Direction
     DOWN
 };
 
+inline int GetOppositeDir(int dir)
+{
+    switch (dir)
+    {
+        case LEFT: return RIGHT;
+        case RIGHT: return LEFT;
+        case UP: return DOWN;
+        case DOWN: return UP;
+    }
+
+    return -1;
+}
+
 // Macro to make it easier to print to the Visual Studio console.
 // Printf will not print to this console (we don't run via command line).
 #define Print(...) { \
