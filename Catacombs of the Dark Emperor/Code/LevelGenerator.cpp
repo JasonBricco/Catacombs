@@ -5,7 +5,7 @@
 #include "Tiles.h"
 #include "Chest.h"
 
-static Room* CreateRoom(Level* level, int x, int y, bool* dirs, int prevDir)
+static Room* CreateRoom(Level* level, int x, int y, PathDirection* dirs, PathDirection prevDir)
 {
 	Room* room = level->GetOrCreateRoom(x, y);
 
@@ -15,12 +15,11 @@ static Room* CreateRoom(Level* level, int x, int y, bool* dirs, int prevDir)
 	AddEntity<WallUpLeft>(room, 0, 0);
 	AddEntity<WallDownLeft>(room, 0, Room::Height - 2);
 
-	int doorX = Room::Width / 2;
-	int doorY = Room::Height / 2;
-
 	// Top row of walls.
-	if (dirs[UP] || prevDir == DOWN)
+	if (dirs[UP].open || prevDir.dir == DOWN)
 	{
+		int doorX = dirs[UP].open ? dirs[UP].doorP : prevDir.doorP;
+
 		AddRect<WallUp>(room, 2, 0, doorX - 2, 0);
 		AddRect<WallUp>(room, doorX + 2, 0, Room::Width - 3, 0);
 
@@ -34,8 +33,10 @@ static Room* CreateRoom(Level* level, int x, int y, bool* dirs, int prevDir)
 	else AddRect<WallUp>(room, 2, 0, Room::Width - 3, 0);
 
 	// Add bottom row of walls.
-	if (dirs[DOWN] || prevDir == UP)
+	if (dirs[DOWN].open || prevDir.dir == UP)
 	{
+		int doorX = dirs[DOWN].open ? dirs[DOWN].doorP : prevDir.doorP;
+
 		AddRect<WallDown>(room, 2, Room::Height - 2, doorX - 2, Room::Height - 2);
 		AddRect<WallDown>(room, doorX + 2, Room::Height - 2, Room::Width - 3, Room::Height - 2);
 
@@ -47,8 +48,10 @@ static Room* CreateRoom(Level* level, int x, int y, bool* dirs, int prevDir)
 	else AddRect<WallDown>(room, 2, Room::Height - 2, Room::Width - 3, Room::Height - 2);
 
 	// Add left row of walls.
-	if (dirs[LEFT] || prevDir == RIGHT)
+	if (dirs[LEFT].open || prevDir.dir == RIGHT)
 	{
+		int doorY = dirs[LEFT].open ? dirs[LEFT].doorP : prevDir.doorP;
+
 		AddRect<WallLeft>(room, 0, 2, 0, doorY - 2);
 		AddRect<WallLeft>(room, 0, doorY + 2, 0, Room::Height - 3);
 
@@ -59,8 +62,10 @@ static Room* CreateRoom(Level* level, int x, int y, bool* dirs, int prevDir)
 	else AddRect<WallLeft>(room, 0, 2, 0, Room::Height - 3);
 
 	// Add right row of walls.
-	if (dirs[RIGHT] || prevDir == LEFT)
+	if (dirs[RIGHT].open || prevDir.dir == LEFT)
 	{
+		int doorY = dirs[RIGHT].open ? dirs[RIGHT].doorP : prevDir.doorP;
+
 		AddRect<WallRight>(room, Room::Width - 2, 2, Room::Width - 2, doorY - 2);
 		AddRect<WallRight>(room, Room::Width - 2, doorY + 2, Room::Width - 2, Room::Height - 3);
 
@@ -76,7 +81,7 @@ static Room* CreateRoom(Level* level, int x, int y, bool* dirs, int prevDir)
 	return room;
 }
 
-void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, int prevDir, bool mainPath)
+void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, PathDirection prevDir, bool mainPath)
 {
 	// Store directions as vectors for convenience.
 	Vector2i vecDirs[5];
@@ -97,16 +102,16 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, in
 		int diffX = end.x - cur.x;
 		int diffY = end.y - cur.y;
 
-		bool dirs[4] = {};
+		PathDirection dirs[4] = {};
 		int choice = 0;
 		bool noValidChoices = false;
 
 		if (cur != end)
 		{
-			dirs[UP] = diffY > 0;
-			dirs[DOWN] = diffY < 0;
-			dirs[LEFT] = diffX < 0;
-			dirs[RIGHT] = diffX > 0;
+			dirs[UP] = { diffY > 0, UP };
+			dirs[DOWN] = { diffY < 0, DOWN };
+			dirs[LEFT] = { diffX < 0, LEFT };
+			dirs[RIGHT] = { diffX > 0, RIGHT };
 
 			int tries = 32;
 			bool validDir = false;
@@ -118,7 +123,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, in
 				Vector2i nextP = cur + vecDirs[choice];
 				auto it = roomsAdded.find(nextP);
 
-				if (dirs[choice] && it == roomsAdded.end())
+				if (dirs[choice].open && it == roomsAdded.end())
 					validDir = true;
 
 				// Stop if we tried too many times.
@@ -134,8 +139,22 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, in
 			// Ensure only one direction is chosen.
 			for (int i = 0; i < 4; ++i)
 			{
-				if (i != choice)
-					dirs[i] = false;
+				// Leave our choice open and close the rest. 
+				// If we found no possible directions, make sure
+				// all directions are closed regardless.
+				if (i != choice || noValidChoices)
+					dirs[i].open = false;
+			}
+
+			// Select random door positions for each direction.
+			// I set them for directions that aren't open as well
+			// so that we'll have a valid position if we open the
+			// door later (for example from creating a branching path).
+			for (PathDirection& pd : dirs)
+			{
+				if (pd.dir == UP || pd.dir == DOWN)
+					pd.doorP = randomInRange(4, Room::Width - 5);
+				else pd.doorP = randomInRange(4, Room::Height - 5);
 			}
 
 			if (mainPath && randomInRange(0, 2) == 0)
@@ -145,11 +164,11 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, in
 				// Don't generate a branching path in the direction
 				// we're already going on the main path, or in the
 				// direction we came from.
-				if (!dirs[dir] && prevDir != GetOppositeDir(dir))
+				if (!dirs[dir].open && prevDir.dir != GetOppositeDir(dir))
 				{
-					BranchStart branch = { cur, vecDirs[dir], dir };
+					BranchStart branch = { cur, vecDirs[dir], dirs[dir] };
 					branches.push_back(branch);
-					dirs[dir] = true;
+					dirs[dir].open = true;
 				}
 			}
 		}
@@ -157,8 +176,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, in
 		Room* room = CreateRoom(level, cur.x, cur.y, dirs, prevDir);
 		roomsAdded.insert(cur);
 
-		// Copy current directions to the previous directions.
-		prevDir = choice;
+		prevDir = dirs[choice];
 
 		if (initial)
 		{
@@ -214,7 +232,8 @@ void LevelGenerator::Build(Level* level)
 
 	Vector2i end = Vector2i(x, y);
 
-	GeneratePath(level, start, end, -1, true);
+	PathDirection initpd = { false, -1, {} };
+	GeneratePath(level, start, end, initpd, true);
 
 	for (BranchStart branch : branches)
 	{
@@ -230,8 +249,6 @@ void LevelGenerator::Build(Level* level)
 		// Make sure the previous direction is set for the
 		// first room of the path, so it connects back
 		// to the main path.
-		int prevDir = branch.dirIndex;
-
-		GeneratePath(level, branch.start + branch.dir, end, prevDir, false);
+		GeneratePath(level, branch.start + branch.dir, end, branch.pd, false);
 	}
 }

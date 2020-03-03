@@ -21,11 +21,18 @@ struct BasicGenerator : public Generator
 	void Build(Level*) override;
 };
 
+struct PathDirection
+{
+	bool open;
+	int dir;
+	int doorP;
+};
+
 struct BranchStart
 {
 	Vector2i start;
 	Vector2i dir;
-	int dirIndex;
+	PathDirection pd;
 };
 
 struct LevelGenerator : public Generator
@@ -39,7 +46,7 @@ struct LevelGenerator : public Generator
 	void Build(Level*) override;
 
 private:
-	void GeneratePath(Level* level, Vector2i start, Vector2i end, int prevDir, bool mainPath = false);
+	void GeneratePath(Level* level, Vector2i start, Vector2i end, PathDirection prevDir, bool mainPath = false);
 };
 
 template <typename T, typename... Args>
