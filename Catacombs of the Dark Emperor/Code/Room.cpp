@@ -8,11 +8,11 @@ void Room::Update(Level* level, float elapsed)
 		entity->Update(level, elapsed);
 }
 
-void Room::Draw(RenderWindow& window)
+void Room::Draw(Renderer& rend)
 {
 	for (Entity* entity : entities)
 	{
 		if (entity->Visible())
-			entity->Draw(window);
+			entity->Draw(rend);
 	}
 }

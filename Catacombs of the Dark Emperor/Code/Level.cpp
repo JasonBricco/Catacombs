@@ -24,8 +24,8 @@ void Level::Update(float elapsed)
 	currentRoom->Update(this, elapsed);
 }
 
-void Level::Draw(sf::RenderWindow& window)
+void Level::Draw(Renderer& rend)
 {
 	assert(currentRoom != nullptr);
-	currentRoom->Draw(window);
+	currentRoom->Draw(rend);
 }

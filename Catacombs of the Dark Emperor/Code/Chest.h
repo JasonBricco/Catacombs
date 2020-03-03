@@ -28,5 +28,5 @@ public:
 
 	void open();
 
-	void Draw(RenderWindow& window) override;
+	void Draw(Renderer& rend) override;
 };

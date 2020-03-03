@@ -27,14 +27,14 @@ void Entity::LoadTexture(Sprite& spriteToSet, std::string name)
 	size = Vector2f((float)texSize.x, (float)texSize.y) / PIXELS_PER_UNIT;
 }
 
-void Entity::Draw(sf::RenderWindow& window)
+void Entity::Draw(Renderer& rend)
 {
 	// Multiply the world position by PIXELS_PER_UNIT to
 	// get the pixel location to draw at.
 	Vector2f drawP = position * PIXELS_PER_UNIT;
 
 	sprite.setPosition(drawP);
-	window.draw(sprite);
+	rend.Draw(sprite);
 }
 
 void DynamicEntity::Move(Level* level, Vector2f accel, float elapsed)

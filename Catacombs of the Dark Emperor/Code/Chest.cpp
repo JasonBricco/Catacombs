@@ -55,12 +55,12 @@ void Chest::open()
 	sprite = sprites[UP];
 }
 
-void Chest::Draw(RenderWindow& window)
+void Chest::Draw(Renderer& rend)
 {
 	Vector2f drawP = position * PIXELS_PER_UNIT;
 
 	sprite.setPosition(drawP);
-	window.draw(sprite);
+	rend.Draw(sprite);
 	if (Keyboard::isKeyPressed(Keyboard::E) && (dist < 1.5f))
 	{
 		IsChestContentOpen = true;
@@ -68,12 +68,12 @@ void Chest::Draw(RenderWindow& window)
 	if (IsChestContentOpen == true)
 	{
 		ChestImage.setPosition(sf::Vector2f(835,130));
-		window.draw(ChestContents);
+		rend.Draw(ChestContents, 100);
 		if (Keyboard::isKeyPressed(Keyboard::F))
 		{
 			IsChestContentOpen = false;
 		}
-		window.draw(ChestImage);
+		rend.Draw(ChestImage, 105);
 	}
 }
 

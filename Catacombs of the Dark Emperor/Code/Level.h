@@ -52,5 +52,5 @@ public:
 	}
 
 	void Update(float elapsed);
-	void Draw(RenderWindow& window);
+	void Draw(Renderer& rend);
 };

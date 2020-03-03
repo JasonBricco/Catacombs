@@ -38,5 +38,5 @@ public:
 	}
 
 	void Update(Level* level, float elapsed);
-	void Draw(sf::RenderWindow& window);
+	void Draw(Renderer& rend);
 };

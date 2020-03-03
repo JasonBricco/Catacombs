@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Collision.h"
+#include "Renderer.h"
 
 class Level;
 
@@ -90,7 +91,7 @@ public:
 	}
 
 	virtual void Update(Level*, float) {}
-	virtual void Draw(sf::RenderWindow& window);
+	virtual void Draw(Renderer& rend);
 };
 
 class DynamicEntity : public Entity

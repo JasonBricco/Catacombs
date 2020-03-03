@@ -15,6 +15,8 @@ int main(int, char**)
 	RenderWindow window(VideoMode(width, height), "Catacombs of the Dark Emperor");
 	window.setVerticalSyncEnabled(true);
 
+	Renderer rend(&window);
+
 	Level* level = new Level();
 
 	LevelGenerator* generator = new LevelGenerator();
@@ -41,8 +43,9 @@ int main(int, char**)
 		window.clear(Color::Black);
 
 		level->Update(elapsed.asSeconds());
-		level->Draw(window);
+		level->Draw(rend);
 
+		rend.WriteToWindow();
 		window.display();
 
 		elapsed = clock.restart();
