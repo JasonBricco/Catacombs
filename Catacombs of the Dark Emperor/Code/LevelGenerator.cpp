@@ -193,25 +193,34 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 		}
 		else
 		{
-			// 50% (for now) chance of spawning a red chest in this room.
-			if (randomUnit() <= 0.9f)
+			// Red chests can spawn in any room except
+			// the end of path rooms.
+			if (cur != end && !noValidChoices)
 			{
-				Chest* chest = new Chest();
+				// 35% (for now) chance of spawning a red chest in this room.
+				if (randomUnit() <= 0.35f)
+				{
+					Chest* chest = new Chest();
 
-				chest->spawn(player, 1);
-				room->AddEntity(chest);
+					chest->spawn(player, 1);
+					room->AddEntity(chest);
+				}
 			}
-			// 10% (for now) chance of spawning a blue chest in this room.
-			if (randomUnit() <= 0.9f)
+		}
+
+		// Blue chests can spawn only in end of path rooms.
+		if (cur == end || noValidChoices)
+		{
+			if (randomUnit() <= 0.65f)
 			{
 				Chest* chest = new Chest();
 
 				chest->spawn(player, 2);
 				room->AddEntity(chest);
 			}
-		}
 
-		if (cur == end || noValidChoices) break;
+			break;
+		}
 		else cur += vecDirs[choice];
 	}
 }

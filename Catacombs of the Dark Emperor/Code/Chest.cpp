@@ -67,7 +67,7 @@ void Chest::Draw(Renderer& rend)
 	}
 	if (IsChestContentOpen == true)
 	{
-		ChestImage.setPosition(sf::Vector2f(835,130));
+		ChestImage.setPosition(sf::Vector2f(490,125));
 		rend.Draw(ChestContents, 100);
 		if (Keyboard::isKeyPressed(Keyboard::F))
 		{
