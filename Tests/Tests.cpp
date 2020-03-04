@@ -67,6 +67,76 @@ public:
 			Assert::IsTrue(r >= 0 && r <= 10);
 		}
 	}
+
+	TEST_METHOD(TestGetOppositeDir)
+	{
+		int TestLeft = 0;
+		int TestRight = 1;
+		int TestUp = 2;
+		int TestDown = 3;
+		int TestNone = 4;
+		//Should all return the opposite
+		Assert::AreEqual(1, GetOppositeDir(TestLeft));
+		Assert::AreEqual(0, GetOppositeDir(TestRight));
+		Assert::AreEqual(3, GetOppositeDir(TestUp));
+		Assert::AreEqual(2, GetOppositeDir(TestDown));
+		//Should not return a valid direction
+		Assert::AreNotEqual(0, GetOppositeDir(TestNone));
+		Assert::AreNotEqual(1, GetOppositeDir(TestNone));
+		Assert::AreNotEqual(2, GetOppositeDir(TestNone));
+		Assert::AreNotEqual(3, GetOppositeDir(TestNone));
+		//Should return -1 if not a valid direction
+		Assert::AreEqual(-1, GetOppositeDir(TestNone));
+		TestNone = 100;
+		Assert::AreEqual(-1, GetOppositeDir(TestNone));
+		TestNone = -20;
+		Assert::AreEqual(-1, GetOppositeDir(TestNone));
+		TestNone = 100000000;
+		Assert::AreEqual(-1, GetOppositeDir(TestNone));
+	}
+
+	TEST_METHOD(TestDot)
+	{
+		Vector2f TestA(1.0f, 2.0f);
+		Vector2f TestB(2.0f, 3.0f);
+		float result = 8.0f;
+		Assert::AreEqual(result, Dot(TestA, TestB));
+
+		Vector2f TestC(0.0f, 0.0f);
+		Vector2f TestD(2.0f, 3.0f);
+		result = 0.0f;
+		Assert::AreEqual(result, Dot(TestC, TestD));
+
+		Vector2f TestE(10.0f, 5.0f);
+		Vector2f TestF(2.0f, 3.0f);
+		result = 35.0f;
+		Assert::AreEqual(result, Dot(TestE, TestF));
+
+		Vector2f TestG(-10.0f, -10.0f);
+		Vector2f TestH(2.0f, 3.0f);
+		result = -50.0f;
+		Assert::AreEqual(result, Dot(TestG, TestH));
+
+		Vector2f TestI(1.0f, 1.0f);
+		Vector2f TestJ(1.0f, -1.0f);
+		result = 0;
+		Assert::AreEqual(result, Dot(TestI, TestJ));
+	}
+
+	TEST_METHOD(TestLength2)
+	{
+		Vector2f Test(2.0f, 2.0f);
+		float result = 8.0f;
+		Assert::AreEqual(result, Length2(Test));
+
+		Vector2f Test2(0.0f, 0.0f);
+		result = 0.0f;
+		Assert::AreEqual(result, Length2(Test2));
+
+		Vector2f Test3(-1.0f, 3.0f);
+		result = 10.0f;
+		Assert::AreEqual(result, Length2(Test3));
+	}
 };
 
 TEST_CLASS(TestCollision)
