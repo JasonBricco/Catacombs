@@ -18,8 +18,8 @@ class Chest : public DynamicEntity
 public:
 	Chest() 
 	{
-		LoadTexture(ChestContents, "Assets/ChestInterfaceFull.png");
-		ChestContents.setPosition(Vector2f(100, 100));
+		LoadTexture(ChestContents, "Assets/ChestInterface.png");
+		ChestContents.setPosition(Vector2f(260, 100));
 	}
 
 	void spawn(Player* player, int type);
