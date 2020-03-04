@@ -1,5 +1,7 @@
 #pragma once
 
+inline bool GameState = false;          //true to pause
+
 enum Direction
 {
     LEFT,
@@ -97,4 +99,14 @@ inline void Shuffle(T* arr, int n)
         arr[k] = arr[n];
         arr[n] = value;
     }
+}
+
+inline bool getGameState()
+{
+    return GameState;
+}
+
+inline void setGameState(bool pause)
+{
+    GameState = pause;
 }
