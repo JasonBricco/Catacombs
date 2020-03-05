@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Code\Assets.cpp" />
+    <ClCompile Include="Code\HealthBar.cpp" />
     <ClCompile Include="Code\LevelGenerator.cpp" />
     <ClCompile Include="Code\Renderer.cpp" />
     <ClCompile Include="Code\SingleRoomGenerator.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Code\Entity.h" />
     <ClInclude Include="Code\Generator.h" />
     <ClInclude Include="Code\Globals.h" />
+    <ClInclude Include="Code\HealthBar.h" />
     <ClInclude Include="Code\Level.h" />
     <ClInclude Include="Code\Player.h" />
     <ClInclude Include="Code\Renderer.h" />

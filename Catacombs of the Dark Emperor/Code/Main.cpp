@@ -10,7 +10,7 @@ int main(int, char**)
 
 	Print("Level seed: %u\n", seed);
 
-	int width = 1024, height = 576;
+	int width = 1024, height = 608;
 
 	RenderWindow window(VideoMode(width, height), "Catacombs of the Dark Emperor");
 	window.setVerticalSyncEnabled(true);
