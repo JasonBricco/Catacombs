@@ -8,10 +8,10 @@ class Heart : public DynamicEntity
 public:
 	Heart()
 	{
-		LoadTexture(sprites[0], "Assets/HeartFull");
-		LoadTexture(sprites[1], "Assets/HeartHalf");
-		LoadTexture(sprites[2], "Assets/HeartEmpty");
-		LoadTexture(sprites[3], "Assets/HeartEmpty");
+		LoadTexture(sprites[0], "Assets/HeartFull.png");
+		LoadTexture(sprites[1], "Assets/HeartHalf.png");
+		LoadTexture(sprites[2], "Assets/HeartEmpty.png");
+		LoadTexture(sprites[3], "Assets/HeartEmpty.png");
 
 		sprite = sprites[0];
 
