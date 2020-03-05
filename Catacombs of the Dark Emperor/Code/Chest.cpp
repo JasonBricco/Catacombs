@@ -64,14 +64,16 @@ void Chest::Draw(Renderer& rend)
 	if (Keyboard::isKeyPressed(Keyboard::E) && (dist < 1.5f))
 	{
 		IsChestContentOpen = true;
+		setGameState(true);
 	}
 	if (IsChestContentOpen == true)
 	{
-		ChestImage.setPosition(sf::Vector2f(490,125));
+		ChestImage.setPosition(sf::Vector2f(492,125));
 		rend.Draw(ChestContents, 100);
 		if (Keyboard::isKeyPressed(Keyboard::F))
 		{
 			IsChestContentOpen = false;
+			setGameState(false);
 		}
 		rend.Draw(ChestImage, 105);
 	}

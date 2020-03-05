@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Level.h"
 #include "Generator.h"
+#include "Utils.h"
 
 int main(int, char**)
 {
@@ -41,8 +42,10 @@ int main(int, char**)
 
 		// Clear the screen to a black color.
 		window.clear(Color::Black);
-
-		level->Update(elapsed.asSeconds());
+		if (getGameState() == false)
+		{
+			level->Update(elapsed.asSeconds());
+		}
 		level->Draw(rend);
 
 		rend.WriteToWindow();
@@ -53,3 +56,4 @@ int main(int, char**)
 
 	return 0;
 }
+
