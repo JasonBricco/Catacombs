@@ -137,6 +137,78 @@ public:
 		result = 10.0f;
 		Assert::AreEqual(result, Length2(Test3));
 	}
+
+	TEST_METHOD(TestDistance2)
+	{
+		Vector2f TestA(1.0f, 1.0f);
+		Vector2f TestB(3.0f, 4.0f);
+		float result = 13.0f;
+
+		Assert::AreEqual(result, Distance2(TestA, TestB));
+
+		Vector2f TestC(0.0f, 0.0f);
+		Vector2f TestD(1.0f, 1.0f);
+		result = 2.0f;
+
+		Assert::AreEqual(result, Distance2(TestC, TestD));
+
+		Vector2f TestE(0.0f, 0.0f);
+		Vector2f TestF(-1.0f, -1.0f);
+		result = 2.0f;
+
+		Assert::AreEqual(result, Distance2(TestE, TestF));
+
+		Vector2f TestG(0.0f, 0.0f);
+		Vector2f TestH(0.0f, 0.0f);
+		result = 0.0f;
+
+		Assert::AreEqual(result, Distance2(TestG, TestH));
+	}
+
+	TEST_METHOD(TestDistance)
+	{
+		Vector2f TestA(0.0f, 0.0f);
+		Vector2f TestB(0.0f, 0.0f);
+		float result = 0.0f;
+
+		Assert::AreEqual(result, Distance(TestA, TestB));
+
+		Vector2f TestC(2.0f, 3.0f);
+		Vector2f TestD(1.0f, 1.0f);
+		result = sqrtf(5.0f);
+
+		Assert::AreEqual(result, Distance(TestC, TestD));
+
+		Vector2f TestE(-2.0f, 1.0f);
+		Vector2f TestF(1.0f, 1.0f);
+		result = 3.0f;
+
+		Assert::AreEqual(result, Distance(TestE, TestF));
+	}
+
+	TEST_METHOD(TestInverseSqrt)
+	{
+		float TestA = 3.0f;
+		float result = 1.0f / sqrtf(3.0f);
+
+		Assert::AreEqual(result, InverseSqrt(TestA));
+	}
+
+	TEST_METHOD(TestNormalize)
+	{
+		Vector2f TestA(2.0, 2.0);
+		float resultf = 2.0f * InverseSqrt(8.0f);
+		Vector2f result(resultf, resultf);
+		// for some reason the compiler doesn't like using Assert::AreEquals() with the normalize function, this does it for now
+		if (result == Normalize(TestA))
+		{
+			Assert::AreEqual(1, 1);
+		}
+		else
+		{
+			Assert::AreEqual(0, 1);
+		}
+	}
 };
 
 TEST_CLASS(TestCollision)
