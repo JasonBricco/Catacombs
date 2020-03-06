@@ -13,11 +13,13 @@ static Room* CreateRoom(Level* level, int x, int y, PathDirection* dirs, PathDir
 {
 	Room* room = level->GetOrCreateRoom(x, y);
 
+	int offset = randomInRange(0, 2) == 0 ? 0 : 4;
+
 	// Add corner tiles.
-	AddEntity<WallUpRight>(room, Room::Width - 2, 0);
-	AddEntity<WallDownRight>(room, Room::Width - 2, Room::Height - 2);
-	AddEntity<WallUpLeft>(room, 0, 0);
-	AddEntity<WallDownLeft>(room, 0, Room::Height - 2);
+	AddEntity<WallCorner>(room, Room::Width - 2, 0, UP_RIGHT + offset);
+	AddEntity<WallCorner>(room, Room::Width - 2, Room::Height - 2, DOWN_RIGHT + offset);
+	AddEntity<WallCorner>(room, 0, 0, UP_LEFT + offset);
+	AddEntity<WallCorner>(room, 0, Room::Height - 2, DOWN_LEFT + offset);
 
 	// Top row of walls.
 	if (dirs[UP].open || prevDir.dir == DOWN)

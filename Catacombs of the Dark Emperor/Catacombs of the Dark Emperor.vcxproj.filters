@@ -41,12 +41,6 @@
     <ClCompile Include="Code\Chest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Code\SingleRoomGenerator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\BasicGenerator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Code\LevelGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

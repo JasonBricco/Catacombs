@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entity.h"
+#include "Utils.h"
 
 class FloorTile : public Entity
 {
@@ -35,28 +36,38 @@ public:
 	WallRight() : Entity("Assets/DungeonWall1.png") {}
 };
 
-class WallUpRight : public Entity
+class WallCorner : public Entity
 {
 public:
-	WallUpRight() : Entity("Assets/DungeonCorner1.png") {}
-};
+	WallCorner(int variant)
+	{
+		switch (variant)
+		{
+		case UP_LEFT:
+			LoadTexture(sprite, "Assets/DungeonCorner0.png"); break;
 
-class WallDownRight : public Entity
-{
-public:
-	WallDownRight() : Entity("Assets/DungeonCorner2.png") {}
-};
+		case UP_RIGHT:
+			LoadTexture(sprite, "Assets/DungeonCorner1.png"); break;
 
-class WallUpLeft : public Entity
-{
-public:
-	WallUpLeft() : Entity("Assets/DungeonCorner0.png") {}
-};
+		case DOWN_RIGHT:
+			LoadTexture(sprite, "Assets/DungeonCorner2.png"); break;
 
-class WallDownLeft : public Entity
-{
-public:
-	WallDownLeft() : Entity("Assets/DungeonCorner3.png") {}
+		case DOWN_LEFT: 
+			LoadTexture(sprite, "Assets/DungeonCorner3.png"); break;
+		
+		case UP_LEFT + 4:
+			LoadTexture(sprite, "Assets/Corner1.png"); break;
+
+		case UP_RIGHT + 4:
+			LoadTexture(sprite, "Assets/Corner2.png"); break;
+
+		case DOWN_LEFT + 4:
+			LoadTexture(sprite, "Assets/Corner3.png"); break;
+
+		case DOWN_RIGHT + 4:
+			LoadTexture(sprite, "Assets/Corner4.png"); break;
+		}
+	}
 };
 
 class DoorUp : public Entity
