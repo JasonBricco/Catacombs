@@ -7,7 +7,7 @@
 
 // giving type an int
 // 1 is for red chest, 2 is for blue chest
-void Chest::spawn(Player* playerPtr, int type)
+void Chest::spawn(Player* playerPtr, int type, int x, int y)
 {
 	player = playerPtr;
 	if (type == 1)
@@ -24,8 +24,7 @@ void Chest::spawn(Player* playerPtr, int type)
 		sprite = sprites[DOWN];
 	}
 	ChestImage = sprites[DOWN];
-	int x = randomInRange(3, Room::Width - 4);
-	int y = randomInRange(3, Room::Height - 4);
+	
 	this->SetPosition(x, y);
 
 }

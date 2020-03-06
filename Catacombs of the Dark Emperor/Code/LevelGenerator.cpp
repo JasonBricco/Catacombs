@@ -82,25 +82,19 @@ static Room* CreateRoom(Level* level, int x, int y, PathDirection* dirs, PathDir
 	// Add floor tiles.
 	AddRect<FloorTile>(room, 2, 2, Room::Width - 3, Room::Height - 3);
 
-	int rocks = randomInRange(0, 3);
+	int rockCount = randomInRange(0, 5);
 
-	if (rocks == 0)
+	for (int i = 0; i < rockCount; ++i)
 	{
-		int rockCount = randomInRange(1, 10);
+		Vector2i p = Vector2i(randomInRange(3, Room::Width - 4), randomInRange(3, Room::Height - 4));
 
-		for (int i = 0; i < rockCount; ++i)
+		if (obstacles.find(p) == obstacles.end())
 		{
-			Vector2i p = Vector2i(randomInRange(3, Room::Width - 4), randomInRange(3, Room::Height - 4));
-
-			if (obstacles.find(p) == obstacles.end())
-			{
-				AddEntity<RocksTile>(room, p.x, p.y);
-				obstacles.insert(p);
-			}
+			AddEntity<RocksTile>(room, p.x, p.y);
+			obstacles.insert(p);
 		}
 	}
 
-	obstacles.clear();
 	return room;
 }
 
@@ -196,6 +190,8 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 			}
 		}
 
+		obstacles.clear();
+
 		Room* room = CreateRoom(level, cur.x, cur.y, dirs, prevDir);
 		roomsAdded.insert(cur);
 
@@ -223,10 +219,15 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 				// 35% (for now) chance of spawning a red chest in this room.
 				if (randomUnit() <= 0.35f)
 				{
-					Chest* chest = new Chest();
+					int x = randomInRange(3, Room::Width - 4);
+					int y = randomInRange(3, Room::Height - 4);
 
-					chest->spawn(player, 1);
-					room->AddEntity(chest);
+					if (obstacles.find(Vector2i(x, y)) == obstacles.end())
+					{
+						Chest* chest = new Chest();
+						chest->spawn(player, 1, x, y);
+						room->AddEntity(chest);
+					}
 				}
 			}
 		}
@@ -234,12 +235,18 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 		// Blue chests can spawn only in end of path rooms.
 		if (cur == end || noValidChoices)
 		{
-			if (randomUnit() <= 0.65f)
+			if (randomUnit() <= 0.75f)
 			{
-				Chest* chest = new Chest();
+				int x = randomInRange(3, Room::Width - 4);
+				int y = randomInRange(3, Room::Height - 4);
 
-				chest->spawn(player, 2);
-				room->AddEntity(chest);
+				if (obstacles.find(Vector2i(x, y)) == obstacles.end())
+				{
+					Chest* chest = new Chest();
+
+					chest->spawn(player, 2, x, y);
+					room->AddEntity(chest);
+				}
 			}
 
 			break;
