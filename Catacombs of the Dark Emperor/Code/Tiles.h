@@ -109,3 +109,19 @@ public:
 		offset = Vector2f(offsetX, offsetY);
 	}
 };
+
+class LampTile : public Entity
+{
+
+};
+
+class PillarTile : public Entity
+{
+
+};
+
+class RocksTile : public Entity
+{
+public:
+	RocksTile() : Entity("Assets/Rocks-1.png") {}
+};

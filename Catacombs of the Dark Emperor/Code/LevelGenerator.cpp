@@ -5,6 +5,10 @@
 #include "Tiles.h"
 #include "Chest.h"
 
+// Stores obstacles in order to prevent
+// them from appearing at the same location in a room.
+static Vector2iSet obstacles;
+
 static Room* CreateRoom(Level* level, int x, int y, PathDirection* dirs, PathDirection prevDir)
 {
 	Room* room = level->GetOrCreateRoom(x, y);
@@ -78,6 +82,25 @@ static Room* CreateRoom(Level* level, int x, int y, PathDirection* dirs, PathDir
 	// Add floor tiles.
 	AddRect<FloorTile>(room, 2, 2, Room::Width - 3, Room::Height - 3);
 
+	int rocks = randomInRange(0, 3);
+
+	if (rocks == 0)
+	{
+		int rockCount = randomInRange(1, 10);
+
+		for (int i = 0; i < rockCount; ++i)
+		{
+			Vector2i p = Vector2i(randomInRange(3, Room::Width - 4), randomInRange(3, Room::Height - 4));
+
+			if (obstacles.find(p) == obstacles.end())
+			{
+				AddEntity<RocksTile>(room, p.x, p.y);
+				obstacles.insert(p);
+			}
+		}
+	}
+
+	obstacles.clear();
 	return room;
 }
 
