@@ -36,6 +36,10 @@ protected:
 	// from the entity's pivot point for the collision box to be.
 	Vector2f size, position;
 
+	// Rendering layer. Entities with a higher layer draw in front of 
+	// entities with a lower layer.
+	int layer = 0;
+
 	Vector2f offset = {};
 
 	// Whether this entity will be collided with.

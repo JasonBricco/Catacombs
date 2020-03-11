@@ -9,18 +9,6 @@ class Generator
 	virtual void Build(Level*) {}
 };
 
-// Builds a single room, places the player in it,
-// and sets it as the current room.
-struct SingleRoomGenerator : public Generator
-{
-	void Build(Level*) override;
-};
-
-struct BasicGenerator : public Generator
-{
-	void Build(Level*) override;
-};
-
 struct PathDirection
 {
 	bool open;

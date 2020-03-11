@@ -121,6 +121,15 @@ public:
 	}
 };
 
+class PotTile : public Entity
+{
+public:
+	PotTile() : Entity("Assets/Pot.png") 
+	{
+		layer = 5;
+	}
+};
+
 class LampTile : public Entity
 {
 
@@ -134,5 +143,8 @@ class PillarTile : public Entity
 class RocksTile : public Entity
 {
 public:
-	RocksTile() : Entity("Assets/Rocks-1.png") {}
+	RocksTile() : Entity("Assets/Rocks-1.png")
+	{
+		layer = 5;
+	}
 };

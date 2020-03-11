@@ -18,6 +18,7 @@ public:
 		LoadTexture(sprites[UP], "Assets/hero-idle-back.png");
 
 		sprite = sprites[DOWN];
+		layer = 50;
 
 		speed = 100.0f;
 		size = Vector2f(0.95f, 0.5f);

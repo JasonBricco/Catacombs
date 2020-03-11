@@ -59,7 +59,8 @@ void Chest::Draw(Renderer& rend)
 	Vector2f drawP = position * PIXELS_PER_UNIT;
 
 	sprite.setPosition(drawP);
-	rend.Draw(sprite);
+	rend.Draw(sprite, 5);
+
 	if (Keyboard::isKeyPressed(Keyboard::E) && (dist < 1.5f))
 	{
 		IsChestContentOpen = true;

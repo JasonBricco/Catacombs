@@ -41,9 +41,21 @@ public:
 	// created. Returns the new or existing room.
 	Room* GetOrCreateRoom(int x, int y);
 
+	Room* GetRoom(Vector2i p);
+
+	inline Room* GetRoom(int x, int y)
+	{
+		return GetRoom(Vector2i(x, y));
+	}
+
 	inline Room* GetCurrentRoom()
 	{
 		return currentRoom;
+	}
+
+	inline RoomMap& GetRooms()
+	{
+		return rooms;
 	}
 
 	inline void SetCurrentRoom(Room* room)

@@ -7,6 +7,8 @@ class Room
 	Vector2i pos;
 	std::vector<Entity*> entities;
 
+	int doors[4];
+
 public:
 	// Room size in world units (1 unit = 32 pixels).
 	static constexpr int Width = 32;
@@ -35,6 +37,16 @@ public:
 	inline std::vector<Entity*>& GetEntities()
 	{
 		return entities;
+	}
+
+	inline void SetDoor(int dir, int loc)
+	{
+		doors[dir] = loc;
+	}
+
+	inline int* GetDoors()
+	{
+		return doors;
 	}
 
 	void Update(Level* level, float elapsed);
