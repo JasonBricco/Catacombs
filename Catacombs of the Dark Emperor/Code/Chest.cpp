@@ -4,6 +4,7 @@
 #include "Chest.h"
 #include "Room.h"
 #include "Globals.h"
+#include "Renderer.h"
 
 // giving type an int
 // 1 is for red chest, 2 is for blue chest
@@ -74,6 +75,42 @@ void Chest::Draw(Renderer& rend)
 		{
 			IsChestContentOpen = false;
 			setGameState(false);
+		}
+		if(itemTaken[0] == false)
+			rend.Draw(item->Item[0], 110);
+		if (itemTaken[1] == false)
+			rend.Draw(item->Item[1], 110);
+		if (itemTaken[2] == false)
+			rend.Draw(item->Item[2], 110);
+		if (Mouse::isButtonPressed(Mouse::Left))
+		{
+			Vector2f mouseP = Vector2f(Mouse::getPosition());
+			mouseP.x -= 450.0f;
+			mouseP.y -= 300.0f;
+			Vector2f item1P = item->Item[0].getPosition();
+			item1P.x += 1.0f;
+			item1P.y += 1.5f;
+			float dist1 = Distance(mouseP, item1P);
+			if (dist1 < 80.0f) 
+			{
+				itemTaken[0] = true;
+			}
+			Vector2f item2P = item->Item[1].getPosition();
+			item2P.x += 1.0f;
+			item2P.y += 1.5f;
+			float dist2 = Distance(mouseP, item2P);
+			if (dist2 < 80.0f)
+			{
+				itemTaken[1] = true;
+			}
+			Vector2f item3P = item->Item[2].getPosition();
+			item3P.x += 1.0f;
+			item3P.y += 1.5f;
+			float dist3 = Distance(mouseP, item3P);
+			if (dist3 < 80.0f)
+			{
+				itemTaken[2] = true;
+			}
 		}
 		rend.Draw(ChestImage, 105);
 	}
