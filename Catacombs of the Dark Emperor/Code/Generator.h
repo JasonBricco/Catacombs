@@ -3,6 +3,7 @@
 #include "Level.h"
 #include "Player.h"
 
+
 // Base class for a level generator.
 class Generator
 {
@@ -27,6 +28,7 @@ struct LevelGenerator : public Generator
 {
 	Player* player;
 	Vector2iSet roomsAdded;
+	Inventory* inventory;
 
 	// Stores the first room for each branching path.
 	std::vector<BranchStart> branches;

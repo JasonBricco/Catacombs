@@ -2,6 +2,7 @@
 
 #include "Entity.h"
 #include "Utils.h"
+#include "Inventory.h"
 
 class Player : public DynamicEntity
 {

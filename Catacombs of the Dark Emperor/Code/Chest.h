@@ -9,14 +9,18 @@
 class Chest : public DynamicEntity 
 {
 	Player* player;
+	Inventory* invent;
 	bool IsChestOpen = false;
 	sf::Sprite ChestContents;
 	float dist;
 	bool IsChestContentOpen = false;
 	sf::Sprite ChestImage;
 	Items* item = new Items();
-	int positions[3][2] = { {357, 215}, {490, 223}, {625, 220} };
+	Sprite itemsInChest[9];
+	//gives positions for first three chest item positions
+	int positions[3][2] = { {350, 215}, {490, 215}, {630, 215} };
 	bool itemTaken[9];
+
 //Position for item place 1 : sf::Vector2f(357, 215)
 //Position for item place 2 : sf::Vector2f(492, 215)
 //Position for item place 3 : sf::Vector2f(627, 215)
@@ -30,17 +34,22 @@ class Chest : public DynamicEntity
 public:
 	Chest() 
 	{
-		item->Item[0].setPosition(sf::Vector2f(positions[0][0],positions[0][1]));
+		//chooses random from Items
+		//right now only three so chooses all three of them
+		itemsInChest[0] = item->Item[randomInRange(0, 2)];
+		itemsInChest[1] = item->Item[randomInRange(0, 2)];
+		itemsInChest[2] = item->Item[randomInRange(0, 2)];
+		itemsInChest[0].setPosition(sf::Vector2f(positions[0][0],positions[0][1]));
 		itemTaken[0] = false;
-		item->Item[1].setPosition(sf::Vector2f(positions[1][0], positions[1][1]));
+		itemsInChest[1].setPosition(sf::Vector2f(positions[1][0], positions[1][1]));
 		itemTaken[1] = false;
-		item->Item[2].setPosition(sf::Vector2f(positions[2][0], positions[2][1]));
+		itemsInChest[2].setPosition(sf::Vector2f(positions[2][0], positions[2][1]));
 		itemTaken[2] = false;
 		LoadTexture(ChestContents, "Assets/ChestInterface.png");
 		ChestContents.setPosition(Vector2f(260, 100));
 	}
 
-	void spawn(Player* player, int type, int x, int y);
+	void spawn(Player* player, Inventory* inventory, int type, int x, int y);
 
 	void Update(Level* level, float elapsed) override;
 

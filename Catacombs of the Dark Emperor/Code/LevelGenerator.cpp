@@ -284,6 +284,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 
 		Room* room = CreateRoom(level, cur.x, cur.y, dirs, prevDir);
 		roomsAdded.insert(cur);
+		room->AddEntity(inventory);
 
 		prevDir = dirs[choice];
 
@@ -293,7 +294,6 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 			{
 				player->SetPosition(8, 5);
 				room->AddEntity(player);
-
 				level->SetCurrentRoom(room);
 			}
 
@@ -315,7 +315,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 					if (obstacles.find(Vector2i(x, y)) == obstacles.end())
 					{
 						Chest* chest = new Chest();
-						chest->spawn(player, 1, x, y);
+						chest->spawn(player, inventory, 1, x, y);
 						room->AddEntity(chest);
 					}
 				}
@@ -334,7 +334,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 				{
 					Chest* chest = new Chest();
 
-					chest->spawn(player, 2, x, y);
+					chest->spawn(player, inventory, 2, x, y);
 					room->AddEntity(chest);
 				}
 			}
@@ -348,6 +348,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 void LevelGenerator::Build(Level* level)
 {
 	player = new Player();
+	inventory = new Inventory();
 
 	// The number of rooms away from the origin our ending
 	// room can be in either axis.

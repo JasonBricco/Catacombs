@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="Code\Assets.cpp" />
     <ClCompile Include="Code\HealthBar.cpp" />
+    <ClCompile Include="Code\Inventory.cpp" />
     <ClCompile Include="Code\LevelGenerator.cpp" />
     <ClCompile Include="Code\Renderer.cpp" />
     <ClCompile Include="Code\Chest.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Code\Generator.h" />
     <ClInclude Include="Code\Globals.h" />
     <ClInclude Include="Code\HealthBar.h" />
+    <ClInclude Include="Code\Inventory.h" />
     <ClInclude Include="Code\Items.h" />
     <ClInclude Include="Code\Level.h" />
     <ClInclude Include="Code\Player.h" />
