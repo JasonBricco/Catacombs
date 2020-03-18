@@ -55,6 +55,12 @@ public:
 	}
 
 	bool TrySetObstacle(int x, int y);
+	
+	inline bool ObstacleAt(int x, int y)
+	{
+		auto it = obstacles.find(Vector2i(x, y));
+		return it != obstacles.end();
+	}
 
 	void Update(Level* level, float elapsed);
 	void Draw(Renderer& rend);

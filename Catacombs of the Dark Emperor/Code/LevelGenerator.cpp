@@ -396,7 +396,15 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 		{
 			if (mainPath)
 			{
-				player->SetPosition(8, 5);
+				int spawnX, spawnY;
+
+				do
+				{
+					spawnX = randomInRange(4, 8);
+					spawnY = randomInRange(4, 8);
+				} while (room->ObstacleAt(spawnX, spawnY));
+
+				player->SetPosition(spawnX, spawnY);
 				room->AddEntity(player);
 				level->SetCurrentRoom(room);
 			}
