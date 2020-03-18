@@ -1,11 +1,16 @@
 #pragma once
 
 #include "Entity.h"
+#include "Utils.h"
 
 class Room
 {
 	Vector2i pos;
 	std::vector<Entity*> entities;
+
+	// Stores obstacles in order to prevent
+	// them from appearing at the same location in a room.
+	Vector2iSet obstacles;
 
 	int doors[4];
 
@@ -49,6 +54,10 @@ public:
 		return doors;
 	}
 
+	bool TrySetObstacle(int x, int y);
+
 	void Update(Level* level, float elapsed);
 	void Draw(Renderer& rend);
 };
+
+typedef std::unordered_map<Vector2i, Room*, Vector2iHash, Vector2iCompare> RoomMap;

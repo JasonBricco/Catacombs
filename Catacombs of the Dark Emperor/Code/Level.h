@@ -2,29 +2,6 @@
 
 #include "Room.h"
 
-// In order to use sf::Vector2i as a key in an std::unordered_map, 
-// a hash function and comparison function must be provided.
-// The Vector2iHash and Vector2iCompare structures provide this. 
-// They are passed as template parameters when declaring the map.
-struct Vector2iHash
-{
-    int operator()(Vector2i v) const
-    {
-		return v.y * 31 + v.x;
-    }
-};
-
-struct Vector2iCompare
-{
-    bool operator()(Vector2i a, Vector2i b) const
-    {
-		return a.x == b.x && a.y == b.y;
-    }
-};
-
-typedef std::unordered_map<Vector2i, Room*, Vector2iHash, Vector2iCompare> RoomMap;
-typedef std::unordered_set<Vector2i, Vector2iHash, Vector2iCompare> Vector2iSet;
-
 class Level
 {
 	// Stores all rooms in the level using sparse storage.

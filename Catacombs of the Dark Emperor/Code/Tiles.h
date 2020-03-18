@@ -148,3 +148,12 @@ public:
 		layer = 5;
 	}
 };
+
+class BlockTile : public Entity
+{
+public:
+	BlockTile() : Entity("Assets/Block.png")
+	{
+		layer = 5;
+	}
+};

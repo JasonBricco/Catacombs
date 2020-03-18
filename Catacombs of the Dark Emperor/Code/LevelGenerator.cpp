@@ -5,9 +5,102 @@
 #include "Tiles.h"
 #include "Chest.h"
 
-// Stores obstacles in order to prevent
-// them from appearing at the same location in a room.
-static Vector2iSet obstacles;
+enum class RoomFeatures
+{
+	Rocks,
+	Blocks
+};
+
+using BlockFunc = void(*)(Room* room);
+
+// Generates random blocks.
+static void BlockPattern1(Room* room)
+{
+	int blockCount = randomInRange(2, 6);
+
+	for (int i = 0; i < blockCount; i++)
+	{
+		int x = randomInRange(3, Room::Width - 4);
+		int y = randomInRange(3, Room::Height - 4);
+
+		if (room->TrySetObstacle(x, y))
+			AddEntity<BlockTile>(room, x, y);
+	}
+}
+
+// Generates a larger amount of random blocks.
+static void BlockPattern2(Room* room)
+{
+	int blockCount = randomInRange(10, 25);
+
+	for (int i = 0; i < blockCount; i++)
+	{
+		int x = randomInRange(3, Room::Width - 4);
+		int y = randomInRange(3, Room::Height - 4);
+		
+		if (room->TrySetObstacle(x, y))
+			AddEntity<BlockTile>(room, x, y);
+	}
+}
+
+// Generates block walls.
+static void BlockPattern3(Room* room)
+{
+	int count = randomInRange(2, 3);
+
+	for (int i = 0; i < count; i++)
+	{
+		bool vertical = randomUnit() < 0.5f;
+
+		int startX = randomInRange(3, 11);
+		int startY = randomInRange(4, 7);
+
+		if (vertical)
+		{
+			int dist = randomInRange(4, 8);
+
+			for (int j = startY; j < startY + dist; j++)
+			{
+				if (room->TrySetObstacle(startX, j))
+					AddEntity<BlockTile>(room, startX, j);
+			}
+		}
+		else
+		{
+			int dist = randomInRange(8, 14);
+
+			for (int j = startX; j < startX + dist; j++)
+			{
+				if (room->TrySetObstacle(j, startY))
+					AddEntity<BlockTile>(room, j, startY);
+			}
+		}
+	}
+}
+
+// Generates an X pattern.
+static void BlockPattern4(Room* room)
+{
+	int y = Room::Height - 4;
+
+	int start = randomInRange(3, 10);
+	int end = start + randomInRange(7, 10);
+
+	for (int x = start; x < end; ++x, --y)
+	{
+		if (room->TrySetObstacle(x, y))
+			AddEntity<BlockTile>(room, x, y);
+
+		if (room->TrySetObstacle(x, Room::Height - y))
+			AddEntity<BlockTile>(room, x, Room::Height - y);
+
+		if (room->TrySetObstacle(Room::Width - x, y))
+			AddEntity<BlockTile>(room, Room::Width - x, y);
+
+		if (room->TrySetObstacle(Room::Width - x, Room::Height - y))
+			AddEntity<BlockTile>(room, Room::Width - x, Room::Height - y);
+	}
+}
 
 static void AddPotsX(Room* room, int side)
 {
@@ -43,7 +136,11 @@ static void AddPotsY(Room* room, int side)
 
 static void FillRoom(Room* room)
 {
-	bool addPots = randomInRange(0, 2) == 0;
+	RoomFeatures features = randomInRange(0, 2) == 0 ? RoomFeatures::Blocks : RoomFeatures::Rocks;
+	bool addPots = false;
+
+	if (features == RoomFeatures::Rocks)
+		addPots = randomInRange(0, 2) == 0;
 
 	int offset = randomInRange(0, 2) == 0 ? 0 : 4;
 
@@ -103,7 +200,8 @@ static void FillRoom(Room* room)
 		AddRect<WallLeft>(room, 0, doorY + 2, 0, Room::Height - 3);
 
 		AddEntity<DoorLeft>(room, 0, doors[LEFT] - 1);
-		// TODO: Barriers.
+		AddEntity<Barrier>(room, 0, doors[LEFT] - 1, 2.0f, 0.6f);
+		AddEntity<Barrier>(room, 0, doors[LEFT] + 1, 2.0f, 0.6f, 0.0f, 0.4f);
 	}
 	else
 	{
@@ -120,7 +218,8 @@ static void FillRoom(Room* room)
 		AddRect<WallRight>(room, Room::Width - 2, doorY + 2, Room::Width - 2, Room::Height - 3);
 
 		AddEntity<DoorRight>(room, Room::Width - 2, doors[RIGHT] - 1);
-		// TODO: Barriers.
+		AddEntity<Barrier>(room, Room::Width - 2, doors[RIGHT] - 1, 2.0f, 0.6f);
+		AddEntity<Barrier>(room, Room::Width - 2, doors[RIGHT] + 1, 2.0f, 0.6f, 0.0f, 0.4f);
 	}
 	else
 	{
@@ -131,17 +230,24 @@ static void FillRoom(Room* room)
 	// Add floor tiles.
 	AddRect<FloorTile>(room, 2, 2, Room::Width - 3, Room::Height - 3);
 
-	int rockCount = randomInRange(0, 5);
-
-	for (int i = 0; i < rockCount; ++i)
+	if (features == RoomFeatures::Rocks)
 	{
-		Vector2i p = Vector2i(randomInRange(3, Room::Width - 4), randomInRange(3, Room::Height - 4));
+		int rockCount = randomInRange(0, 5);
 
-		if (obstacles.find(p) == obstacles.end())
+		for (int i = 0; i < rockCount; ++i)
 		{
-			AddEntity<RocksTile>(room, p.x, p.y);
-			obstacles.insert(p);
+			Vector2i p = Vector2i(randomInRange(3, Room::Width - 4), randomInRange(3, Room::Height - 4));
+
+			if (room->TrySetObstacle(p.x, p.y))
+				AddEntity<RocksTile>(room, p.x, p.y);
 		}
+	}
+	else if (features == RoomFeatures::Blocks)
+	{
+		BlockFunc funcs[4] = { BlockPattern1, BlockPattern2, BlockPattern3, BlockPattern4 };
+
+		int pattern = randomInRange(0, 3);
+		funcs[pattern](room);
 	}
 }
 
@@ -280,8 +386,6 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 			}
 		}
 
-		obstacles.clear();
-
 		Room* room = CreateRoom(level, cur.x, cur.y, dirs, prevDir);
 		roomsAdded.insert(cur);
 		room->AddEntity(inventory);
@@ -312,7 +416,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 					int x = randomInRange(3, Room::Width - 4);
 					int y = randomInRange(3, Room::Height - 4);
 
-					if (obstacles.find(Vector2i(x, y)) == obstacles.end())
+					if (room->TrySetObstacle(x, y))
 					{
 						Chest* chest = new Chest();
 						chest->spawn(player, inventory, 1, x, y);
@@ -330,7 +434,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 				int x = randomInRange(3, Room::Width - 4);
 				int y = randomInRange(3, Room::Height - 4);
 
-				if (obstacles.find(Vector2i(x, y)) == obstacles.end())
+				if (room->TrySetObstacle(x, y))
 				{
 					Chest* chest = new Chest();
 
