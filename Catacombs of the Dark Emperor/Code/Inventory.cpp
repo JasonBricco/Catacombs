@@ -11,19 +11,19 @@ void Inventory::Draw(Renderer& rend)
 {
 	Vector2f drawP = position * PIXELS_PER_UNIT;
 	sprite.setPosition(drawP);
-	rend.Draw(sprite, 5);
+	rend.Draw(&sprite, 5);
 
 	if (InventoryOpen == true)
 	{
 		Vector2i gridP = Vector2i(0, 0);
-		rend.Draw(invent, 105);
+		rend.Draw(&invent, 105);
 		for (int i : inventoryItem)
 		{
 			float x = gridStartX + gridP.x * cellSizeX;
 			float y = gridStartY + gridP.y * cellSizeY;
 
 			item->Item[i].setPosition(x, y);
-			rend.Draw(item->Item[i], 110);
+			rend.Draw(&item->Item[i], 110);
 			++gridP.x;
 
 			if (gridP.x == cellCount)
@@ -38,7 +38,7 @@ void Inventory::Draw(Renderer& rend)
 			InventoryOpen = false;
 			setGameState(false);
 		}
-		rend.Draw(playerimage, 110);
+		rend.Draw(&playerimage, 110);
 	}
 }
 

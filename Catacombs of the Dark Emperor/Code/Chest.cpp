@@ -61,7 +61,7 @@ void Chest::Draw(Renderer& rend)
 	Vector2f drawP = position * PIXELS_PER_UNIT;
 
 	sprite.setPosition(drawP);
-	rend.Draw(sprite, 5);
+	rend.Draw(&sprite, 5);
 
 	if (Keyboard::isKeyPressed(Keyboard::E) && (dist < 1.5f) && getGameState() == false)
 	{
@@ -71,7 +71,7 @@ void Chest::Draw(Renderer& rend)
 	if (IsChestContentOpen == true)
 	{
 		ChestImage.setPosition(sf::Vector2f(492,125));
-		rend.Draw(ChestContents, 100);
+		rend.Draw(&ChestContents, 100);
 		if (Keyboard::isKeyPressed(Keyboard::F))
 		{
 			IsChestContentOpen = false;
@@ -80,7 +80,7 @@ void Chest::Draw(Renderer& rend)
 		for (int i = 0; i < NumberOfItemsToAppear; i++)
 		{
 			if (itemTaken[i] == false)
-				rend.Draw(itemsInChest[i], 110);
+				rend.Draw(&itemsInChest[i], 110);
 		}
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
@@ -100,7 +100,7 @@ void Chest::Draw(Renderer& rend)
 				}
 			}
 		}
-		rend.Draw(ChestImage, 105);
+		rend.Draw(&ChestImage, 105);
 	}
 }
 

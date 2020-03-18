@@ -2,10 +2,10 @@
 #include "HealthBar.h"
 // #include "HealthBar.h" 
 
-void UpdateHearts(int health)
+void UpdateHearts(int)
 {
 }
 
-void BuildHealthBar(Level* level)
+void BuildHealthBar(Level*)
 {
 }

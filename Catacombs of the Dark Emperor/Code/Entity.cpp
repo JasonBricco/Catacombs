@@ -34,7 +34,7 @@ void Entity::Draw(Renderer& rend)
 	Vector2f drawP = position * PIXELS_PER_UNIT;
 
 	sprite.setPosition(drawP);
-	rend.Draw(sprite, layer);
+	rend.Draw(&sprite, layer);
 }
 
 void DynamicEntity::Move(Level* level, Vector2f accel, float elapsed)

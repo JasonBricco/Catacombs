@@ -2,7 +2,7 @@
 
 struct DrawTarget
 {
-	Sprite sprite;
+	Drawable* drawable;
 	int layer;
 };
 
@@ -21,15 +21,15 @@ public:
 		targets.reserve(576);
 	}
 
-	inline void Draw(Sprite sprite, int layer)
+	inline void Draw(Drawable* drawable, int layer)
 	{
-		DrawTarget target = { sprite, layer };
+		DrawTarget target = { drawable, layer };
 		targets.push_back(target);
 	}
 
-	inline void Draw(Sprite sprite)
+	inline void Draw(Drawable* drawable)
 	{
-		DrawTarget target = { sprite, 0 };
+		DrawTarget target = { drawable, 0 };
 		targets.push_back(target);
 	}
 

@@ -10,7 +10,7 @@ void Renderer::WriteToWindow()
     });
 
     for (DrawTarget target : targets)
-        window->draw(target.sprite);
+        window->draw(*target.drawable);
 
     targets.clear();
 }
