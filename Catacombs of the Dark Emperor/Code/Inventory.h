@@ -2,14 +2,21 @@
 #include "Stdafx.h"
 #include "Entity.h"
 #include "Utils.h"
+#include "Items.h"
 
 class Inventory : public Entity
 {
 	bool InventoryOpen = false;
 	Sprite invent;
-	std::vector<Sprite> inventory;
-	int posi[3][2] = { {350, 215}, {490, 215}, {630, 215} };
+	std::vector<int> inventoryItem;
+	std::vector<int> itemCount;
 	Sprite playerimage;
+	Items* item = new Items();
+	const float cellSizeX = 135.0f;
+	const float cellSizeY = 100.0f;
+	const int cellCount = 3;
+	float gridStartX = 355.0f;
+	float gridStartY = 220.0f;
 
 public:
 
@@ -26,6 +33,6 @@ public:
 
 	void Draw(Renderer& rend) override;
 
-	void Insert(Sprite sprite);
+	void Insert(int ItemNumber);
 
 };

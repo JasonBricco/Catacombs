@@ -12,39 +12,43 @@ class Chest : public DynamicEntity
 	Inventory* invent;
 	bool IsChestOpen = false;
 	sf::Sprite ChestContents;
-	float dist;
+	float dist = 100.0f;
 	bool IsChestContentOpen = false;
+	int NumberOfItemsToAppear = 0;
 	sf::Sprite ChestImage;
 	Items* item = new Items();
 	Sprite itemsInChest[9];
-	//gives positions for first three chest item positions
-	int positions[3][2] = { {350, 215}, {490, 215}, {630, 215} };
 	bool itemTaken[9];
-
-//Position for item place 1 : sf::Vector2f(357, 215)
-//Position for item place 2 : sf::Vector2f(492, 215)
-//Position for item place 3 : sf::Vector2f(627, 215)
-//Position for item place 4 : sf::Vector2f(357, 320)
-//Position for item place 5 : sf::Vector2f(492, 320)
-//Position for item place 6 : sf::Vector2f(627, 320)
-//Position for item place 7 : sf::Vector2f(357, 215)
-//Position for item place 8 : sf::Vector2f(492, 215)
-//Position for item place 9 : sf::Vector2f(627, 215)
+	const float cellSizeX = 135.0f;
+	const float cellSizeY = 100.0f;
+	const int cellCount = 3;
+	int ItemNumber[9];
+	float gridStartX = 355.0f;
+	float gridStartY = 220.0f;
 
 public:
 	Chest() 
 	{
-		//chooses random from Items
-		//right now only three so chooses all three of them
-		itemsInChest[0] = item->Item[randomInRange(0, 2)];
-		itemsInChest[1] = item->Item[randomInRange(0, 2)];
-		itemsInChest[2] = item->Item[randomInRange(0, 2)];
-		itemsInChest[0].setPosition(sf::Vector2f(positions[0][0],positions[0][1]));
-		itemTaken[0] = false;
-		itemsInChest[1].setPosition(sf::Vector2f(positions[1][0], positions[1][1]));
-		itemTaken[1] = false;
-		itemsInChest[2].setPosition(sf::Vector2f(positions[2][0], positions[2][1]));
-		itemTaken[2] = false;
+		Vector2i gridP = Vector2i(0, 0);
+		NumberOfItemsToAppear = randomInRange(1, 9);
+		for (int i = 0 ; i < NumberOfItemsToAppear ; i++)
+		{
+			ItemNumber[i] = randomInRange(0, 2);
+			itemsInChest[i] = item->Item[ItemNumber[i]];
+			float x = gridStartX + gridP.x * cellSizeX;
+			float y = gridStartY + gridP.y * cellSizeY;
+
+			itemsInChest[i].setPosition(x, y);
+			itemTaken[i] = false;
+
+			++gridP.x;
+
+			if (gridP.x == cellCount)
+			{
+				gridP.x = 0;
+				++gridP.y;
+			}
+		}
 		LoadTexture(ChestContents, "Assets/ChestInterface.png");
 		ChestContents.setPosition(Vector2f(260, 100));
 	}

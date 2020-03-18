@@ -2,24 +2,35 @@
 #include "Stdafx.h"
 #include "Assets.h"
 #include "Utils.h"
-#include "Chest.h"
 #include "Room.h"
 #include "Globals.h"
 #include "Renderer.h"
+#include "Chest.h"
 
 void Inventory::Draw(Renderer& rend)
 {
 	Vector2f drawP = position * PIXELS_PER_UNIT;
-
 	sprite.setPosition(drawP);
 	rend.Draw(sprite, 5);
 
 	if (InventoryOpen == true)
 	{
+		Vector2i gridP = Vector2i(0, 0);
 		rend.Draw(invent, 105);
-		for (Sprite i : inventory)
+		for (int i : inventoryItem)
 		{
-			rend.Draw(i, 110);
+			float x = gridStartX + gridP.x * cellSizeX;
+			float y = gridStartY + gridP.y * cellSizeY;
+
+			item->Item[i].setPosition(x, y);
+			rend.Draw(item->Item[i], 110);
+			++gridP.x;
+
+			if (gridP.x == cellCount)
+			{
+				gridP.x = 0;
+				++gridP.y;
+			}
 		}
 
 		if (Keyboard::isKeyPressed(Keyboard::F))
@@ -33,14 +44,23 @@ void Inventory::Draw(Renderer& rend)
 
 void Inventory::Update(Level*, float)
 {
-	if (Keyboard::isKeyPressed(Keyboard::I))
+	if (Keyboard::isKeyPressed(Keyboard::I) && getGameState() == false)
 	{
 		InventoryOpen = true;
 		setGameState(true);
 	}
 }
 
-void Inventory::Insert(Sprite sprite)
+void Inventory::Insert(int ItemNumber)
 {
-	inventory.push_back(sprite);
+	for (int i : inventoryItem)
+	{
+		if (ItemNumber == i)
+		{
+			item->ItemCount[i]++;
+			return;
+		}
+	}
+	inventoryItem.push_back(ItemNumber);
+	item->ItemCount[ItemNumber] = 0;
 }

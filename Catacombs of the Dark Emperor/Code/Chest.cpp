@@ -63,7 +63,7 @@ void Chest::Draw(Renderer& rend)
 	sprite.setPosition(drawP);
 	rend.Draw(sprite, 5);
 
-	if (Keyboard::isKeyPressed(Keyboard::E) && (dist < 1.5f))
+	if (Keyboard::isKeyPressed(Keyboard::E) && (dist < 1.5f) && getGameState() == false)
 	{
 		IsChestContentOpen = true;
 		setGameState(true);
@@ -77,43 +77,27 @@ void Chest::Draw(Renderer& rend)
 			IsChestContentOpen = false;
 			setGameState(false);
 		}
-		if(itemTaken[0] == false)
-			rend.Draw(itemsInChest[0], 110);
-		if (itemTaken[1] == false)
-			rend.Draw(itemsInChest[1], 110);
-		if (itemTaken[2] == false)
-			rend.Draw(itemsInChest[2], 110);
+		for (int i = 0; i < NumberOfItemsToAppear; i++)
+		{
+			if (itemTaken[i] == false)
+				rend.Draw(itemsInChest[i], 110);
+		}
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
 			Vector2f mouseP = Vector2f(Mouse::getPosition());
 			mouseP.x -= 450.0f;
 			mouseP.y -= 300.0f;
-			Vector2f item1P = itemsInChest[0].getPosition();
-			item1P.x += 1.0f;
-			item1P.y += 1.5f;
-			float dist1 = Distance(mouseP, item1P);
-			if (dist1 < 80.0f) 
+			for (int i = 0; i < NumberOfItemsToAppear; i++)
 			{
-				itemTaken[0] = true;
-				invent->Insert(itemsInChest[0]);
-			}
-			Vector2f item2P = itemsInChest[1].getPosition();
-			item2P.x += 1.0f;
-			item2P.y += 1.5f;
-			float dist2 = Distance(mouseP, item2P);
-			if (dist2 < 80.0f)
-			{
-				itemTaken[1] = true;
-				invent->Insert(itemsInChest[1]);
-			}
-			Vector2f item3P = itemsInChest[2].getPosition();
-			item3P.x += 1.0f;
-			item3P.y += 1.5f;
-			float dist3 = Distance(mouseP, item3P);
-			if (dist3 < 80.0f)
-			{
-				itemTaken[2] = true;
-				invent->Insert(itemsInChest[2]);
+				Vector2f itemP = itemsInChest[i].getPosition();
+				itemP.x += 1.0f;
+				itemP.y += 1.5f;
+				float dist1 = Distance(mouseP, itemP);
+				if (dist1 < 80.0f)
+				{
+					itemTaken[i] = true;
+					invent->Insert(ItemNumber[i]);
+				}
 			}
 		}
 		rend.Draw(ChestImage, 105);
