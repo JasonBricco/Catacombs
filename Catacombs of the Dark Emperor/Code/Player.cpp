@@ -86,3 +86,14 @@ void Player::HandleOverlaps(Level* level)
 		}
 	}
 }
+
+void Player::Draw(Renderer& rend)
+{
+	Entity::Draw(rend);
+
+	// TODO: Put healthbar drawing here.
+	//rend.Draw(health_bar_sprite, layer_here);
+	// or: for (int i = 0; i < heart_count; ++i) rend.draw(heart, layer);
+	// You'll also need to call sprite.setPosition(x, y) to position them
+	// properly before calling rend.draw().
+}

@@ -24,15 +24,14 @@ public:
 
 	HealthBar()
 	{
-		// Note: commented out until these are used, to remove warnings.
-		/*Heart* heart1 = new Heart();
+		Heart* heart1 = new Heart();
 		Heart* heart2 = new Heart();
 		Heart* heart3 = new Heart();
 		Heart* heart4 = new Heart();
 		Heart* heart5 = new Heart();
 		Heart* heart6 = new Heart();
 		Heart* heart7 = new Heart();
-		Heart* heart8 = new Heart();*/
+		Heart* heart8 = new Heart();
 	}
 
 };

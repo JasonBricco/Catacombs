@@ -4,6 +4,8 @@
 #include "Generator.h"
 #include "Utils.h"
 
+#include "Assets.h"
+
 int main(int, char**)
 {
 	uint32_t seed = (uint32_t)time(NULL);

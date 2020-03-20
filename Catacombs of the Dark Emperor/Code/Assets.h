@@ -2,10 +2,11 @@
 
 class Assets
 {
-	// A hash table that maps a name to a texture. If a texture is requested that 
-	// isn't in the table, the texture is loaded from disk. Otherwise we return the 
-	// requested texture. This allows sharing textures without loading them multiple times.
+	// A hash table that maps a name to a resource. If a resource is requested that 
+	// isn't in the table, the resource is loaded from disk. Otherwise we return the 
+	// requested resource. This allows sharing resources without loading them multiple times.
 	std::unordered_map<std::string, Texture> textures;
+	std::unordered_map<std::string, Font> fonts;
 
 	// Singleton instance.
 	static Assets* instance;
@@ -20,4 +21,5 @@ public:
 	}
 
 	Texture& GetTexture(std::string name);
+	Font& GetFont(std::string name);
 };

@@ -26,3 +26,21 @@ Texture& Assets::GetTexture(std::string name)
 	// it->first is the key (name), and it->second is the value (the texture).
 	return it->second;
 }
+
+Font& Assets::GetFont(std::string name)
+{
+	auto it = fonts.find(name);
+
+	if (it == fonts.end())
+	{
+		Font font;
+
+		if (!font.loadFromFile(name))
+			Print("Failed to load font %s.", name.c_str());
+
+		fonts.insert(std::make_pair(name, font));
+		return fonts[name];
+	}
+
+	return it->second;
+}

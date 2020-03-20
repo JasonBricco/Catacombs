@@ -31,4 +31,5 @@ public:
 
 	void HandleOverlaps(Level* level) override;
 	void Update(Level* level, float elapsed) override;
+	void Draw(Renderer& rend) override;
 };
