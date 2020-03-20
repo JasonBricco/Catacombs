@@ -96,6 +96,7 @@ void Chest::Draw(Renderer& rend)
 				if (dist1 < 80.0f)
 				{
 					itemTaken[i] = true;
+					itemsInChest[i].setPosition(1000.0f, 1000.0f);
 					invent->Insert(ItemNumber[i]);
 				}
 			}

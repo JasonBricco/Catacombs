@@ -1,6 +1,5 @@
 #include "Inventory.h"
 #include "Stdafx.h"
-#include "Assets.h"
 #include "Utils.h"
 #include "Room.h"
 #include "Globals.h"
@@ -24,6 +23,10 @@ void Inventory::Draw(Renderer& rend)
 
 			item->Item[i].setPosition(x, y);
 			rend.Draw(&item->Item[i], 110);
+			tx[i].setPosition(x + 32, y + 25);
+			int num = item->ItemCount[i];
+			tx[i].setString("x"+std::to_string(item->ItemCount[i]));
+			rend.Draw(&tx[i], 115);
 			++gridP.x;
 
 			if (gridP.x == cellCount)
@@ -53,14 +56,13 @@ void Inventory::Update(Level*, float)
 
 void Inventory::Insert(int ItemNumber)
 {
+	item->ItemCount[ItemNumber]++;
 	for (int i : inventoryItem)
 	{
 		if (ItemNumber == i)
 		{
-			item->ItemCount[i]++;
 			return;
 		}
 	}
 	inventoryItem.push_back(ItemNumber);
-	item->ItemCount[ItemNumber] = 0;
 }

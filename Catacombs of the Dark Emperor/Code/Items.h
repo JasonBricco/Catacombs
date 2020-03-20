@@ -11,9 +11,9 @@ public:
 
 	Items()
 	{
-		for (int i : ItemCount)
+		for (int i = 0 ; i < 3; i++)
 		{
-			i = 0;
+			ItemCount[i] = 0;
 		}
 		LoadTexture(Item[0], "Assets/Shield.png");
 		LoadTexture(Item[1], "Assets/ArrowRight.png");
