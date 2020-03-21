@@ -47,7 +47,7 @@ void Chest::Update(Level*, float)
 		{
 			open();
 		}
-	}
+	} 
 }
 
 void Chest::open()
@@ -84,16 +84,14 @@ void Chest::Draw(Renderer& rend)
 		}
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
-			Vector2f mouseP = Vector2f(Mouse::getPosition());
-			mouseP.x -= 450.0f;
-			mouseP.y -= 300.0f;
+			Vector2f mouseP = rend.getWindow()->mapPixelToCoords( Mouse::getPosition(*rend.getWindow()));
 			for (int i = 0; i < NumberOfItemsToAppear; i++)
 			{
 				Vector2f itemP = itemsInChest[i].getPosition();
 				itemP.x += 1.0f;
 				itemP.y += 1.5f;
 				float dist1 = Distance(mouseP, itemP);
-				if (dist1 < 80.0f)
+				if (dist1 <60.0f)
 				{
 					itemTaken[i] = true;
 					itemsInChest[i].setPosition(1000.0f, 1000.0f);

@@ -34,4 +34,9 @@ public:
 	}
 
 	void WriteToWindow();
+
+	inline RenderWindow* getWindow()
+	{
+		return window;
+	}
 };

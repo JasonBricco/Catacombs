@@ -34,7 +34,7 @@ public:
 		{
 			tx[i] = Text("",font,20) ;
 			tx[i].setFillColor(sf::Color::Black);
-			tx[i].setOutlineColor(Color(250, 129, 0));
+			tx[i].setOutlineColor(Color(210, 125, 44));
 			tx[i].setOutlineThickness(5);
 		}
 	}
