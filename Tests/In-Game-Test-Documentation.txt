@@ -42,14 +42,39 @@ TEST_COLLISION
 	TEST_CHEST: Move into the chest from all 4 sides
 		Pass: Player does not move through the chest (Note from the bottom of the chest the sprites will overlap, this is normal)
 		Fail: Player moves through the chest
+	TEST_STATIC_ENVIRONMENT_OBJECTS: Move into the static environment objects (rubble, purple stone blocks, pots, etc)
+		Pass: Player does not move through the objects
+		Fail: Player moves through the objects
 TEST_CHEST
 	TEST_OPEN: Press E when at the side, or in front of the chest
 		Pass: Chest sprite changes to an Open Chest sprite
 		Fail: Chest does not change to the Open Chest sprite
-TEST_GENERATOR
-	TEST_DOOR
+	TEST_CHEST_OPEN_INVENTORY: Press E on a chest to open or look into
+		Pass: Chest inventory interface appears with items in it (Unless items were previously clicked on/taken by the player)
+		Fail: Chest inventory interface does not appear
+	TEST_CHEST_TAKE_ITEMS: Click on the items in a chest
+		Pass: Items disappear from Chest inventory
+		Fail: Items do not disappear from Chest inventory
+TEST_GENERATOR (For these tests, you need to run the game several times and observe the spawns of the different objects)
+	TEST_DOOR:
 		Pass: Doors spawn in random different positions from room to room
 		Fail: Doors are fixed to the same spot room to room
 	TEST_CHEST:
 		Pass: Chest either doesn’t spawn, or spawns in a random position from room to room
 		Fail: Chest either never spawns, or spawns in a fixed place from room to room
+	TEST_STATIC_ENVIRONMENT_OBJECTS:
+		Pass: Objects spawn in random rooms and in reasonable places within rooms (by walls for pots, random for rubble, etc)
+		Fail: Objects don't spawn, or don't spawn within reasonable areas
+	TEST_CHEST_CONTENTS:
+		Pass: Chest contents are random
+		Fail: Chest has no contents (Unless items were already taken)
+TEST_PLAYER_INVENTORY
+	TEST_INTERFACE: Press I to open Player inventory
+		Pass: Player inventory interface opens (Interface is the same as the chest Interface)
+		Fail: No interface appears
+	TEST_ITEMS: Obtain 1 or more items from a chest
+		Pass: Items taken from the chest appear in the players inventory
+		Fail: Items do not appear in the players inventory
+	TEST_ITEM_COUNT: Obtain 1 or more of the same item
+		Pass: Item has a number indicating how many of said item you have in your inventory
+		Fail: Item does not have a number or has an incorrect number
