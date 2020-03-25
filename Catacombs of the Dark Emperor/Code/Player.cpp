@@ -86,8 +86,14 @@ void Player::HandleOverlaps(Level* level)
 			position.x = 1.5f;
 			break;
 
-		case EntityID::DoorStairs:
+		case EntityID::DoorStairsUp:
 			getGameState().newLevel = true;
+			getGameState().newLevelPrevDir = UP;
+			break;
+
+		case EntityID::DoorStairsDown:
+			getGameState().newLevel = true;
+			getGameState().newLevelPrevDir = DOWN;
 			break;
 		}
 	}

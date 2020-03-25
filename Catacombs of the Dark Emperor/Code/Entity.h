@@ -17,11 +17,13 @@ enum class CollideType
 enum class EntityID
 {
 	None,
+	Player,
 	DoorUp,
 	DoorDown,
 	DoorLeft,
 	DoorRight,
-	DoorStairs
+	DoorStairsUp,
+	DoorStairsDown
 };
 
 class Entity
@@ -83,6 +85,11 @@ public:
 	inline const Vector2f GetPosition()
 	{
 		return position;
+	}
+
+	inline Vector2f GetSize()
+	{
+		return size;
 	}
 
 	inline CollideType GetCollideType()

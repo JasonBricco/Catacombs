@@ -27,6 +27,9 @@ struct LevelGenerator : public Generator
 {
 	Player* player;
 
+	Room* spawnRoom;
+	PathDirection spawnPrevDir;
+
 	Vector2iSet roomsAdded;
 
 	// Stores the first room for each branching path.
@@ -36,4 +39,5 @@ struct LevelGenerator : public Generator
 
 private:
 	void GeneratePath(Level* level, Vector2i start, Vector2i end, PathDirection prevDir, bool mainPath = false);
+	void SpawnPlayer();
 };

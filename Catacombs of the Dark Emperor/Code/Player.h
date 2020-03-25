@@ -15,6 +15,8 @@ class Player : public DynamicEntity
 public:
 	Player()
 	{
+		id = EntityID::Player;
+
 		LoadTexture(sprites[LEFT], "Assets/hero-idle-side-left.png");
 		LoadTexture(sprites[RIGHT], "Assets/hero-idle-side-right.png");
 		LoadTexture(sprites[DOWN], "Assets/hero-idle-front.png");

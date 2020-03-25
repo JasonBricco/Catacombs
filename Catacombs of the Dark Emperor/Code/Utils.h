@@ -4,6 +4,7 @@ struct GameState
 {
     bool paused;
     bool newLevel;
+    int newLevelPrevDir;
 };
 
 inline GameState g_state;

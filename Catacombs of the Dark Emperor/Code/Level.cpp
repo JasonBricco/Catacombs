@@ -44,6 +44,13 @@ void Level::Destroy()
 		auto entities = pair.second->GetEntities();
 
 		for (Entity* entity : pair.second->GetEntities())
-			delete entity;
+		{
+			// Don't delete the player - it should always persist.
+			// Remove it instead. We still reference it in the generator,
+			// which will place it in the new level.
+			if (entity->ID() == EntityID::Player)
+				pair.second->RemoveEntity(entity);
+			else delete entity;
+		}
 	}
 }

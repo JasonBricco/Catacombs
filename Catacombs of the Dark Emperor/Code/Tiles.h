@@ -113,16 +113,38 @@ public:
 class BarredDoor : public Entity
 {
 public:
-	BarredDoor() : Entity("Assets/BarredDoorUp.png") {}
+	BarredDoor(int variant)
+	{
+		switch (variant)
+		{
+		case UP:
+			LoadTexture(sprite, "Assets/BarredDoorUp.png"); break;
+
+		case DOWN:
+			LoadTexture(sprite, "Assets/BarredDoorDown.png"); break;
+		}
+	}
 };
 
 class DoorStairs : public Entity
 {
 public:
-	DoorStairs() : Entity("Assets/DungeonDoorStairs.png")
+	DoorStairs(int variant)
 	{
+		switch (variant)
+		{
+		case UP:
+			LoadTexture(sprite, "Assets/DungeonDoorStairsUp.png"); 
+			id = EntityID::DoorStairsUp;
+			break;
+
+		case DOWN:
+			LoadTexture(sprite, "Assets/DungeonDoorStairsDown.png"); 
+			id = EntityID::DoorStairsDown;
+			break;
+		}
+
 		collideType = CollideType::Overlap;
-		id = EntityID::DoorStairs;
 	}
 };
 
@@ -159,8 +181,12 @@ class PillarTile : public Entity
 class RocksTile : public Entity
 {
 public:
-	RocksTile() : Entity("Assets/Rocks-1.png")
+	RocksTile()
 	{
+		if (randomUnit() < 0.35f)
+			LoadTexture(sprite, "Assets/Rocks-2.png");
+		else LoadTexture(sprite, "Assets/Rocks-1.png");
+
 		layer = 5;
 	}
 };
