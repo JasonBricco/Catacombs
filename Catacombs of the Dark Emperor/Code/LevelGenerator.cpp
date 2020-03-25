@@ -1,9 +1,9 @@
 #include "Stdafx.h"
 #include "Generator.h"
-#include "Generator.h"
 #include "Player.h"
 #include "Tiles.h"
 #include "Chest.h"
+#include "Enemies.h"
 
 enum class RoomFeatures
 {
@@ -12,6 +12,11 @@ enum class RoomFeatures
 };
 
 using BlockFunc = void(*)(Room* room);
+
+static Vector2i RandomRoomPos()
+{
+	return Vector2i(randomInRange(3, Room::Width - 4), randomInRange(3, Room::Height - 4));
+}
 
 // Generates random blocks.
 static void BlockPattern1(Room* room)
@@ -134,6 +139,19 @@ static void AddPotsY(Room* room, int side)
 	}
 }
 
+static void SpawnEnemies(Room* room)
+{
+	int amt = randomInRange(1, 3);
+
+	for (int i = 0; i < amt; ++i)
+	{
+		Vector2i p = RandomRoomPos();
+
+		if (room->TrySetObstacle(p.x, p.y))
+			room->AddEntity<Wolf>(p.x, p.y);
+	}
+}
+
 static void FillRoom(Room* room)
 {
 	RoomFeatures features = randomInRange(0, 2) == 0 ? RoomFeatures::Blocks : RoomFeatures::Rocks;
@@ -245,13 +263,15 @@ static void FillRoom(Room* room)
 	// Add floor tiles.
 	room->AddRect<FloorTile>(2, 2, Room::Width - 3, Room::Height - 3);
 
+	SpawnEnemies(room);
+
 	if (features == RoomFeatures::Rocks)
 	{
 		int rockCount = randomInRange(0, 5);
 
 		for (int i = 0; i < rockCount; ++i)
 		{
-			Vector2i p = Vector2i(randomInRange(3, Room::Width - 4), randomInRange(3, Room::Height - 4));
+			Vector2i p = RandomRoomPos();
 
 			if (room->TrySetObstacle(p.x, p.y))
 				room->AddEntity<RocksTile>(p.x, p.y);

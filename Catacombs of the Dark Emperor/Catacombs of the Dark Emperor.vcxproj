@@ -184,6 +184,7 @@
     <ClInclude Include="Code\Assets.h" />
     <ClInclude Include="Code\Chest.h" />
     <ClInclude Include="Code\Collision.h" />
+    <ClInclude Include="Code\Enemies.h" />
     <ClInclude Include="Code\Entity.h" />
     <ClInclude Include="Code\Generator.h" />
     <ClInclude Include="Code\Globals.h" />
