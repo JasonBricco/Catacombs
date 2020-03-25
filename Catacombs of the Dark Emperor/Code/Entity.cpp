@@ -6,9 +6,6 @@
 #include "Collision.h"
 #include "Globals.h"
 
-std::vector<AABB> DynamicEntity::collides;
-std::vector<std::pair<Entity*, AABB>> DynamicEntity::overlaps;
-
 Entity::Entity(std::string name)
 {
 	LoadTexture(sprite, name);

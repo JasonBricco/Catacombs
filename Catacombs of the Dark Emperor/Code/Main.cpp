@@ -44,10 +44,21 @@ int main(int, char**)
 
 		// Clear the screen to a black color.
 		window.clear(Color::Black);
-		if (getGameState() == false)
+
+		if (!getGameState().paused)
 		{
 			level->Update(elapsed.asSeconds());
+
+			if (getGameState().newLevel)
+			{
+				delete level;
+				level = new Level();
+				generator->Build(level);
+
+				getGameState().newLevel = false;
+			}
 		}
+		
 		level->Draw(rend);
 
 		rend.WriteToWindow();

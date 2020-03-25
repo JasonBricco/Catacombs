@@ -22,3 +22,4 @@
 #pragma warning(pop)
 
 using namespace sf;
+using namespace std;

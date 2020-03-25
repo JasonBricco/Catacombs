@@ -17,6 +17,23 @@ bool Room::TrySetObstacle(int x, int y)
 	return false;
 }
 
+void Room::RemoveEntity(Entity* entity)
+{
+	bool found = false;
+
+	for (auto it = entities.begin(); it != entities.end(); ++it)
+	{
+		if (*it == entity)
+		{
+			entities.erase(it);
+			found = true;
+			break;
+		}
+	}
+
+	assert(found);
+}
+
 void Room::Update(Level* level, float elapsed)
 {
 	for (Entity* entity : entities)

@@ -110,6 +110,22 @@ public:
 	}
 };
 
+class BarredDoor : public Entity
+{
+public:
+	BarredDoor() : Entity("Assets/BarredDoorUp.png") {}
+};
+
+class DoorStairs : public Entity
+{
+public:
+	DoorStairs() : Entity("Assets/DungeonDoorStairs.png")
+	{
+		collideType = CollideType::Overlap;
+		id = EntityID::DoorStairs;
+	}
+};
+
 class Barrier : public Entity
 {
 public:

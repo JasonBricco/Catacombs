@@ -53,7 +53,7 @@ public:
 		ChestContents.setPosition(Vector2f(260, 100));
 	}
 
-	void spawn(Player* player, Inventory* inventory, int type, int x, int y);
+	void spawn(Player* player, int type, int x, int y);
 
 	void Update(Level* level, float elapsed) override;
 

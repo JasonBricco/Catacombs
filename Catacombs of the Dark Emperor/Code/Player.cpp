@@ -39,6 +39,8 @@ void Player::Update(Level* level, float elapsed)
 		accel = Normalize(accel);
 
 	Move(level, accel, elapsed);
+
+	inventory->Update(level, elapsed);
 }
 
 void Player::ChangeRooms(Level* level, int offX, int offY)
@@ -83,6 +85,10 @@ void Player::HandleOverlaps(Level* level)
 			ChangeRooms(level, 1, 0);
 			position.x = 1.5f;
 			break;
+
+		case EntityID::DoorStairs:
+			getGameState().newLevel = true;
+			break;
 		}
 	}
 }
@@ -90,6 +96,8 @@ void Player::HandleOverlaps(Level* level)
 void Player::Draw(Renderer& rend)
 {
 	Entity::Draw(rend);
+
+	inventory->Draw(rend);
 
 	// TODO: Put healthbar drawing here.
 	//rend.Draw(health_bar_sprite, layer_here);

@@ -1,6 +1,12 @@
 #pragma once
 
-inline bool GameState = false;          //true to pause
+struct GameState
+{
+    bool paused;
+    bool newLevel;
+};
+
+inline GameState g_state;
 
 enum Direction
 {
@@ -105,14 +111,9 @@ inline void Shuffle(T* arr, int n)
     }
 }
 
-inline bool getGameState()
+inline GameState& getGameState()
 {
-    return GameState;
-}
-
-inline void setGameState(bool pause)
-{
-    GameState = pause;
+    return g_state;
 }
 
 // In order to use sf::Vector2i as a key in an std::unordered_map, 

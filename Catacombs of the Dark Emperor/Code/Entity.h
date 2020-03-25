@@ -20,7 +20,8 @@ enum class EntityID
 	DoorUp,
 	DoorDown,
 	DoorLeft,
-	DoorRight
+	DoorRight,
+	DoorStairs
 };
 
 class Entity
@@ -45,12 +46,12 @@ protected:
 	// Whether this entity will be collided with.
 	CollideType collideType = CollideType::Solid;
 
-	void LoadTexture(Sprite& sprite, std::string name);
+	void LoadTexture(Sprite& sprite, string name);
 
 public:
 	// Name is the name of the texture to load for this entity.
 	// By default, the pivot is the upper-left corner. 
-	Entity(std::string name);
+	Entity(string name);
 
 	Entity() {}
 	
@@ -107,8 +108,8 @@ protected:
 	// Temporary storage to store bounding boxes we have to check for collision. 
 	// It's static because only one entity will utilize it at a time.
 	// This is more efficient for memory.
-	static std::vector<AABB> collides;
-	static std::vector<std::pair<Entity*, AABB>> overlaps;
+	static inline std::vector<AABB> collides;
+	static inline std::vector<std::pair<Entity*, AABB>> overlaps;
 
 	Vector2f velocity = {};
 

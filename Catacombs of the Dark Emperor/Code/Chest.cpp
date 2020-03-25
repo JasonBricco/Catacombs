@@ -8,10 +8,11 @@
 
 // giving type an int
 // 1 is for red chest, 2 is for blue chest
-void Chest::spawn(Player* playerPtr, Inventory* inventory, int type, int x, int y)
+void Chest::spawn(Player* playerPtr, int type, int x, int y)
 {
-	invent = inventory;
 	player = playerPtr;
+	invent = player->GetInventory();
+
 	if (type == 1)
 	{
 		LoadTexture(sprites[DOWN], "Assets/redchestclosed.png");
@@ -63,10 +64,12 @@ void Chest::Draw(Renderer& rend)
 	sprite.setPosition(drawP);
 	rend.Draw(&sprite, 5);
 
-	if (Keyboard::isKeyPressed(Keyboard::E) && (dist < 1.5f) && getGameState() == false)
+	GameState& state = getGameState();
+
+	if (Keyboard::isKeyPressed(Keyboard::E) && (dist < 1.5f) && !state.paused)
 	{
 		IsChestContentOpen = true;
-		setGameState(true);
+		state.paused = true;
 	}
 	if (IsChestContentOpen == true)
 	{
@@ -75,7 +78,7 @@ void Chest::Draw(Renderer& rend)
 		if (Keyboard::isKeyPressed(Keyboard::F))
 		{
 			IsChestContentOpen = false;
-			setGameState(false);
+			state.paused = false;
 		}
 		for (int i = 0; i < NumberOfItemsToAppear; i++)
 		{
@@ -102,5 +105,3 @@ void Chest::Draw(Renderer& rend)
 		rend.Draw(&ChestImage, 105);
 	}
 }
-
-

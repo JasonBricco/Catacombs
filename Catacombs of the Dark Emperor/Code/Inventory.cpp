@@ -24,7 +24,7 @@ void Inventory::Draw(Renderer& rend)
 			item->Item[i].setPosition(x, y);
 			rend.Draw(&item->Item[i], 110);
 			tx[i].setPosition(x + 32, y + 25);
-			int num = item->ItemCount[i];
+			//int num = item->ItemCount[i];
 			tx[i].setString("x"+std::to_string(item->ItemCount[i]));
 			rend.Draw(&tx[i], 115);
 			++gridP.x;
@@ -39,7 +39,7 @@ void Inventory::Draw(Renderer& rend)
 		if (Keyboard::isKeyPressed(Keyboard::F))
 		{
 			InventoryOpen = false;
-			setGameState(false);
+			getGameState().paused = false;
 		}
 		rend.Draw(&playerimage, 110);
 	}
@@ -47,10 +47,10 @@ void Inventory::Draw(Renderer& rend)
 
 void Inventory::Update(Level*, float)
 {
-	if (Keyboard::isKeyPressed(Keyboard::I) && getGameState() == false)
+	if (Keyboard::isKeyPressed(Keyboard::I) && !getGameState().paused)
 	{
 		InventoryOpen = true;
-		setGameState(true);
+		getGameState().paused = true;
 	}
 }
 

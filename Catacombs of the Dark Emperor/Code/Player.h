@@ -10,6 +10,8 @@ class Player : public DynamicEntity
 
 	 int health;
 	 int keys;
+
+	 Inventory* inventory;
 public:
 	Player()
 	{
@@ -27,6 +29,13 @@ public:
 
 		health = 16;
 		keys = 0;
+
+		inventory = new Inventory();
+	}
+
+	inline Inventory* GetInventory()
+	{
+		return inventory;
 	}
 
 	void HandleOverlaps(Level* level) override;

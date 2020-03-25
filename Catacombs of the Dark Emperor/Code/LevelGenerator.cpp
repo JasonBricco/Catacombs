@@ -24,7 +24,7 @@ static void BlockPattern1(Room* room)
 		int y = randomInRange(3, Room::Height - 4);
 
 		if (room->TrySetObstacle(x, y))
-			AddEntity<BlockTile>(room, x, y);
+			room->AddEntity<BlockTile>(x, y);
 	}
 }
 
@@ -39,7 +39,7 @@ static void BlockPattern2(Room* room)
 		int y = randomInRange(3, Room::Height - 4);
 		
 		if (room->TrySetObstacle(x, y))
-			AddEntity<BlockTile>(room, x, y);
+			room->AddEntity<BlockTile>(x, y);
 	}
 }
 
@@ -62,7 +62,7 @@ static void BlockPattern3(Room* room)
 			for (int j = startY; j < startY + dist; j++)
 			{
 				if (room->TrySetObstacle(startX, j))
-					AddEntity<BlockTile>(room, startX, j);
+					room->AddEntity<BlockTile>(startX, j);
 			}
 		}
 		else
@@ -72,7 +72,7 @@ static void BlockPattern3(Room* room)
 			for (int j = startX; j < startX + dist; j++)
 			{
 				if (room->TrySetObstacle(j, startY))
-					AddEntity<BlockTile>(room, j, startY);
+					room->AddEntity<BlockTile>(j, startY);
 			}
 		}
 	}
@@ -83,22 +83,22 @@ static void BlockPattern4(Room* room)
 {
 	int y = Room::Height - 4;
 
-	int start = randomInRange(3, 10);
+	int start = randomInRange(4, 10);
 	int end = start + randomInRange(7, 10);
 
 	for (int x = start; x < end; ++x, --y)
 	{
 		if (room->TrySetObstacle(x, y))
-			AddEntity<BlockTile>(room, x, y);
+			room->AddEntity<BlockTile>(x, y);
 
 		if (room->TrySetObstacle(x, Room::Height - y))
-			AddEntity<BlockTile>(room, x, Room::Height - y);
+			room->AddEntity<BlockTile>(x, Room::Height - y);
 
 		if (room->TrySetObstacle(Room::Width - x, y))
-			AddEntity<BlockTile>(room, Room::Width - x, y);
+			room->AddEntity<BlockTile>(Room::Width - x, y);
 
 		if (room->TrySetObstacle(Room::Width - x, Room::Height - y))
-			AddEntity<BlockTile>(room, Room::Width - x, Room::Height - y);
+			room->AddEntity<BlockTile>(Room::Width - x, Room::Height - y);
 	}
 }
 
@@ -115,7 +115,7 @@ static void AddPotsX(Room* room, int side)
 	for (int x = 2; x < Room::Width - 2; ++x)
 	{
 		if (randomUnit() <= weights[x - 2])
-			AddEntity<PotTile>(room, x, side);
+			room->AddEntity<PotTile>(x, side);
 	}
 }
 
@@ -130,7 +130,7 @@ static void AddPotsY(Room* room, int side)
 	for (int y = 2; y < Room::Height - 2; ++y)
 	{
 		if (randomUnit() <= weights[y - 2])
-			AddEntity<PotTile>(room, side, y);
+			room->AddEntity<PotTile>(side, y);
 	}
 }
 
@@ -145,90 +145,97 @@ static void FillRoom(Room* room)
 	int offset = randomInRange(0, 2) == 0 ? 0 : 4;
 
 	// Add corner tiles.
-	AddEntity<WallCorner>(room, Room::Width - 2, 0, UP_RIGHT + offset);
-	AddEntity<WallCorner>(room, Room::Width - 2, Room::Height - 2, DOWN_RIGHT + offset);
-	AddEntity<WallCorner>(room, 0, 0, UP_LEFT + offset);
-	AddEntity<WallCorner>(room, 0, Room::Height - 2, DOWN_LEFT + offset);
+	room->AddEntity<WallCorner>(Room::Width - 2, 0, UP_RIGHT + offset);
+	room->AddEntity<WallCorner>(Room::Width - 2, Room::Height - 2, DOWN_RIGHT + offset);
+	room->AddEntity<WallCorner>(0, 0, UP_LEFT + offset);
+	room->AddEntity<WallCorner>(0, Room::Height - 2, DOWN_LEFT + offset);
 
-	int* doors = room->GetDoors();
+	RoomDoor* doors = room->GetDoors();
 
 	// Top row of walls.
-	if (doors[UP] > 0)
+	if (doors[UP].pos > 0)
 	{
-		int doorX = doors[UP];
+		int doorX = doors[UP].pos;
 
-		AddRect<WallUp>(room, 2, 0, doorX - 2, 0);
-		AddRect<WallUp>(room, doorX + 2, 0, Room::Width - 3, 0);
+		room->AddRect<WallUp>(2, 0, doorX - 2, 0);
+		room->AddRect<WallUp>(doorX + 2, 0, Room::Width - 3, 0);
 
-		AddEntity<DoorUp>(room, doorX - 1, 0);
+		if (doors[UP].type == DoorType::Stairs)
+			room->AddEntity<DoorStairs>(doorX - 1, 0);
+		else room->AddEntity<DoorUp>(doorX - 1, 0);
 
 		// Add barriers so that some parts of the room sprite 
 		// are solid. Barriers are invisible colliders.
-		AddEntity<Barrier>(room, doorX - 1, 0, 0.6f, 2.0f);
-		AddEntity<Barrier>(room, doorX + 1, 0, 0.6f, 2.0f, 0.4f, 0.0f);
+		room->AddEntity<Barrier>(doorX - 1, 0, 0.6f, 2.0f);
+		room->AddEntity<Barrier>(doorX + 1, 0, 0.6f, 2.0f, 0.4f, 0.0f);
 	}
 	else
 	{
-		AddRect<WallUp>(room, 2, 0, Room::Width - 3, 0);
+		room->AddRect<WallUp>(2, 0, Room::Width - 3, 0);
 		if (addPots) AddPotsX(room, 2);
 	}
 
 	// Add bottom row of walls.
-	if (doors[DOWN] > 0)
+	if (doors[DOWN].pos > 0)
 	{
-		int doorX = doors[DOWN];
+		int doorX = doors[DOWN].pos;
 
-		AddRect<WallDown>(room, 2, Room::Height - 2, doorX - 2, Room::Height - 2);
-		AddRect<WallDown>(room, doorX + 2, Room::Height - 2, Room::Width - 3, Room::Height - 2);
+		room->AddRect<WallDown>(2, Room::Height - 2, doorX - 2, Room::Height - 2);
+		room->AddRect<WallDown>(doorX + 2, Room::Height - 2, Room::Width - 3, Room::Height - 2);
 
-		AddEntity<DoorDown>(room, doors[DOWN] - 1, Room::Height - 2);
-		AddEntity<Barrier>(room, doors[DOWN] - 1, Room::Height - 2, 0.6f, 2.0f);
-		AddEntity<Barrier>(room, doors[DOWN] + 1, Room::Height - 2, 0.6f, 2.0f, 0.4f, 0.0f);
+		if (doors[DOWN].type == DoorType::Barred)
+			room->AddEntity<BarredDoor>(doorX - 1, Room::Height - 2);
+		else
+		{
+			room->AddEntity<DoorDown>(doorX - 1, Room::Height - 2);
+			room->AddEntity<Barrier>(doorX - 1, Room::Height - 2, 0.6f, 2.0f);
+			room->AddEntity<Barrier>(doorX + 1, Room::Height - 2, 0.6f, 2.0f, 0.4f, 0.0f);
+		}
 	}
 	else
 	{
-		AddRect<WallDown>(room, 2, Room::Height - 2, Room::Width - 3, Room::Height - 2);
+		room->AddRect<WallDown>(2, Room::Height - 2, Room::Width - 3, Room::Height - 2);
 		if (addPots) AddPotsX(room, Room::Height - 3);
 	}
 
 	// Add left row of walls.
-	if (doors[LEFT] > 0)
+	if (doors[LEFT].pos > 0)
 	{
-		int doorY = doors[LEFT];
+		int doorY = doors[LEFT].pos;
 
-		AddRect<WallLeft>(room, 0, 2, 0, doorY - 2);
-		AddRect<WallLeft>(room, 0, doorY + 2, 0, Room::Height - 3);
+		room->AddRect<WallLeft>(0, 2, 0, doorY - 2);
+		room->AddRect<WallLeft>(0, doorY + 2, 0, Room::Height - 3);
 
-		AddEntity<DoorLeft>(room, 0, doors[LEFT] - 1);
-		AddEntity<Barrier>(room, 0, doors[LEFT] - 1, 2.0f, 0.6f);
-		AddEntity<Barrier>(room, 0, doors[LEFT] + 1, 2.0f, 0.6f, 0.0f, 0.4f);
+		room->AddEntity<DoorLeft>(0, doorY - 1);
+		room->AddEntity<Barrier>(0, doorY - 1, 2.0f, 0.6f);
+		room->AddEntity<Barrier>(0, doorY + 1, 2.0f, 0.6f, 0.0f, 0.4f);
 	}
 	else
 	{
-		AddRect<WallLeft>(room, 0, 2, 0, Room::Height - 3);
+		room->AddRect<WallLeft>(0, 2, 0, Room::Height - 3);
 		if (addPots) AddPotsY(room, 2);
 	}
 
 	// Add right row of walls.
-	if (doors[RIGHT])
+	if (doors[RIGHT].pos)
 	{
-		int doorY = doors[RIGHT];
+		int doorY = doors[RIGHT].pos;
 
-		AddRect<WallRight>(room, Room::Width - 2, 2, Room::Width - 2, doorY - 2);
-		AddRect<WallRight>(room, Room::Width - 2, doorY + 2, Room::Width - 2, Room::Height - 3);
+		room->AddRect<WallRight>(Room::Width - 2, 2, Room::Width - 2, doorY - 2);
+		room->AddRect<WallRight>(Room::Width - 2, doorY + 2, Room::Width - 2, Room::Height - 3);
 
-		AddEntity<DoorRight>(room, Room::Width - 2, doors[RIGHT] - 1);
-		AddEntity<Barrier>(room, Room::Width - 2, doors[RIGHT] - 1, 2.0f, 0.6f);
-		AddEntity<Barrier>(room, Room::Width - 2, doors[RIGHT] + 1, 2.0f, 0.6f, 0.0f, 0.4f);
+		room->AddEntity<DoorRight>(Room::Width - 2, doorY - 1);
+		room->AddEntity<Barrier>(Room::Width - 2, doorY - 1, 2.0f, 0.6f);
+		room->AddEntity<Barrier>(Room::Width - 2, doorY + 1, 2.0f, 0.6f, 0.0f, 0.4f);
 	}
 	else
 	{
-		AddRect<WallRight>(room, Room::Width - 2, 2, Room::Width - 2, Room::Height - 3);
+		room->AddRect<WallRight>(Room::Width - 2, 2, Room::Width - 2, Room::Height - 3);
 		if (addPots) AddPotsY(room, Room::Width - 3);
 	}
 
 	// Add floor tiles.
-	AddRect<FloorTile>(room, 2, 2, Room::Width - 3, Room::Height - 3);
+	room->AddRect<FloorTile>(2, 2, Room::Width - 3, Room::Height - 3);
 
 	if (features == RoomFeatures::Rocks)
 	{
@@ -239,7 +246,7 @@ static void FillRoom(Room* room)
 			Vector2i p = Vector2i(randomInRange(3, Room::Width - 4), randomInRange(3, Room::Height - 4));
 
 			if (room->TrySetObstacle(p.x, p.y))
-				AddEntity<RocksTile>(room, p.x, p.y);
+				room->AddEntity<RocksTile>(p.x, p.y);
 		}
 	}
 	else if (features == RoomFeatures::Blocks)
@@ -267,28 +274,33 @@ static Room* CreateRoom(Level* level, int x, int y, PathDirection* dirs, PathDir
 {
 	Room* room = level->GetOrCreateRoom(x, y);
 
-	if (dirs[UP].open || prevDir.dir == DOWN)
+	bool openUp = dirs[UP].doorType != DoorType::None;
+	bool openDown = dirs[DOWN].doorType != DoorType::None;
+	bool openLeft = dirs[LEFT].doorType != DoorType::None;
+	bool openRight = dirs[RIGHT].doorType != DoorType::None;
+
+	if (openUp || prevDir.dir == DOWN)
 	{
-		int doorX = dirs[UP].open ? dirs[UP].doorP : prevDir.doorP;
-		room->SetDoor(UP, doorX);
+		int doorX = openUp ? dirs[UP].doorP : prevDir.doorP;
+		room->SetDoor(UP, doorX, dirs[UP].doorType);
 	}
 
-	if (dirs[DOWN].open || prevDir.dir == UP)
+	if (openDown || prevDir.dir == UP)
 	{
-		int doorX = dirs[DOWN].open ? dirs[DOWN].doorP : prevDir.doorP;
-		room->SetDoor(DOWN, doorX);
+		int doorX = openDown ? dirs[DOWN].doorP : prevDir.doorP;
+		room->SetDoor(DOWN, doorX, dirs[DOWN].doorType);
 	}
 
-	if (dirs[LEFT].open || prevDir.dir == RIGHT)
+	if (openLeft || prevDir.dir == RIGHT)
 	{
-		int doorY = dirs[LEFT].open ? dirs[LEFT].doorP : prevDir.doorP;
-		room->SetDoor(LEFT, doorY);
+		int doorY = openLeft ? dirs[LEFT].doorP : prevDir.doorP;
+		room->SetDoor(LEFT, doorY, dirs[LEFT].doorType);
 	}
 
-	if (dirs[RIGHT].open || prevDir.dir == LEFT)
+	if (openRight || prevDir.dir == LEFT)
 	{
-		int doorY = dirs[RIGHT].open ? dirs[RIGHT].doorP : prevDir.doorP;
-		room->SetDoor(RIGHT, doorY);
+		int doorY = openRight ? dirs[RIGHT].doorP : prevDir.doorP;
+		room->SetDoor(RIGHT, doorY, dirs[RIGHT].doorType);
 	}
 
 	return room;
@@ -321,10 +333,10 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 
 		if (cur != end)
 		{
-			dirs[UP] = { diffY > 0, UP };
-			dirs[DOWN] = { diffY < 0, DOWN };
-			dirs[LEFT] = { diffX < 0, LEFT };
-			dirs[RIGHT] = { diffX > 0, RIGHT };
+			dirs[UP] = { diffY > 0 ? DoorType::Normal : DoorType::None, UP };
+			dirs[DOWN] = { diffY < 0 ? DoorType::Normal : DoorType::None, DOWN };
+			dirs[LEFT] = { diffX < 0 ? DoorType::Normal : DoorType::None, LEFT };
+			dirs[RIGHT] = { diffX > 0 ? DoorType::Normal : DoorType::None, RIGHT };
 
 			int tries = 32;
 			bool validDir = false;
@@ -336,7 +348,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 				Vector2i nextP = cur + vecDirs[choice];
 				auto it = roomsAdded.find(nextP);
 
-				if (dirs[choice].open && it == roomsAdded.end())
+				if (dirs[choice].doorType == DoorType::Normal && it == roomsAdded.end())
 					validDir = true;
 
 				// Stop if we tried too many times.
@@ -356,7 +368,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 				// If we found no possible directions, make sure
 				// all directions are closed regardless.
 				if (i != choice || noValidChoices)
-					dirs[i].open = false;
+					dirs[i].doorType = DoorType::None;
 			}
 
 			// Select random door positions for each direction.
@@ -377,32 +389,57 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 				// Don't generate a branching path in the direction
 				// we're already going on the main path, or in the
 				// direction we came from.
-				if (!dirs[dir].open && prevDir.dir != GetOppositeDir(dir))
+				if (dirs[dir].doorType == DoorType::None && prevDir.dir != GetOppositeDir(dir))
 				{
 					BranchStart branch = { cur, vecDirs[dir], dirs[dir] };
 					branches.push_back(branch);
-					dirs[dir].open = true;
+					dirs[dir].doorType = DoorType::Normal;
 				}
 			}
 		}
 
+		bool pathEnd = cur == end || noValidChoices;
+
+		// Generate stairs going down to a new level
+		// at the end of the main path.
+		if (pathEnd && mainPath)
+		{
+			dirs[UP].doorType = DoorType::Stairs;
+			dirs[UP].doorP = randomInRange(4, Room::Width - 5);
+		}
+
+		if (initial && prevDir.dir == DOWN)
+		{
+			dirs[DOWN].doorType = DoorType::Barred;
+			dirs[DOWN].doorP = Room::Width / 2;
+		}
+
 		Room* room = CreateRoom(level, cur.x, cur.y, dirs, prevDir);
 		roomsAdded.insert(cur);
-		room->AddEntity(inventory);
-
-		prevDir = dirs[choice];
 
 		if (initial)
 		{
 			if (mainPath)
 			{
-				int spawnX, spawnY;
+				float spawnX, spawnY;
+				int tryX, tryY;
 
-				do
+				if (prevDir.dir == DOWN)
 				{
-					spawnX = randomInRange(4, 8);
-					spawnY = randomInRange(4, 8);
-				} while (room->ObstacleAt(spawnX, spawnY));
+					spawnX = Room::Width / 2 - 0.5f;
+					spawnY = Room::Height - 4 - 0.25f;
+				}
+				else
+				{
+					do
+					{
+						tryX = randomInRange(4, 8);
+						tryY = randomInRange(4, 8);
+					} while (room->ObstacleAt(tryX, tryY));
+
+					spawnX = (float)tryX;
+					spawnY = (float)tryY;
+				}
 
 				player->SetPosition(spawnX, spawnY);
 				room->AddEntity(player);
@@ -427,7 +464,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 					if (room->TrySetObstacle(x, y))
 					{
 						Chest* chest = new Chest();
-						chest->spawn(player, inventory, 1, x, y);
+						chest->spawn(player, 1, x, y);
 						room->AddEntity(chest);
 					}
 				}
@@ -435,7 +472,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 		}
 
 		// Blue chests can spawn only in end of path rooms.
-		if (cur == end || noValidChoices)
+		if (pathEnd)
 		{
 			if (randomUnit() <= 0.75f)
 			{
@@ -445,8 +482,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 				if (room->TrySetObstacle(x, y))
 				{
 					Chest* chest = new Chest();
-
-					chest->spawn(player, inventory, 2, x, y);
+					chest->spawn(player, 2, x, y);
 					room->AddEntity(chest);
 				}
 			}
@@ -454,13 +490,14 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 			break;
 		}
 		else cur += vecDirs[choice];
+
+		prevDir = dirs[choice];
 	}
 }
 
 void LevelGenerator::Build(Level* level)
 {
 	player = new Player();
-	inventory = new Inventory();
 
 	// The number of rooms away from the origin our ending
 	// room can be in either axis.
@@ -474,7 +511,12 @@ void LevelGenerator::Build(Level* level)
 
 	Vector2i end = Vector2i(x, y);
 
-	PathDirection initpd = { false, -1, {} };
+	PathDirection initpd;
+
+	if (getGameState().newLevel)
+		initpd = { DoorType::None, DOWN, 0 };
+	else initpd = { DoorType::None, -1, 0 };
+
 	GeneratePath(level, start, end, initpd, true);
 
 	for (BranchStart branch : branches)
@@ -500,7 +542,7 @@ void LevelGenerator::Build(Level* level)
 			// Remove the door that was added to enter this branch, 
 			// this branch can't be made.
 			Room* room = level->GetRoom(branch.start);
-			room->SetDoor(branch.pd.dir, 0);
+			room->SetDoor(branch.pd.dir, 0, DoorType::None);
 		}
 	}
 

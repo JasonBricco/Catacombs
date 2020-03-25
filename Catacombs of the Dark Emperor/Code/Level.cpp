@@ -36,3 +36,14 @@ void Level::Draw(Renderer& rend)
 	assert(currentRoom != nullptr);
 	currentRoom->Draw(rend);
 }
+
+void Level::Destroy()
+{
+	for (auto pair : rooms)
+	{
+		auto entities = pair.second->GetEntities();
+
+		for (Entity* entity : pair.second->GetEntities())
+			delete entity;
+	}
+}

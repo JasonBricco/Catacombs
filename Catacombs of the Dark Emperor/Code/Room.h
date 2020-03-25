@@ -3,6 +3,20 @@
 #include "Entity.h"
 #include "Utils.h"
 
+enum class DoorType
+{
+	None,
+	Normal,
+	Stairs,
+	Barred
+};
+
+struct RoomDoor
+{
+	int pos;
+	DoorType type;
+};
+
 class Room
 {
 	Vector2i pos;
@@ -12,7 +26,7 @@ class Room
 	// them from appearing at the same location in a room.
 	Vector2iSet obstacles;
 
-	int doors[4];
+	RoomDoor doors[4];
 
 public:
 	// Room size in world units (1 unit = 32 pixels).
@@ -34,22 +48,37 @@ public:
 		entities.push_back(entity);
 	}
 
-	inline void RemoveEntity(Entity* entity)
+	template <typename T, typename... Args>
+	inline void AddEntity(int x, int y, Args... args)
 	{
-		entities.erase(std::remove(entities.begin(), entities.end(), entity), entities.end());
+		T* entity = new T(args...);
+		entity->SetPosition(x, y);
+		entities.push_back(entity);
 	}
+
+	template <typename T, typename... Args>
+	inline void AddRect(int minX, int minY, int maxX, int maxY, Args... args)
+	{
+		for (int y = minY; y <= maxY; ++y)
+		{
+			for (int x = minX; x <= maxX; ++x)
+				AddEntity<T>(x, y, args...);
+		}
+	}
+
+	void RemoveEntity(Entity* entity);
 
 	inline std::vector<Entity*>& GetEntities()
 	{
 		return entities;
 	}
 
-	inline void SetDoor(int dir, int loc)
+	inline void SetDoor(int dir, int loc, DoorType type)
 	{
-		doors[dir] = loc;
+		doors[dir] = { loc, type };
 	}
 
-	inline int* GetDoors()
+	inline RoomDoor* GetDoors()
 	{
 		return doors;
 	}

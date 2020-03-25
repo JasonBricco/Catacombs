@@ -42,4 +42,6 @@ public:
 
 	void Update(float elapsed);
 	void Draw(Renderer& rend);
+
+	void Destroy();
 };
