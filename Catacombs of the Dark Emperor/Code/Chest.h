@@ -33,7 +33,7 @@ public:
 		NumberOfItemsToAppear = randomInRange(1, 9);
 		for (int i = 0 ; i < NumberOfItemsToAppear ; i++)
 		{
-			ItemNumber[i] = randomInRange(0, 2);
+			ItemNumber[i] = randomInRange(0, totalItemsInInventory-1);
 			itemsInChest[i] = item->Item[ItemNumber[i]];
 			float x = gridStartX + gridP.x * cellSizeX;
 			float y = gridStartY + gridP.y * cellSizeY;

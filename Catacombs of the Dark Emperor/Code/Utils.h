@@ -9,6 +9,8 @@ struct GameState
 
 inline GameState g_state;
 
+inline const int totalItemsInInventory = 9;
+
 enum Direction
 {
     LEFT,
