@@ -9,6 +9,8 @@ void Player::Update(Level* level, float elapsed)
 {
 	Vector2f accel = Vector2(0.0f, 0.0f);
 
+	playerPosition = this->GetPosition();
+
 	if (Keyboard::isKeyPressed(Keyboard::A))
 	{
 		sprite = sprites[LEFT];

@@ -148,7 +148,7 @@ static void SpawnEnemies(Room* room)
 		Vector2i p = RandomRoomPos();
 
 		if (room->TrySetObstacle(p.x, p.y))
-			room->AddEntity<Wolf>(p.x, p.y);
+			room->AddEntity(new Wolf(p.x, p.y));
 	}
 }
 

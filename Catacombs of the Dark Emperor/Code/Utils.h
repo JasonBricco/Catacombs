@@ -11,6 +11,8 @@ inline GameState g_state;
 
 inline const int totalItemsInInventory = 9;
 
+inline Vector2f playerPosition;
+
 enum Direction
 {
     LEFT,
