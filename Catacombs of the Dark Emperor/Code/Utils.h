@@ -5,6 +5,7 @@ struct GameState
     bool paused;
     bool newLevel;
     bool restart;
+    bool showOutlines;
     int newLevelPrevDir;
 };
 

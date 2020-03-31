@@ -42,6 +42,11 @@ int main(int, char**)
 		{
 			if (event.type == Event::Closed)
 				window.close();
+			else if (event.type == Event::KeyPressed)
+			{
+				if (event.key.code == Keyboard::F1)
+					state.showOutlines = !state.showOutlines;
+			}
 		}
 
 		// Clear the screen to a black color.
@@ -76,4 +81,3 @@ int main(int, char**)
 
 	return 0;
 }
-

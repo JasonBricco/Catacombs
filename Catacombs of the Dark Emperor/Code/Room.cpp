@@ -47,4 +47,12 @@ void Room::Draw(Renderer& rend)
 		if (entity->Visible())
 			entity->Draw(rend);
 	}
+
+	// Perform this in a separate loop for performance
+	// reasons when showOutlines is false.
+	if (getGameState().showOutlines)
+	{
+		for (Entity* entity : entities)
+			entity->DrawOutline(rend);
+	}
 }

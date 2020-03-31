@@ -32,6 +32,9 @@ protected:
 	EntityID id = EntityID::None;
 	Sprite sprite;
 
+	// Debug outline.
+	RectangleShape outline;
+
 	int health = 16;
 	float invincibleTime = 0.0f;
 
@@ -122,6 +125,7 @@ public:
 	}
 
 	virtual void Draw(Renderer& rend);
+	void DrawOutline(Renderer& rend);
 };
 
 class DynamicEntity : public Entity

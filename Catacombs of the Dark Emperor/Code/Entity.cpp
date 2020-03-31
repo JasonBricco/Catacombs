@@ -71,6 +71,20 @@ void Entity::Draw(Renderer& rend)
 	rend.Draw(&sprite, layer);
 }
 
+void Entity::DrawOutline(Renderer& rend)
+{
+	// Draw outlines for entities that collide.
+	if (collideType != CollideType::Passable)
+	{
+		outline = RectangleShape(size * PIXELS_PER_UNIT);
+		outline.setOutlineThickness(-2.0f);
+		outline.setPosition((GetPosition() + offset) * PIXELS_PER_UNIT);
+		outline.setFillColor(Color::Transparent);
+		outline.setOutlineColor(Color::Green);
+		rend.Draw(&outline, INT_MAX);
+	}
+}
+
 void DynamicEntity::Move(Level* level, Vector2f accel, float elapsed)
 {
 	accel *= speed;
