@@ -4,6 +4,7 @@ struct GameState
 {
     bool paused;
     bool newLevel;
+    bool restart;
     int newLevelPrevDir;
 };
 

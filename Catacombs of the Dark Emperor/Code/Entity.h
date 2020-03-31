@@ -32,6 +32,13 @@ protected:
 	EntityID id = EntityID::None;
 	Sprite sprite;
 
+	int health = 16;
+	float invincibleTime = 0.0f;
+
+	// For modifying entity colors.
+	Color tint = Color::White;
+	float tintTime = 0.0f;
+
 	bool visible = true;
 
 	// Size is used for collision. It's the size in world units. A 32x32 pixel
@@ -102,7 +109,18 @@ public:
 		return collideType == CollideType::Passable || collideType == CollideType::Overlap;
 	}
 
-	virtual void Update(Level*, float) {}
+	virtual void Damage(Level* level, int amount, Vector2f knockback = Vector2(0.0f, 0.0f));
+	virtual void Kill(Level* level);
+
+	virtual void Update(Level*, float elapsed) 
+	{
+		invincibleTime -= elapsed;
+		tintTime -= elapsed;
+
+		if (tintTime <= 0.0f)
+			tint = Color::White;
+	}
+
 	virtual void Draw(Renderer& rend);
 };
 
@@ -147,5 +165,10 @@ public:
 	inline Vector2f& GetVelocity()
 	{
 		return velocity;
+	}
+
+	inline void Knockback(Vector2f force)
+	{
+		velocity = force;
 	}
 };

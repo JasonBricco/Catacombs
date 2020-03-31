@@ -550,12 +550,16 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 	}
 }
 
-void LevelGenerator::Build(Level* level)
+void LevelGenerator::Build(Level* level, bool firstLevel)
 {
-	GameState& state = getGameState();
-
-	if (!state.newLevel)
+	if (firstLevel)
+	{
+		// If this isn't the first level, the player already 
+		// exists. If we are restarting the level, the player
+		// was deleted in its Kill method and so the reference
+		// we have here isn't valid.
 		player = new Player();
+	}
 
 	// The number of rooms away from the origin our ending
 	// room can be in either axis.
@@ -571,8 +575,8 @@ void LevelGenerator::Build(Level* level)
 
 	PathDirection initpd;
 
-	if (state.newLevel)
-		initpd = { DoorType::None, state.newLevelPrevDir, 0 };
+	if (!firstLevel)
+		initpd = { DoorType::None, getGameState().newLevelPrevDir, 0 };
 	else initpd = { DoorType::None, -1, 0 };
 
 	GeneratePath(level, start, end, initpd, true);

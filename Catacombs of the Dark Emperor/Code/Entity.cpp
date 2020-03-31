@@ -11,6 +11,41 @@ Entity::Entity(std::string name)
 	LoadTexture(sprite, name);
 }
 
+void Entity::Damage(Level* level, int amount, Vector2f knockback)
+{
+	if (invincibleTime <= 0.0f)
+	{
+		health = std::max(health - amount, 0);
+
+		if (health == 0)
+			Kill(level);
+		else
+		{
+			// Invincible frames.
+			invincibleTime = 0.1f;
+
+			tint = Color(255, 0, 0, 255);
+			tintTime = 0.05f;
+
+			if (knockback.x != 0.0f || knockback.y != 0.0f)
+			{
+				// If this entity is a dynamic entity, apply knockback
+				// based on the force passed in.
+				DynamicEntity* dyn = dynamic_cast<DynamicEntity*>(this);
+
+				if (dyn != nullptr)
+					dyn->Knockback(knockback);
+			}
+		}
+	}
+}
+
+// Default kill simply destroys the entity.
+void Entity::Kill(Level* level)
+{
+	level->DestroyEntity(this);
+}
+
 void Entity::LoadTexture(Sprite& spriteToSet, std::string name)
 {
 	Assets* assets = Assets::Instance();
@@ -29,6 +64,8 @@ void Entity::Draw(Renderer& rend)
 	// Multiply the world position by PIXELS_PER_UNIT to
 	// get the pixel location to draw at.
 	Vector2f drawP = position * PIXELS_PER_UNIT;
+
+	sprite.setColor(tint);
 
 	sprite.setPosition(drawP);
 	rend.Draw(&sprite, layer);
