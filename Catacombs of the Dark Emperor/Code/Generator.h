@@ -6,7 +6,7 @@
 // Base class for a level generator.
 class Generator
 {
-	virtual void Build(Level*) {}
+	virtual void Build(Level*, bool) {}
 };
 
 struct PathDirection
@@ -35,7 +35,7 @@ struct LevelGenerator : public Generator
 	// Stores the first room for each branching path.
 	std::vector<BranchStart> branches;
 
-	void Build(Level*) override;
+	void Build(Level*, bool firstLevel) override;
 
 private:
 	void GeneratePath(Level* level, Vector2i start, Vector2i end, PathDirection prevDir, bool mainPath = false);

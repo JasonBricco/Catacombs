@@ -4,10 +4,16 @@ struct GameState
 {
     bool paused;
     bool newLevel;
+    bool restart;
+    bool showOutlines;
     int newLevelPrevDir;
 };
 
 inline GameState g_state;
+
+inline const int totalItemsInInventory = 9;
+
+inline Vector2f playerPosition;
 
 enum Direction
 {

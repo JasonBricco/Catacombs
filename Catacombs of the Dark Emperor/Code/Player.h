@@ -9,7 +9,6 @@ class Player : public DynamicEntity
 {
 	void ChangeRooms(Level* level, int offX, int offY);
 
-	 int health;
 	 int keys;
 	 Inventory* inventory;
 	 HealthBar* healthBar;
@@ -30,9 +29,9 @@ public:
 		size = Vector2f(0.95f, 0.5f);
 		offset = Vector2f(0.525f, 1.5f);
 
-		health = 16;
 		keys = 0;
 
+		collideType = CollideType::Overlap;
 		inventory = new Inventory();
 
 		healthBar = new HealthBar();
@@ -43,6 +42,7 @@ public:
 		return inventory;
 	}
 
+	void Kill(Level* level) override;
 	void HandleOverlaps(Level* level) override;
 	void Update(Level* level, float elapsed) override;
 	void Draw(Renderer& rend) override;

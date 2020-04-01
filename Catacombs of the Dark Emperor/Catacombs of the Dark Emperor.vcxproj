@@ -162,6 +162,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Code\Assets.cpp" />
+    <ClCompile Include="Code\Enemies.cpp" />
     <ClCompile Include="Code\HealthBar.cpp" />
     <ClCompile Include="Code\Inventory.cpp" />
     <ClCompile Include="Code\LevelGenerator.cpp" />

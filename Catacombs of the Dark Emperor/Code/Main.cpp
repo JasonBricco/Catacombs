@@ -13,7 +13,7 @@ int main(int, char**)
 
 	Print("Level seed: %u\n", seed);
 
-	int width = 1024, height = 608;
+	int width = 1024, height = 576;
 
 	RenderWindow window(VideoMode(width, height), "Catacombs of the Dark Emperor");
 	window.setVerticalSyncEnabled(true);
@@ -23,7 +23,9 @@ int main(int, char**)
 	Level* level = new Level();
 
 	LevelGenerator* generator = new LevelGenerator();
-	generator->Build(level);
+	generator->Build(level, true);
+
+	GameState& state = getGameState();
 
 	// Tracks frame time so we can use it for updating entities
 	// in a framerate independent manner.
@@ -40,22 +42,32 @@ int main(int, char**)
 		{
 			if (event.type == Event::Closed)
 				window.close();
+			else if (event.type == Event::KeyPressed)
+			{
+				if (event.key.code == Keyboard::F1)
+					state.showOutlines = !state.showOutlines;
+			}
 		}
 
 		// Clear the screen to a black color.
 		window.clear(Color::Black);
 
-		if (!getGameState().paused)
+		if (!state.paused)
 		{
 			level->Update(elapsed.asSeconds());
 
-			if (getGameState().newLevel)
+			if (state.newLevel || state.restart)
 			{
+				level->Destroy();
 				delete level;
 				level = new Level();
-				generator->Build(level);
 
-				getGameState().newLevel = false;
+				// If restart is true, this is considered the
+				// first level, otherwise it isn't.
+				generator->Build(level, state.restart);
+
+				state.newLevel = false;
+				state.restart = false;
 			}
 		}
 		
@@ -69,4 +81,3 @@ int main(int, char**)
 
 	return 0;
 }
-

@@ -8,7 +8,10 @@
 
 void Player::Update(Level* level, float elapsed)
 {
+	Entity::Update(level, elapsed);
 	Vector2f accel = Vector2(0.0f, 0.0f);
+
+	playerPosition = this->GetPosition();
 
 	if (Keyboard::isKeyPressed(Keyboard::A))
 	{
@@ -98,6 +101,12 @@ void Player::HandleOverlaps(Level* level)
 			break;
 		}
 	}
+}
+
+void Player::Kill(Level* level)
+{
+	Entity::Kill(level);
+	level->Restart(3.0f);
 }
 
 void Player::Draw(Renderer& rend)

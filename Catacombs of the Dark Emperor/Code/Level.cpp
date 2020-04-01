@@ -29,6 +29,27 @@ void Level::Update(float elapsed)
 {
 	assert(currentRoom != nullptr);
 	currentRoom->Update(this, elapsed);
+
+	// Destroy entities after updating is done,
+	// so we don't destroy mid-iteration.
+	for (Entity* entity : pendingDestroy)
+	{
+		currentRoom->RemoveEntity(entity);
+		delete entity;
+	}
+
+	pendingDestroy.clear();
+
+	if (restartPending)
+	{
+		restartTime -= elapsed;
+
+		if (restartTime <= 0.0f)
+		{
+			getGameState().restart = true;
+			restartPending = false;
+		}
+	}
 }
 
 void Level::Draw(Renderer& rend)

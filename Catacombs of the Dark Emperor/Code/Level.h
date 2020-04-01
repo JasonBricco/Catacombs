@@ -12,6 +12,11 @@ class Level
 	// The currently loaded room that is displayed.
 	Room* currentRoom;
 
+	vector<Entity*> pendingDestroy;
+
+	bool restartPending;
+	float restartTime = 0.0f;
+
 public:
 	// Creates a new room at the given room coordinates.
 	// If the room already exists, a new room won't be
@@ -38,6 +43,17 @@ public:
 	inline void SetCurrentRoom(Room* room)
 	{
 		currentRoom = room;
+	}
+
+	inline void DestroyEntity(Entity* entity)
+	{
+		pendingDestroy.push_back(entity);
+	}
+
+	inline void Restart(float time)
+	{
+		restartTime = time;
+		restartPending = true;
 	}
 
 	void Update(float elapsed);
