@@ -120,7 +120,6 @@ void Player::Draw(Renderer& rend)
 	// or: for (int i = 0; i < heart_count; ++i) rend.draw(heart, layer);
 	// You'll also need to call sprite.setPosition(x, y) to position them
 	// properly before calling rend.draw().
-
 	healthBar->UpdateHearts(3);
 	for (int i = 0; i < 8; i++) 
 	{
