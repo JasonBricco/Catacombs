@@ -95,3 +95,4 @@ void DynamicEntity::Move(Level* level, Vector2f accel, float elapsed)
 	collides.clear();
 	overlaps.clear();
 }
+

@@ -4,6 +4,7 @@
 #include "Utils.h"
 #include "Room.h"
 #include "Level.h"
+#include "HealthBar.h"
 
 void Player::Update(Level* level, float elapsed)
 {
@@ -110,4 +111,13 @@ void Player::Draw(Renderer& rend)
 	// or: for (int i = 0; i < heart_count; ++i) rend.draw(heart, layer);
 	// You'll also need to call sprite.setPosition(x, y) to position them
 	// properly before calling rend.draw().
+
+	healthBar->UpdateHearts(3);
+	for (int i = 0; i < 8; i++) 
+	{
+		Heart* heart = healthBar->hearts[i];
+		heart->SetPosition((float)(.55 * i), 18.0);
+		heart->Draw(rend);
+	}
+
 }

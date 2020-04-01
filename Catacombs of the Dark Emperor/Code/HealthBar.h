@@ -20,24 +20,23 @@ public:
 
 class HealthBar
 {
+
 public:
+	Heart* hearts[8];
 
-	HealthBar()
-	{
-		/*Heart* heart1 = new Heart();
-		Heart* heart2 = new Heart();
-		Heart* heart3 = new Heart();
-		Heart* heart4 = new Heart();
-		Heart* heart5 = new Heart();
-		Heart* heart6 = new Heart();
-		Heart* heart7 = new Heart();
-		Heart* heart8 = new Heart();*/
+	void UpdateHearts(int health);
+
+	HealthBar(){
+	
+		for (int i = 0; i < 8; i++) {
+			hearts[i] = new Heart();
+		}
 	}
-
+	
+	
 };
 
-void UpdateHearts(int health);
 
-void BuildHealthBar(Level* level);
+
 
 

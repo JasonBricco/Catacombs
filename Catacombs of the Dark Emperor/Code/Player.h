@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "Utils.h"
 #include "Inventory.h"
+#include "HealthBar.h"
 
 class Player : public DynamicEntity
 {
@@ -10,8 +11,8 @@ class Player : public DynamicEntity
 
 	 int health;
 	 int keys;
-
 	 Inventory* inventory;
+	 HealthBar* healthBar;
 public:
 	Player()
 	{
@@ -33,6 +34,8 @@ public:
 		keys = 0;
 
 		inventory = new Inventory();
+
+		healthBar = new HealthBar();
 	}
 
 	inline Inventory* GetInventory()

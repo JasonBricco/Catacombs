@@ -102,6 +102,11 @@ public:
 		return collideType == CollideType::Passable || collideType == CollideType::Overlap;
 	}
 
+	inline Sprite* GetSprite()
+	{
+		return &sprite;
+	}
+
 	virtual void Update(Level*, float) {}
 	virtual void Draw(Renderer& rend);
 };
@@ -148,4 +153,11 @@ public:
 	{
 		return velocity;
 	}
+
+	inline Sprite* GetSprites()
+	{
+		return sprites;
+	}
+
+	
 };
