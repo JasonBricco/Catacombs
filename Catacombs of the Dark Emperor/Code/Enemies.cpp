@@ -9,7 +9,7 @@ void Wolf::Update(Level* level, float elapsed)
 	Vector2f accel = Vector2(0.0f, 0.0f);
 	speed = 60.0f;
 
-	Vector2f wolfP = BoundingBox().center;
+	Vector2f wolfP = GetCenter();
 
 	if (!following)
 	{
@@ -25,8 +25,15 @@ void Wolf::Update(Level* level, float elapsed)
 
 		if (recompute <= 0.0f)
 		{
-			FindPath(level, TilePos(wolfP), TilePos(playerPosition), &path);
-			recompute = 0.5f;
+			if (Distance(playerPosition, lastPlayerP) > 1.0f)
+				needsUpdate = true;
+
+			if (needsUpdate)
+			{
+				FindPath(level, TilePos(wolfP), TilePos(playerPosition), &path);
+				recompute = 1.0f;
+				lastPlayerP = playerPosition;
+			}
 		}
 
 		if (path.Valid())
@@ -61,7 +68,7 @@ void Wolf::HandleOverlaps(Level* level)
 		switch (e->ID())
 		{
 		case EntityID::Player:
-			Vector2 force = Normalize(e->GetPosition() - GetPosition()) * 30.0f;
+			Vector2 force = Normalize(e->GetCenter() - GetCenter()) * 30.0f;
 			e->Damage(level, 4, force);
 			break;
 		}

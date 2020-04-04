@@ -8,10 +8,10 @@ class Wolf : public DynamicEntity
 {
 	Path path;
 	float recompute = 0.0f;
+	bool needsUpdate = true;
 
-	Vector2f nextP;
+	Vector2f nextP, lastPlayerP;
 	bool hasNext = false;
-
 	bool following = false;
 
 public:
@@ -28,7 +28,7 @@ public:
 		this->SetPosition(x,y);
 
 		size = Vector2f(0.9f, 0.9f);
-		offset = Vector2f(0.5f, 0.5f);
+		offset = Vector2f(0.5f, 0.6f);
 	}
 
 	void HandleOverlaps(Level* level) override;

@@ -11,21 +11,31 @@ void Player::Update(Level* level, float elapsed)
 	Entity::Update(level, elapsed);
 	Vector2f accel = Vector2(0.0f, 0.0f);
 
-	playerPosition = BoundingBox().center;
+	playerPosition = GetCenter();
 
 	if (Keyboard::isKeyPressed(Keyboard::A))
+	{
+		sprite = sprites[LEFT];
 		accel.x -= 1.0f;
+	}
 
 	if (Keyboard::isKeyPressed(Keyboard::D))
+	{
+		sprite = sprites[RIGHT];
 		accel.x += 1.0f;
+	}
 
 	if (Keyboard::isKeyPressed(Keyboard::S))
+	{
+		sprite = sprites[DOWN];
 		accel.y += 1.0f;
+	}
 
 	if (Keyboard::isKeyPressed(Keyboard::W))
+	{
+		sprite = sprites[UP];
 		accel.y -= 1.0f;
-
-	SetFacing(accel);
+	}
 
 	//implements player attack
 	if (Keyboard::isKeyPressed(Keyboard::E))
@@ -82,21 +92,25 @@ void Player::HandleOverlaps(Level* level)
 		case EntityID::DoorUp:
 			ChangeRooms(level, 0, 1);
 			position.y = Room::Height - 4.15f;
+			playerPosition = GetCenter();
 			break;
 
 		case EntityID::DoorDown:
 			ChangeRooms(level, 0, -1);
 			position.y = 1.0f;
+			playerPosition = GetCenter();
 			break;
 
 		case EntityID::DoorLeft:
 			ChangeRooms(level, -1, 0);
 			position.x = Room::Width - 3.65f;
+			playerPosition = GetCenter();
 			break;
 
 		case EntityID::DoorRight:
 			ChangeRooms(level, 1, 0);
 			position.x = 1.5f;
+			playerPosition = GetCenter();
 			break;
 
 		case EntityID::DoorStairsUp:
@@ -123,13 +137,8 @@ void Player::Draw(Renderer& rend)
 	Entity::Draw(rend);
 
 	inventory->Draw(rend);
-
-	// TODO: Put healthbar drawing here.
-	//rend.Draw(health_bar_sprite, layer_here);
-	// or: for (int i = 0; i < heart_count; ++i) rend.draw(heart, layer);
-	// You'll also need to call sprite.setPosition(x, y) to position them
-	// properly before calling rend.draw().
 	healthBar->UpdateHearts(health);
+
 	for (int i = 0; i < 8; i++) 
 	{
 		Heart* heart = healthBar->hearts[i];

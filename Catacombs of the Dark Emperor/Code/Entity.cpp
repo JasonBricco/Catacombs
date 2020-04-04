@@ -90,12 +90,18 @@ void DynamicEntity::SetFacing(Vector2f accel)
 	if (fabs(accel.x) > fabs(accel.y))
 	{
 		// Left or right.
-		sprite = accel.x < 0.0f ? sprites[LEFT] : sprites[RIGHT];
+		if (accel.x < -0.1f)
+			sprite = sprites[LEFT];
+		else if (accel.x > 0.1f)
+			sprite = sprites[RIGHT];
 	}
 	else
 	{
 		// Up or down.
-		sprite = accel.y < 0.0f ? sprites[UP] : sprites[DOWN];
+		if (accel.y < -0.1f)
+			sprite = sprites[UP];
+		else if (accel.y > 0.1f)
+			sprite = sprites[DOWN];
 	}
 }
 

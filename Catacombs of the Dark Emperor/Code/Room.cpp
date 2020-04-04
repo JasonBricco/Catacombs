@@ -27,7 +27,6 @@ void Room::RemoveEntity(Entity* entity)
 			return;
 		}
 	}
-
 }
 
 void Room::BuildPathGrid()

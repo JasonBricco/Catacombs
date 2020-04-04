@@ -93,9 +93,14 @@ public:
 		SetPosition((float)x, (float)y);
 	}
 
-	inline const Vector2f GetPosition()
+	inline Vector2f GetPosition()
 	{
 		return position;
+	}
+
+	inline Vector2f GetCenter()
+	{
+		return BoundingBox().center;
 	}
 
 	inline Vector2f GetSize()
