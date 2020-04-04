@@ -85,6 +85,20 @@ void Entity::DrawOutline(Renderer& rend)
 	}
 }
 
+void DynamicEntity::SetFacing(Vector2f accel)
+{
+	if (fabs(accel.x) > fabs(accel.y))
+	{
+		// Left or right.
+		sprite = accel.x < 0.0f ? sprites[LEFT] : sprites[RIGHT];
+	}
+	else
+	{
+		// Up or down.
+		sprite = accel.y < 0.0f ? sprites[UP] : sprites[DOWN];
+	}
+}
+
 void DynamicEntity::Move(Level* level, Vector2f accel, float elapsed)
 {
 	accel *= speed;

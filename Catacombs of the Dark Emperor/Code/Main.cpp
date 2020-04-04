@@ -3,7 +3,6 @@
 #include "Level.h"
 #include "Generator.h"
 #include "Utils.h"
-
 #include "Assets.h"
 
 int main(int, char**)
@@ -44,8 +43,16 @@ int main(int, char**)
 				window.close();
 			else if (event.type == Event::KeyPressed)
 			{
-				if (event.key.code == Keyboard::F1)
-					state.showOutlines = !state.showOutlines;
+				switch (event.key.code)
+				{
+					case Keyboard::F1:
+						state.showOutlines = !state.showOutlines;
+						break;
+
+					case Keyboard::F2:
+						state.showPathGrid = !state.showPathGrid;
+						break;
+				}
 			}
 		}
 

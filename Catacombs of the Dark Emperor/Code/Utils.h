@@ -5,7 +5,7 @@ struct GameState
     bool paused;
     bool newLevel;
     bool restart;
-    bool showOutlines;
+    bool showOutlines, showPathGrid;
     int newLevelPrevDir;
 };
 
@@ -25,6 +25,12 @@ enum Direction
     UP_RIGHT,
     DOWN_LEFT,
     DOWN_RIGHT
+};
+
+const Vector2i directions[] =
+{
+    Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(0, -1),
+    Vector2i(-1, 1), Vector2i(1, 1), Vector2i(-1, -1), Vector2i(1, -1)
 };
 
 inline int GetOppositeDir(int dir)

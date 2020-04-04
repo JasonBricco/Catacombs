@@ -17,21 +17,17 @@ struct RoomDoor
 	DoorType type;
 };
 
-class Room
+struct Room
 {
-	Vector2i pos;
-	std::vector<Entity*> entities;
-
-	// Stores obstacles in order to prevent
-	// them from appearing at the same location in a room.
-	Vector2iSet obstacles;
-
-	RoomDoor doors[4];
-
-public:
 	// Room size in world units (1 unit = 32 pixels).
 	static constexpr int Width = 32;
 	static constexpr int Height = 18;
+	static constexpr int TileCount = Width * Height;
+
+	static inline bool InBounds(int x, int y)
+	{
+		return x >= 0 && x < Room::Width&& y >= 0 && y < Room::Height;
+	}
 
 	inline void SetPosition(int x, int y)
 	{
@@ -91,8 +87,27 @@ public:
 		return it != obstacles.end();
 	}
 
+	inline int* PathGrid()
+	{
+		return pathGrid;
+	}
+
+	void BuildPathGrid();
 	void Update(Level* level, float elapsed);
 	void Draw(Renderer& rend);
+
+private:
+	int pathGrid[Width * Height];
+	std::vector<RectangleShape> debugPathRects;
+
+	Vector2i pos;
+	std::vector<Entity*> entities;
+
+	// Stores obstacles in order to prevent
+	// them from appearing at the same location in a room.
+	Vector2iSet obstacles;
+
+	RoomDoor doors[4];
 };
 
 typedef std::unordered_map<Vector2i, Room*, Vector2iHash, Vector2iCompare> RoomMap;

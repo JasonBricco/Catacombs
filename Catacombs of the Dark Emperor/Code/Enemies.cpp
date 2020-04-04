@@ -1,53 +1,53 @@
 #include "Stdafx.h"
 #include "Enemies.h"
+#include "Utils.h"
 
 void Wolf::Update(Level* level, float elapsed)
 {
 	Entity::Update(level, elapsed);
 
 	Vector2f accel = Vector2(0.0f, 0.0f);
-	speed = 50.0f;
+	speed = 60.0f;
 
-	Vector2f playerP = playerPosition;
-	Vector2f wolfP = this->GetPosition();
+	Vector2f wolfP = BoundingBox().center;
 
-	float XDist = playerP.x - wolfP.x;
-	float YDist = playerP.y - wolfP.y;
+	if (!following)
+	{
+		float distance = Distance(playerPosition, wolfP);
 
-	float distance = Distance(playerP, wolfP);
-	if (distance < 10.0f) {
-		if (XDist > 0) {
-			accel.x += 1.0f;
+		if (distance < 10.0f)
+			following = true;
+	}
+
+	if (following)
+	{
+		recompute -= elapsed;
+
+		if (recompute <= 0.0f)
+		{
+			FindPath(level, TilePos(wolfP), TilePos(playerPosition), &path);
+			recompute = 0.5f;
 		}
-		else if (XDist < -1.0f) {
-			accel.x -= 1.0f;
-		}
-		if (YDist < -1.0f) {
-			accel.y -= 1.0f;
-		}
-		else if (YDist > 0) {
-			accel.y += 1.0f;
-		}
-	}
 
-	//gives directional sprites to wolf 
-	if (accel.y < 0.0f) {
-		sprite = sprites[UP];
-	}
-	else if (accel.y > 0.0f) {
-		sprite = sprites[DOWN];
-	}
-	else if (accel.x < 0.0f) {
-		sprite = sprites[LEFT];
-	}
-	else if (accel.x > 0.0f) {
-		sprite = sprites[RIGHT];
-	}
+		if (path.Valid())
+		{
+			if (!hasNext)
+			{
+				nextP = path.Next();
+				hasNext = true;
+			}
+			else
+			{
+				Vector2 diff = nextP - wolfP;
 
-	// Ensure the movement vector is at most length 1,
-	// to prevent moving faster on diagonals.
-	if (accel != Vector2f(0.0f, 0.0f))
-		accel = Normalize(accel);
+				if (abs(diff.x) <= 0.5f && abs(diff.y) <= 0.5f)
+					hasNext = false;
+				
+				accel = Normalize(diff);
+				SetFacing(accel);
+			}
+		}
+	}
 
 	Move(level, accel, elapsed);
 }

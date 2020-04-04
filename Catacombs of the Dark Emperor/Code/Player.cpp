@@ -11,31 +11,21 @@ void Player::Update(Level* level, float elapsed)
 	Entity::Update(level, elapsed);
 	Vector2f accel = Vector2(0.0f, 0.0f);
 
-	playerPosition = this->GetPosition();
+	playerPosition = BoundingBox().center;
 
 	if (Keyboard::isKeyPressed(Keyboard::A))
-	{
-		sprite = sprites[LEFT];
 		accel.x -= 1.0f;
-	}
 
 	if (Keyboard::isKeyPressed(Keyboard::D))
-	{
-		sprite = sprites[RIGHT];
 		accel.x += 1.0f;
-	}
 
 	if (Keyboard::isKeyPressed(Keyboard::S))
-	{
-		sprite = sprites[DOWN];
 		accel.y += 1.0f;
-	}
 
 	if (Keyboard::isKeyPressed(Keyboard::W))
-	{
-		sprite = sprites[UP];
 		accel.y -= 1.0f;
-	}
+
+	SetFacing(accel);
 
 	//implements player attack
 	if (Keyboard::isKeyPressed(Keyboard::E))

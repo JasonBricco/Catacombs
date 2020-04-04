@@ -155,6 +155,7 @@ protected:
 	// last collision step.
 	uint32_t colFlags = CF_NONE;
 
+	void SetFacing(Vector2f accel);
 	virtual void HandleOverlaps(Level*) {}
 
 public:
@@ -183,10 +184,8 @@ public:
 		return sprites;
 	}
 
-
 	inline void Knockback(Vector2f force)
 	{
 		velocity = force;
 	}
-
 };

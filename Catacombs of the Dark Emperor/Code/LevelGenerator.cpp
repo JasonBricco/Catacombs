@@ -284,6 +284,8 @@ static void FillRoom(Room* room)
 		int pattern = randomInRange(0, 3);
 		funcs[pattern](room);
 	}
+
+	room->BuildPathGrid();
 }
 
 // Add the doors in a deferred fashion so that adjustments can be made
