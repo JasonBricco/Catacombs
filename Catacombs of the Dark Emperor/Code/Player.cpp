@@ -43,13 +43,15 @@ void Player::Update(Level* level, float elapsed)
 		Room* room = level->GetCurrentRoom();
 		for (Entity* e : room->GetEntities())
 		{
-			if(Distance(e->GetPosition(), GetPosition()) < 5.0f)
-			switch (e->ID())
+			if (Distance(e->GetPosition(), GetPosition()) < 3.0f)
 			{
-			case EntityID::Wolf:
-				Vector2 force = Normalize(e->GetPosition() - GetPosition()) * 30.0f;
-				e->Damage(level, 4, force);
-				break;
+				switch (e->ID())
+				{
+				case EntityID::Wolf:
+					Vector2 force = Normalize(e->GetPosition() - GetPosition()) * 30.0f;
+					e->Damage(level, 4, force);
+					break;
+				}
 			}
 		}
 	}
