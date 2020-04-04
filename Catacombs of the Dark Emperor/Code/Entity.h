@@ -23,7 +23,8 @@ enum class EntityID
 	DoorLeft,
 	DoorRight,
 	DoorStairsUp,
-	DoorStairsDown
+	DoorStairsDown,
+	Wolf
 };
 
 class Entity

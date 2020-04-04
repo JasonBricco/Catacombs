@@ -37,6 +37,23 @@ void Player::Update(Level* level, float elapsed)
 		accel.y -= 1.0f;
 	}
 
+	//implements player attack
+	if (Keyboard::isKeyPressed(Keyboard::E))
+	{
+		Room* room = level->GetCurrentRoom();
+		for (Entity* e : room->GetEntities())
+		{
+			if(Distance(e->GetPosition(), GetPosition()) < 5.0f)
+			switch (e->ID())
+			{
+			case EntityID::Wolf:
+				Vector2 force = Normalize(e->GetPosition() - GetPosition()) * 30.0f;
+				e->Damage(level, 4, force);
+				break;
+			}
+		}
+	}
+
 	// Ensure the movement vector is at most length 1,
 	// to prevent moving faster on diagonals.
 	if (accel != Vector2f(0.0f, 0.0f))
@@ -120,7 +137,7 @@ void Player::Draw(Renderer& rend)
 	// or: for (int i = 0; i < heart_count; ++i) rend.draw(heart, layer);
 	// You'll also need to call sprite.setPosition(x, y) to position them
 	// properly before calling rend.draw().
-	healthBar->UpdateHearts(3);
+	healthBar->UpdateHearts(health);
 	for (int i = 0; i < 8; i++) 
 	{
 		Heart* heart = healthBar->hearts[i];

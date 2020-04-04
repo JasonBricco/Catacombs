@@ -8,6 +8,7 @@ class Wolf : public DynamicEntity
 public:
 	Wolf(int x, int y): DynamicEntity()
 	{
+		id = EntityID::Wolf;
 		layer = 50;
 		LoadTexture(sprites[LEFT], "Assets/monster_wolfC.png");
 		LoadTexture(sprites[RIGHT], "Assets/monster_wolfB.png");
