@@ -1,29 +1,54 @@
-TEST_PLAYER_MOVEMENT
-	TEST_UP: Press W (Up player movement)
-		Pass: Player Sprite turns into the Sprite that has their back to you AND Player moves Vertically UP
-		Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically up
-	TEST_DOWN: Press S (Down player movement)
-		Pass: Player Sprite turns into the Sprite that has their front to you AND Player moves Vertically DOWN
-		Fail: Player sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically down
-	TEST_RIGHT: Press D (Right Player movement)
-		Pass: Player sprite turns into the Sprite that faces RIGHT AND Player moves Horizontally RIGHT
-		Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move horizontally right
-	TEST_LEFT: Press A (Left Player movement)
-		Pass: Player sprite turns into the Sprite that faces LEFT AND Player move Horizontally LEFT
-		Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move horizontally left
-	TEST_UPLEFT_DIAG: Press W and A at the same time (Diagonal movement Up and Left)
-		Pass: Player Sprite turns into the Sprite that has their back to you AND Player moves vertically UP and horizontally LEFT
-		Fail: Player sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically up and horizontally left
-	TEST_UPRIGHT_DIAG: Press W and D at the same time (Diagonal movement Up and Right)
-		Pass: Player Sprite turns into the Sprite that has their back to you AND Player moves Vertically UP and Horizontally RIGHT
-		Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically up and horizontally right
-	TEST_DOWNLEFT_DIAG: Press S and A at the same time (Diagonal movement Down and Left)
-		Pass: Player Sprite turns into the Sprite that has their front to you AND Player moves Vertically DOWN and Horizontally LEFT
-		Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically down and horizontally left
-	TEST_DOWNRIGHT_DIAG: Press S and D at the same time (Diagonal movement Down and Right)
-		Pass: Player Sprite turns into the Sprite that has their front to you AND Player moves Vertically DOWN and Horizontally RIGHT
-		Fail: Player sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically down and horizontally right
-TEST_COLLISION
+TEST_PLAYER
+	TEST_PLAYER_MOVEMENT
+		TEST_UP: Press W (Up player movement)
+			Pass: Player Sprite turns into the Sprite that has their back to you AND Player moves Vertically UP
+			Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically up
+		TEST_DOWN: Press S (Down player movement)
+			Pass: Player Sprite turns into the Sprite that has their front to you AND Player moves Vertically DOWN
+			Fail: Player sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically down
+		TEST_RIGHT: Press D (Right Player movement)
+			Pass: Player sprite turns into the Sprite that faces RIGHT AND Player moves Horizontally RIGHT
+			Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move horizontally right
+		TEST_LEFT: Press A (Left Player movement)
+			Pass: Player sprite turns into the Sprite that faces LEFT AND Player move Horizontally LEFT
+			Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move horizontally left
+		TEST_UPLEFT_DIAG: Press W and A at the same time (Diagonal movement Up and Left)
+			Pass: Player Sprite turns into the Sprite that has their back to you AND Player moves vertically UP and horizontally LEFT
+			Fail: Player sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically up and horizontally left
+		TEST_UPRIGHT_DIAG: Press W and D at the same time (Diagonal movement Up and Right)
+			Pass: Player Sprite turns into the Sprite that has their back to you AND Player moves Vertically UP and Horizontally RIGHT
+			Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically up and horizontally right
+		TEST_DOWNLEFT_DIAG: Press S and A at the same time (Diagonal movement Down and Left)
+			Pass: Player Sprite turns into the Sprite that has their front to you AND Player moves Vertically DOWN and Horizontally LEFT
+			Fail: Player Sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically down and horizontally left
+		TEST_DOWNRIGHT_DIAG: Press S and D at the same time (Diagonal movement Down and Right)
+			Pass: Player Sprite turns into the Sprite that has their front to you AND Player moves Vertically DOWN and Horizontally RIGHT
+			Fail: Player sprite does not change (unless sprite is already the required Sprite) or Player does not move vertically down and horizontally right
+	TEST_PLAYER_INVENTORY
+		TEST_INTERFACE: Press I to open Player inventory
+			Pass: Player inventory interface opens (Interface is the same as the chest Interface)
+			Fail: No interface appears
+		TEST_ITEMS: Obtain 1 or more items from a chest
+			Pass: Items taken from the chest appear in the players inventory
+			Fail: Items do not appear in the players inventory
+		TEST_ITEM_COUNT: Obtain 1 or more of the same item
+			Pass: Item has a number indicating how many of said item you have in your inventory
+			Fail: Item does not have a number or has an incorrect number
+	TEST_PLAYER_ATTACK
+		TEST_PLAYER_ATTACKS: Press E when an enemy approaches you
+			Pass: Enemy takes damage (recoil and flashes red) and eventually dies (despawns)
+			Fail: Enemy doesn't take damage or doesn't despawn upon death
+	TEST_PLAYER_HEALTH
+		TEST_PLAYER_HEALTH_SPRITES: 
+			Pass: Health sprites appear in the bottom left of the screen
+			Fail: Health sprites don't appear in the bottom left of the screen
+		TEST_DAMAGED_HEALTH: Take damage from an enemy
+			Pass: Player health sprites reflect that damage was taken from an enemy
+			Fail: Health sprites don't change
+		TEST_PLAYER_DEATH: Die from enemy attacks
+			Pass: Player dies and the game restarts
+			Fail: Player dies and the game doesn't restart
+TEST_COLLISION (Note for these tests pressing F1 will display a green border representing the borders of all the sprites which is recommended here)
 	TEST_TOP_WALL: Move into a wall at the top of the screen
 		Pass: Player does not move through the wall (Note sprites will overlap here, that is normal)
 		Fail: Player moves through the wall
@@ -45,6 +70,9 @@ TEST_COLLISION
 	TEST_STATIC_ENVIRONMENT_OBJECTS: Move into the static environment objects (rubble, purple stone blocks, pots, etc)
 		Pass: Player does not move through the objects
 		Fail: Player moves through the objects
+	TEST_DYNAMIC_OBJECTS: Move into enemies or objects that are able to move 
+		Pass: Player cannot move through the enemy
+		Fail: Player moves through the enemy
 TEST_CHEST
 	TEST_OPEN: Press E when at the side, or in front of the chest
 		Pass: Chest sprite changes to an Open Chest sprite
@@ -68,13 +96,21 @@ TEST_GENERATOR (For these tests, you need to run the game several times and obse
 	TEST_CHEST_CONTENTS:
 		Pass: Chest contents are random
 		Fail: Chest has no contents (Unless items were already taken)
-TEST_PLAYER_INVENTORY
-	TEST_INTERFACE: Press I to open Player inventory
-		Pass: Player inventory interface opens (Interface is the same as the chest Interface)
-		Fail: No interface appears
-	TEST_ITEMS: Obtain 1 or more items from a chest
-		Pass: Items taken from the chest appear in the players inventory
-		Fail: Items do not appear in the players inventory
-	TEST_ITEM_COUNT: Obtain 1 or more of the same item
-		Pass: Item has a number indicating how many of said item you have in your inventory
-		Fail: Item does not have a number or has an incorrect number
+	TEST_ENEMY_SPAWN:
+		Pass: Enemies spawn in each room
+		Fail: Enemies don't spawn in each room
+	TEST_STAIRS: (Note you cannot go back through the stairs)
+		Pass: A stair doorway appears and takes you to a new floor
+		Fail: No stair doorway appears or doesn't take you to a new floor
+TEST_ENEMY
+	TEST_ENEMY_ATTACK:
+		Pass: Enemy attacks player and deals damage to them (recoil and flashes red)
+		Fail: Enemy attacks player and doesn't deal damage to them or doesn't attack the player
+	TEST_ENEMY_MOVEMENT:
+		Pass: Enemy moves to the player when Player passes close enough to the enemy while going around static environment objects that may get in their way
+		Fail: Enemy doesn't move to the player when close enough or isn't able to get around static environment objects
+	TEST_ENEMY_DEATH:
+		Pass: When Player kills enemy, enemy despawns
+		Fail: When player kills enemy, enemy doesn't despawn or still exists invisibly 
+
+
