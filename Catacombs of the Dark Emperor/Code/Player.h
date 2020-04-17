@@ -9,9 +9,13 @@ class Player : public DynamicEntity
 {
 	void ChangeRooms(Level* level, int offX, int offY);
 
-	 int keys;
-	 Inventory* inventory;
-	 HealthBar* healthBar;
+	// Attack frequency.
+	float atkFreq = 0.25f, atkTimeLeft = 0.0f;
+
+	int keys;
+	Inventory* inventory;
+	HealthBar* healthBar;
+
 public:
 	Player()
 	{
@@ -22,7 +26,32 @@ public:
 		LoadTexture(sprites[DOWN], "Assets/hero-idle-front.png");
 		LoadTexture(sprites[UP], "Assets/hero-idle-back.png");
 
-		sprite = sprites[DOWN];
+		// Create move animation clips.
+		Sprite moveSprites[4];
+		LoadTexture(moveSprites[LEFT], "Assets/hero-walk-left.png");
+		LoadTexture(moveSprites[RIGHT], "Assets/hero-walk-right.png");
+		LoadTexture(moveSprites[UP], "Assets/hero-walk-back.png");
+		LoadTexture(moveSprites[DOWN], "Assets/hero-walk-front.png");
+		
+		CreateClip(move, LEFT, moveSprites[LEFT], Vector2i(64, 64), 6, 8.0f, false, true);
+		CreateClip(move, RIGHT, moveSprites[RIGHT], Vector2i(64, 64), 6, 8.0f, false);
+		CreateClip(move, DOWN, moveSprites[DOWN], Vector2i(64, 64), 6, 8.0f, false);
+		CreateClip(move, UP, moveSprites[UP], Vector2i(64, 64), 6, 8.0f, false);
+
+		// Create attack animation clips.
+		Sprite atkSprites[4];
+		LoadTexture(atkSprites[LEFT], "Assets/hero-attack-left.png");
+		LoadTexture(atkSprites[RIGHT], "Assets/hero-attack-right.png");
+		LoadTexture(atkSprites[UP], "Assets/hero-attack-back.png");
+		LoadTexture(atkSprites[DOWN], "Assets/hero-attack-front.png");
+
+		CreateClip(attack, LEFT, atkSprites[LEFT], Vector2i(64, 64), 3, 30.0f, true, true);
+		CreateClip(attack, RIGHT, atkSprites[RIGHT], Vector2i(64, 64), 3, 30.0f, true);
+		CreateClip(attack, DOWN, atkSprites[DOWN], Vector2i(64, 64), 3, 30.0f, true);
+		CreateClip(attack, UP, atkSprites[UP], Vector2i(64, 64), 3, 30.0f, true);
+
+		facing = DOWN;
+		sprite = sprites[facing];
 		layer = 50;
 
 		speed = 100.0f;

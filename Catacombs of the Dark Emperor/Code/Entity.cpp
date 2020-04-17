@@ -11,6 +11,89 @@ Entity::Entity(std::string name)
 	LoadTexture(sprite, name);
 }
 
+void DynamicEntity::CreateClip(AnimationClip* arr, int slot, Sprite frames, Vector2i frameSize, int frameCount, float fps, bool wait, bool backwards)
+{
+	AnimationClip& clip = arr[slot];
+	clip.frames = frames;
+	clip.frameCount = frameCount;
+	clip.frameSize = frameSize;
+	clip.wait = wait;
+	clip.fps = fps;
+	clip.interval = 1.0f / clip.fps;
+	clip.finished = false;
+	clip.timeLeft = 0.0f;
+	clip.frame = 0;
+	clip.backwards = backwards;
+}
+
+// Sets the entity's animation clip to the one provided,
+// if possible.
+void DynamicEntity::SetAnimation(AnimationClip* clip)
+{
+	if (anim == clip)
+		return;
+
+	bool canChange = true;
+
+	if (anim != nullptr && anim->wait && !anim->finished)
+		canChange = false;
+
+	if (canChange)
+	{
+		anim = clip;
+
+		if (anim != nullptr)
+		{
+			anim->timeLeft = anim->interval;
+			anim->frame = anim->backwards ? anim->frameCount - 1 : 0;
+			anim->finished = false;
+		}
+	}
+}
+
+// Decides which sprite this entity should use based on 
+// its current animation clip. If it has no animation clip,
+// this will do nothing.
+void DynamicEntity::ComputeAnimation(float elapsed)
+{
+	if (anim != nullptr)
+	{
+		anim->timeLeft -= elapsed;
+
+		if (anim->timeLeft <= 0.0f)
+		{
+			if (anim->backwards)
+			{
+				if (anim->frame - 1 == -1)
+				{
+					if (anim->wait)
+						anim->finished = true;
+					else anim->frame = anim->frameCount - 1;
+				}
+				else --anim->frame;
+			}
+			else
+			{
+				if (anim->frame + 1 == anim->frameCount)
+				{
+					if (anim->wait)
+						anim->finished = true;
+					else anim->frame = 0;
+				}
+				else ++anim->frame;
+			}
+
+			anim->timeLeft = anim->interval;
+		}
+		
+		int frame = anim->frame;
+		int x = anim->frameSize.x * frame;
+
+		sprite = anim->frames;
+		sprite.setTextureRect(IntRect(x, 0, anim->frameSize.x, anim->frameSize.y));
+	}
+}
+
 void Entity::Damage(Level* level, int amount, Vector2f knockback)
 {
 	if (invincibleTime <= 0.0f)

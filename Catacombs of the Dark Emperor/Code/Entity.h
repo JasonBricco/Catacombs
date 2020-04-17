@@ -5,6 +5,26 @@
 
 class Level;
 
+// Represents a sprite sheet for animation.
+// For simplicity, we'll assume our sprite sheets
+// are only on a single row (not multiple rows). All the
+// ones we'll use follow this.
+struct AnimationClip
+{
+	Sprite frames;
+	int frameCount;
+	Vector2i frameSize;
+	bool wait;
+	float fps;
+	int frame;
+	float interval;
+	float timeLeft;
+	bool finished;
+
+	// Play the animation backwards (for flipped sheets).
+	bool backwards;
+};
+
 enum class CollideType
 {
 	Passable,
@@ -123,7 +143,6 @@ public:
 		return &sprite;
 	}
 
-
 	virtual void Damage(Level* level, int amount, Vector2f knockback = Vector2(0.0f, 0.0f));
 	virtual void Kill(Level* level);
 
@@ -146,6 +165,16 @@ protected:
 	// Contains a sprite for each facing direction.
 	Sprite sprites[4];
 
+	// Facing direction.
+	int facing;
+
+	// Animations.
+	AnimationClip move[4];
+	AnimationClip attack[4];
+
+	// Current animation clip.
+	AnimationClip* anim = nullptr;
+
 	// Temporary storage to store bounding boxes we have to check for collision. 
 	// It's static because only one entity will utilize it at a time.
 	// This is more efficient for memory.
@@ -162,6 +191,10 @@ protected:
 
 	void SetFacing(Vector2f accel);
 	virtual void HandleOverlaps(Level*) {}
+
+	void CreateClip(AnimationClip* arr, int slot, Sprite frames, Vector2i frameSize, int frameCount, float fps, bool wait, bool backwards = false);
+	void SetAnimation(AnimationClip* clip);
+	void ComputeAnimation(float elapsed);
 
 public:
 	DynamicEntity() : Entity() {}

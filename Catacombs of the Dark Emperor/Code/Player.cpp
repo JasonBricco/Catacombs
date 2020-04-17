@@ -15,30 +15,59 @@ void Player::Update(Level* level, float elapsed)
 
 	if (Keyboard::isKeyPressed(Keyboard::A))
 	{
-		sprite = sprites[LEFT];
+		facing = LEFT;
 		accel.x -= 1.0f;
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::D))
 	{
-		sprite = sprites[RIGHT];
+		facing = RIGHT;
 		accel.x += 1.0f;
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::S))
 	{
-		sprite = sprites[DOWN];
+		facing = DOWN;
 		accel.y += 1.0f;
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::W))
 	{
-		sprite = sprites[UP];
+		facing = UP;
 		accel.y -= 1.0f;
 	}
 
+	// Choose whether we should use animation or 
+	// idle frames based on user input.
+	if (accel != Vector2f(0.0f, 0.0f))
+	{
+		// Choose a move animation.
+		switch (facing)
+		{
+		case LEFT: SetAnimation(& move[LEFT]); break;
+		case RIGHT: SetAnimation(& move[RIGHT]); break;
+		case DOWN: SetAnimation(& move[DOWN]); break;
+		case UP: SetAnimation(&move[UP]); break;
+		}
+	}
+	else
+	{
+		// Choose an idle sprite.
+		switch (facing)
+		{
+		case LEFT: sprite = sprites[LEFT]; break;
+		case RIGHT: sprite = sprites[RIGHT]; break;
+		case DOWN: sprite = sprites[DOWN]; break;
+		case UP: sprite = sprites[UP]; break;
+		}
+
+		SetAnimation(nullptr);
+	}
+
+	atkTimeLeft -= elapsed;
+
 	//implements player attack
-	if (Keyboard::isKeyPressed(Keyboard::E))
+	if (atkTimeLeft <= 0.0f && Keyboard::isKeyPressed(Keyboard::E))
 	{
 		Room* room = level->GetCurrentRoom();
 		for (Entity* e : room->GetEntities())
@@ -54,6 +83,9 @@ void Player::Update(Level* level, float elapsed)
 				}
 			}
 		}
+
+		SetAnimation(&attack[facing]);
+		atkTimeLeft = atkFreq;
 	}
 
 	// Ensure the movement vector is at most length 1,
@@ -64,6 +96,8 @@ void Player::Update(Level* level, float elapsed)
 	Move(level, accel, elapsed);
 
 	inventory->Update(level, elapsed);
+
+	ComputeAnimation(elapsed);
 }
 
 void Player::ChangeRooms(Level* level, int offX, int offY)
