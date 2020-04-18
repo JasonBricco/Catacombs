@@ -8,10 +8,15 @@
 
 void Player::Update(Level* level, float elapsed)
 {
+	health += inventory->GetIncreasedHealth();
+	inventory->SetIncreasedHealth(0);
+
 	Entity::Update(level, elapsed);
 	Vector2f accel = Vector2(0.0f, 0.0f);
 
 	playerPosition = GetCenter();
+
+	int attackI = 4 + inventory->GetIncreasedAttack();
 
 	if (Keyboard::isKeyPressed(Keyboard::A))
 	{
@@ -78,7 +83,8 @@ void Player::Update(Level* level, float elapsed)
 				{
 				case EntityID::Wolf:
 					Vector2 force = Normalize(e->GetPosition() - GetPosition()) * 30.0f;
-					e->Damage(level, 4, force);
+					e->Damage(level, attackI, force);
+					inventory->DecreaseWeaponhealth();
 					break;
 				}
 			}

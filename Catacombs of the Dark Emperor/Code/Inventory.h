@@ -20,6 +20,11 @@ class Inventory : public Entity
 	Text tx[9];
 	Assets* assets = Assets::Instance();
 	Font& font = assets->GetFont("Assets/Arial.ttf");
+	bool pressed = false;
+	bool shieldEquipped = false;
+	int increaseAttack = 0;
+	int increaseHealth = 0;
+	int weaponHealth = 0;
 
 public:
 
@@ -44,5 +49,19 @@ public:
 	void Draw(Renderer& rend) override;
 
 	void Insert(int ItemNumber);
+
+	bool IsShieldEquipped();
+
+	int GetIncreasedAttack();
+
+	int GetIncreasedHealth();
+
+	void SetShieldEquipped(bool statement);
+
+	void SetIncreasedAttack(int attack);
+
+	void SetIncreasedHealth(int health);
+
+	void DecreaseWeaponhealth();
 
 };

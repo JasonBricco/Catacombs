@@ -15,6 +15,8 @@ inline const int totalItemsInInventory = 9;
 
 inline Vector2f playerPosition;
 
+inline bool* playershield;
+
 enum Direction
 {
     LEFT,

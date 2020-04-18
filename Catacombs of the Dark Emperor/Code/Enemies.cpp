@@ -69,7 +69,15 @@ void Wolf::HandleOverlaps(Level* level)
 		{
 		case EntityID::Player:
 			Vector2 force = Normalize(e->GetCenter() - GetCenter()) * 30.0f;
-			e->Damage(level, 4, force);
+			if (*playershield)
+			{
+				e->Damage(level, 0, force);
+				*playershield = false;
+			}
+			else
+			{
+				e->Damage(level, 4, force);
+			}
 			break;
 		}
 	}
