@@ -17,6 +17,8 @@ inline Vector2f playerPosition;
 
 inline bool* playershield;
 
+inline int score = 0;
+
 enum Direction
 {
     LEFT,

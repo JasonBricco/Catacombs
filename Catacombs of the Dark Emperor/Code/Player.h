@@ -16,6 +16,10 @@ class Player : public DynamicEntity
 	Inventory* inventory;
 	HealthBar* healthBar;
 
+	Text scoreText;
+	Assets* assets = Assets::Instance();
+	Font& font = assets->GetFont("Assets/Arial.ttf");
+
 public:
 	Player()
 	{
@@ -64,6 +68,9 @@ public:
 		inventory = new Inventory();
 
 		healthBar = new HealthBar();
+
+		scoreText = Text("Score:", font, 15);
+		scoreText.setFillColor(sf::Color::Yellow);
 	}
 
 	inline Inventory* GetInventory()

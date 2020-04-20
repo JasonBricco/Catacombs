@@ -84,6 +84,7 @@ void Player::Update(Level* level, float elapsed)
 				case EntityID::Wolf:
 					Vector2 force = Normalize(e->GetPosition() - GetPosition()) * 30.0f;
 					e->Damage(level, attackI, force);
+					score++;
 					inventory->DecreaseWeaponhealth();
 					break;
 				}
@@ -186,4 +187,7 @@ void Player::Draw(Renderer& rend)
 		heart->Draw(rend);
 	}
 
+	scoreText.setString("Score: " + std::to_string(score));
+	scoreText.setPosition((float)(450.0), 575);
+	rend.Draw(&scoreText, 110);
 }

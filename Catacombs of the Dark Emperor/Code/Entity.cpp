@@ -126,6 +126,10 @@ void Entity::Damage(Level* level, int amount, Vector2f knockback)
 // Default kill simply destroys the entity.
 void Entity::Kill(Level* level)
 {
+	if (this->ID() == EntityID::Wolf)
+	{
+		score += 4;
+	}
 	level->DestroyEntity(this);
 }
 
