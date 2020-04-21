@@ -76,6 +76,7 @@ void Inventory::Draw(Renderer& rend)
 									shieldEquipped = true;
 								break;
 							case 1:
+								bowEquipped = true;
 								break;
 							case 2:
 								break;

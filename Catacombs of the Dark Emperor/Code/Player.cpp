@@ -5,6 +5,7 @@
 #include "Room.h"
 #include "Level.h"
 #include "HealthBar.h"
+#include "Projectiles.h"
 
 void Player::Update(Level* level, float elapsed)
 {
@@ -80,24 +81,45 @@ void Player::Update(Level* level, float elapsed)
 	if (atkTimeLeft <= 0.0f && Keyboard::isKeyPressed(Keyboard::E))
 	{
 		Room* room = level->GetCurrentRoom();
-		for (Entity* e : room->GetEntities())
+
+		if (!inventory->IsBowEquipped())
 		{
-			if (Distance(e->GetPosition(), GetPosition()) < 3.0f)
+			for (Entity* e : room->GetEntities())
 			{
-				switch (e->ID())
+				if (Distance(e->GetPosition(), GetPosition()) < 3.0f)
 				{
-				case EntityID::Wolf:
-					Vector2 force = Normalize(e->GetPosition() - GetPosition()) * 30.0f;
-					e->Damage(level, attackI, force);
-					score++;
-					inventory->DecreaseWeaponhealth();
-					break;
+					switch (e->ID())
+					{
+					case EntityID::Enemy:
+						Vector2 force = Normalize(e->GetPosition() - GetPosition()) * 30.0f;
+						e->Damage(level, attackI, force);
+						score++;
+						inventory->DecreaseWeaponhealth();
+						break;
+					}
 				}
 			}
-		}
 
-		SetAnimation(&attack[facing]);
-		atkTimeLeft = atkFreq;
+			SetAnimation(&attack[facing]);
+			atkTimeLeft = atkFreq;
+		}
+		else
+		{
+			Vector2f dir = (Vector2f)directions[facing];
+			dir.y = -dir.y;
+		
+			Arrow* arrow = room->AddEntity<Arrow>(0.0f, 0.f, facing, 5.0f);
+
+			Vector2f next = BoundingBox().center + dir;
+
+			if (facing == LEFT || facing == RIGHT)
+				next.y -= 0.3f;
+
+			arrow->SetCentered(next.x, next.y);
+
+			SetAnimation(&bow[facing]);
+			atkTimeLeft = wpnAtkFreq;
+		}
 	}
 
 	// Ensure the movement vector is at most length 1,

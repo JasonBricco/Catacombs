@@ -167,6 +167,7 @@
     <ClCompile Include="Code\Inventory.cpp" />
     <ClCompile Include="Code\LevelGenerator.cpp" />
     <ClCompile Include="Code\Pathfinding.cpp" />
+    <ClCompile Include="Code\Projectiles.cpp" />
     <ClCompile Include="Code\Renderer.cpp" />
     <ClCompile Include="Code\Chest.cpp" />
     <ClCompile Include="Code\Collision.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="Code\Level.h" />
     <ClInclude Include="Code\Pathfinding.h" />
     <ClInclude Include="Code\Player.h" />
+    <ClInclude Include="Code\Projectiles.h" />
     <ClInclude Include="Code\Renderer.h" />
     <ClInclude Include="Code\Room.h" />
     <ClInclude Include="Code\Stdafx.h" />

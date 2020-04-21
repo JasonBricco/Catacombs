@@ -25,6 +25,7 @@ class Inventory : public Entity
 	int increaseAttack = 0;
 	int increaseHealth = 0;
 	int weaponHealth = 0;
+	bool bowEquipped = false;
 
 public:
 
@@ -51,6 +52,11 @@ public:
 	void Insert(int ItemNumber);
 
 	bool IsShieldEquipped();
+	
+	inline bool IsBowEquipped()
+	{
+		return bowEquipped;
+	}
 
 	int GetIncreasedAttack();
 

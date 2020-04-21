@@ -44,7 +44,7 @@ enum class EntityID
 	DoorRight,
 	DoorStairsUp,
 	DoorStairsDown,
-	Wolf
+	Enemy
 };
 
 class Entity
@@ -108,6 +108,13 @@ public:
 	inline void SetPosition(float x, float y)
 	{
 		position = Vector2f(x, y);
+	}
+
+	inline void SetCentered(float x, float y)
+	{
+		position = Vector2f(x, y);
+		position.x -= size.x * 0.5f;
+		position.y -= size.y * 0.5f;
 	}
 
 	inline void SetPosition(int x, int y)
@@ -192,6 +199,7 @@ protected:
 	uint32_t colFlags = CF_NONE;
 
 	void SetFacing(Vector2f accel);
+
 	virtual void HandleOverlaps(Level*) {}
 
 	void CreateClip(AnimationClip* arr, int slot, Sprite frames, Vector2i frameSize, int frameCount, float fps, bool wait, bool backwards = false);
@@ -203,6 +211,8 @@ public:
 
 	// Moves the entity based on the set acceleration.
 	void Move(Level* level, Vector2f accel, float elapsed);
+
+	virtual void HandleCollide(Level*) {}
 
 	inline void Translate(Vector2f amt)
 	{

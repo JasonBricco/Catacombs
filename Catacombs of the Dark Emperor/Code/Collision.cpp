@@ -125,7 +125,7 @@ static bool TestEntityCollision(DynamicEntity* entity, AABB a, AABB b, Vector2f 
 	return result;
 }
 
-void CollisionStep(DynamicEntity* entity, Vector2f delta, std::vector<AABB>& collides)
+void CollisionStep(Level* level, DynamicEntity* entity, Vector2f delta, std::vector<AABB>& collides)
 {
 	float tRemaining = 1.0f;
 
@@ -164,6 +164,8 @@ void CollisionStep(DynamicEntity* entity, Vector2f delta, std::vector<AABB>& col
 			Vector2f& velocity = entity->GetVelocity();
 			velocity -= Dot(velocity, normal) * normal;
 			delta -= Dot(delta, normal) * normal;
+
+			entity->HandleCollide(level);
 		}
 
 		delta -= (delta * tMin);

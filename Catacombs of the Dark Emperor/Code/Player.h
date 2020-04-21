@@ -11,6 +11,7 @@ class Player : public DynamicEntity
 
 	// Attack frequency.
 	float atkFreq = 0.25f, atkTimeLeft = 0.0f;
+	float wpnAtkFreq = 0.5f;
 
 	int keys;
 	Inventory* inventory;
@@ -20,6 +21,8 @@ class Player : public DynamicEntity
 	Text topScoreText;
 	Assets* assets = Assets::Instance();
 	Font& font = assets->GetFont("Assets/Arial.ttf");
+
+	AnimationClip bow[4];
 
 public:
 	Player()
@@ -55,6 +58,18 @@ public:
 		CreateClip(attack, DOWN, atkSprites[DOWN], Vector2i(64, 64), 3, 30.0f, true);
 		CreateClip(attack, UP, atkSprites[UP], Vector2i(64, 64), 3, 30.0f, true);
 
+		// Create bow animation clips.
+		Sprite bowSprites[4];
+		LoadTexture(bowSprites[LEFT], "Assets/WeaponLeft.png");
+		LoadTexture(bowSprites[RIGHT], "Assets/WeaponRight.png");
+		LoadTexture(bowSprites[UP], "Assets/WeaponBack.png");
+		LoadTexture(bowSprites[DOWN], "Assets/WeaponFront.png");
+
+		CreateClip(bow, LEFT, bowSprites[LEFT], Vector2i(64, 64), 3, 10.0f, true, true);
+		CreateClip(bow, RIGHT, bowSprites[RIGHT], Vector2i(64, 64), 3, 10.0f, true);
+		CreateClip(bow, DOWN, bowSprites[DOWN], Vector2i(64, 64), 3, 10.0f, true);
+		CreateClip(bow, UP, bowSprites[UP], Vector2i(64, 64), 3, 10.0f, true);
+
 		facing = DOWN;
 		sprite = sprites[facing];
 		layer = 50;
@@ -82,8 +97,6 @@ public:
 			readsave >> topscore;
 			readsave.close();
 		}
-
-
 	}
 
 	inline Inventory* GetInventory()
