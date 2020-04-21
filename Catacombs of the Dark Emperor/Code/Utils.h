@@ -51,11 +51,6 @@ constexpr float PI2 = PI * 2.0f;
 constexpr float DEG_TO_RAD = PI / 180.0f;
 constexpr float RAD_TO_DEG = 180.0f / PI;
 
-inline float AngleBetween(Vector2f x, Vector2f y)
-{
-    return acos(std::clamp(Dot(x, y), -1.0f, 1.0f)) * RAD_TO_DEG;
-}
-
 inline int GetOppositeDir(int dir)
 {
     switch (dir)
@@ -102,6 +97,11 @@ inline float Dot(Vector2f a, Vector2f b)
 inline float Length2(Vector2f v)
 {
     return Dot(v, v);
+}
+
+inline float AngleBetween(Vector2f x, Vector2f y)
+{
+    return acos(std::clamp(Dot(x, y), -1.0f, 1.0f)) * RAD_TO_DEG;
 }
 
 inline float Distance2(Vector2f a, Vector2f b)
