@@ -55,6 +55,11 @@ int main(int, char**)
 					case Keyboard::F2:
 						state.showPathGrid = !state.showPathGrid;
 						break;
+
+					case Keyboard::Escape:
+						state.paused = !state.paused;
+						state.manualPause = !state.manualPause;
+						break;
 				}
 			}
 		}

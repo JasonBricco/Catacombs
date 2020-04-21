@@ -174,12 +174,7 @@ void Player::HandleOverlaps(Level* level)
 
 void Player::Kill(Level* level)
 {
-	if (score == topscore)
-	{
-		setTopScore();
-	}
 	Entity::Kill(level);
-	score = 0;
 	getGameState().gameOver = true;
 	level->Restart(3.0f);
 }
