@@ -124,7 +124,7 @@ void Level::DrawGamePauseScreen(Renderer& rend)
 {
 	gamePaused = Text("Game Paused", font, 50);
 	gamePaused.setFillColor(sf::Color::Yellow);
-	gamePaused.setPosition(23.5 * 32 / 2, 5 * 32 / 2);
+	gamePaused.setPosition(24.5 * 32 / 2, 5 * 32 / 2);
 	gamePaused.setStyle(sf::Text::Bold);
 
 	blackscreen.setSize(Vector2f(32 * 32, 19 * 32));
@@ -200,15 +200,15 @@ void Level::DrawGameStartScreen(Renderer& rend)
 
 	title = Text("Catacombs of the Dark Emperor", font, 40);
 	title.setFillColor(sf::Color::Yellow);
-	title.setPosition(15 * 32 / 2, 5 * 32 / 2);
+	title.setPosition(15 * 32 / 2, 25 * 32 / 2);
 	title.setStyle(sf::Text::Bold);
 
 	startGameText = Text("Start Game", font, 25);
 	startGameText.setFillColor(sf::Color::Yellow);
-	startGameText.setPosition(30 * 32 / 2, 11 * 32 / 2);
+	startGameText.setPosition(30 * 32 / 2, 31 * 32 / 2);
 
 	startGameButton.setSize(Vector2f(8 * 32, 1 * 32));
-	startGameButton.setPosition(26 * 32 / 2, 11 * 32 / 2);
+	startGameButton.setPosition(26 * 32 / 2, 31 * 32 / 2);
 	startGameButton.setOutlineColor(Color::Yellow);
 	startGameButton.setOutlineThickness(5);
 	startGameButton.setFillColor(Color::Transparent);
