@@ -40,7 +40,10 @@ int main(int, char**)
 		while (window.pollEvent(event))
 		{
 			if (event.type == Event::Closed)
+			{
 				window.close();
+				setTopScore();
+			}
 			else if (event.type == Event::KeyPressed)
 			{
 				switch (event.key.code)

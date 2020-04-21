@@ -17,6 +17,7 @@ class Player : public DynamicEntity
 	HealthBar* healthBar;
 
 	Text scoreText;
+	Text topScoreText;
 	Assets* assets = Assets::Instance();
 	Font& font = assets->GetFont("Assets/Arial.ttf");
 
@@ -71,6 +72,18 @@ public:
 
 		scoreText = Text("Score:", font, 15);
 		scoreText.setFillColor(sf::Color::Yellow);
+		topScoreText = Text("Top Score: ", font, 15);
+		topScoreText.setFillColor(sf::Color::Yellow);
+
+		ifstream readsave;
+		readsave.open(("save.txt"));
+		if (readsave.is_open())
+		{
+			readsave >> topscore;
+			readsave.close();
+		}
+
+
 	}
 
 	inline Inventory* GetInventory()

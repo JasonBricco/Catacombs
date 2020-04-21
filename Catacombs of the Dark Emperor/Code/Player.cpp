@@ -8,6 +8,11 @@
 
 void Player::Update(Level* level, float elapsed)
 {
+	if (topscore < score)
+	{
+		topscore = score;
+	}
+
 	health += inventory->GetIncreasedHealth();
 	inventory->SetIncreasedHealth(0);
 
@@ -169,7 +174,12 @@ void Player::HandleOverlaps(Level* level)
 
 void Player::Kill(Level* level)
 {
+	if (score == topscore)
+	{
+		setTopScore();
+	}
 	Entity::Kill(level);
+	score = 0;
 	level->Restart(3.0f);
 }
 
@@ -188,6 +198,10 @@ void Player::Draw(Renderer& rend)
 	}
 
 	scoreText.setString("Score: " + std::to_string(score));
-	scoreText.setPosition((float)(450.0), 575);
+	scoreText.setPosition((float)(400.0), 575);
 	rend.Draw(&scoreText, 110);
+
+	topScoreText.setString("Top Score: " + std::to_string(topscore));
+	topScoreText.setPosition((float)(500.0), 575);
+	rend.Draw(&topScoreText, 110);
 }

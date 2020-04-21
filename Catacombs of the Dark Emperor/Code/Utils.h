@@ -1,5 +1,8 @@
 #pragma once
 
+#include <iostream>
+#include <fstream>
+
 struct GameState
 {
     bool paused;
@@ -18,6 +21,8 @@ inline Vector2f playerPosition;
 inline bool* playershield;
 
 inline int score = 0;
+
+inline int topscore = 0;
 
 enum Direction
 {
@@ -152,5 +157,16 @@ struct Vector2iCompare
         return a.x == b.x && a.y == b.y;
     }
 };
+
+inline void setTopScore()
+{
+    ofstream savefile;
+    savefile.open("save.txt");
+    if (savefile.is_open())
+    {
+        savefile << topscore;
+        savefile.close();
+    }
+}
 
 typedef std::unordered_set<Vector2i, Vector2iHash, Vector2iCompare> Vector2iSet;
