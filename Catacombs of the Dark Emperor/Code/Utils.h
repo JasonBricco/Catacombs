@@ -10,6 +10,8 @@ struct GameState
     bool restart;
     bool showOutlines, showPathGrid;
     int newLevelPrevDir;
+    bool gameOver;
+    bool manualPause;
 };
 
 inline GameState g_state;

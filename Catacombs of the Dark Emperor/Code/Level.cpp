@@ -48,6 +48,7 @@ void Level::Update(float elapsed)
 		{
 			getGameState().restart = true;
 			restartPending = false;
+			getGameState().gameOver = false;
 		}
 	}
 }
@@ -56,6 +57,26 @@ void Level::Draw(Renderer& rend)
 {
 	assert(currentRoom != nullptr);
 	currentRoom->Draw(rend);
+	if (getGameState().gameOver)
+	{
+		gameOverText = Text("Game Over!", font, 40);
+		gameOverText.setFillColor(sf::Color::Yellow);
+		gameOverText.setPosition(25 * 32 / 2, 15 * 32 / 2);
+		gameOverText.setStyle(sf::Text::Bold);
+
+		restartText = Text("Restarting", font, 30);
+		restartText.setFillColor(sf::Color::Yellow);
+		restartText.setPosition(26 * 32 / 2, 18 * 32 / 2);
+		restartText.setString("Restarting . . .");
+
+		gameover.setSize(Vector2f(32 * 32, 19 * 32));
+		gameover.setPosition(0, 0);
+		gameover.setFillColor(Color::Black);
+
+		rend.Draw(&restartText, 135);
+		rend.Draw(&gameOverText, 135);
+		rend.Draw(&gameover, 130);
+	}
 }
 
 void Level::Destroy()

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Room.h"
+#include "Assets.h"
 
 class Level
 {
@@ -16,6 +17,15 @@ class Level
 
 	bool restartPending;
 	float restartTime = 0.0f;
+
+	sf::RectangleShape gameover;
+
+	Text gameOverText;
+	Text restartText;
+	Assets* assets = Assets::Instance();
+	Font& font = assets->GetFont("Assets/Arial.ttf");
+	String restarting;
+	int rest = 0;
 
 public:
 	// Creates a new room at the given room coordinates.

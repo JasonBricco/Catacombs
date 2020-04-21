@@ -180,6 +180,7 @@ void Player::Kill(Level* level)
 	}
 	Entity::Kill(level);
 	score = 0;
+	getGameState().gameOver = true;
 	level->Restart(3.0f);
 }
 
