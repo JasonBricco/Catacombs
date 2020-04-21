@@ -99,6 +99,8 @@ struct Room
 		return pathGrid;
 	}
 
+	bool hasBlueChest;
+
 	void BuildPathGrid();
 	void Update(Level* level, float elapsed);
 	void Draw(Renderer& rend);

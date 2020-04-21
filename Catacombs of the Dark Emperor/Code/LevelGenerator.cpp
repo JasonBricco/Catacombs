@@ -148,7 +148,11 @@ static void SpawnEnemies(Room* room)
 		Vector2i p = RandomRoomPos();
 
 		if (room->TrySetObstacle(p.x, p.y))
-			room->AddEntity(new Wolf(p.x, p.y));
+		{
+			if (room->hasBlueChest)
+				room->AddEntity(new FireSkull(p.x, p.y));
+			else room->AddEntity(new Slime(p.x, p.y));
+		}
 	}
 }
 
@@ -541,6 +545,7 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 					Chest* chest = new Chest();
 					chest->spawn(player, 2, x, y);
 					room->AddEntity(chest);
+					room->hasBlueChest = true;
 				}
 			}
 

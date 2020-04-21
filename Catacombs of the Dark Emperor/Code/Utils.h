@@ -45,6 +45,17 @@ const Vector2i directions[] =
     Vector2i(-1, 1), Vector2i(1, 1), Vector2i(-1, -1), Vector2i(1, -1)
 };
 
+// Math constants.
+constexpr float PI = 3.1415926535f;
+constexpr float PI2 = PI * 2.0f;
+constexpr float DEG_TO_RAD = PI / 180.0f;
+constexpr float RAD_TO_DEG = 180.0f / PI;
+
+inline float AngleBetween(Vector2f x, Vector2f y)
+{
+    return acos(std::clamp(Dot(x, y), -1.0f, 1.0f)) * RAD_TO_DEG;
+}
+
 inline int GetOppositeDir(int dir)
 {
     switch (dir)
