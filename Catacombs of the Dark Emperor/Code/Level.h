@@ -63,7 +63,11 @@ public:
 
 	inline void DestroyEntity(Entity* entity)
 	{
-		pendingDestroy.push_back(entity);
+		if (!entity->pendingDestroy)
+		{
+			entity->pendingDestroy = true;
+			pendingDestroy.push_back(entity);
+		}
 	}
 
 	inline void Restart(float time)

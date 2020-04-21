@@ -82,6 +82,8 @@ protected:
 	void LoadTexture(Sprite& sprite, string name);
 
 public:
+	bool pendingDestroy = false;
+
 	// Name is the name of the texture to load for this entity.
 	// By default, the pivot is the upper-left corner. 
 	Entity(string name);
