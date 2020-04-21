@@ -67,7 +67,7 @@ void Level::Draw(Renderer& rend)
 		DrawGamePauseScreen(rend);
 	}
 
-	if (Mouse::isButtonPressed(Mouse::Left))
+	if (Mouse::isButtonPressed(Mouse::Left) && getGameState().manualPause)
 	{
 		if (resumeButton.getGlobalBounds().contains(rend.getWindow()->mapPixelToCoords(Mouse::getPosition(*rend.getWindow()))))
 		{
