@@ -12,6 +12,7 @@ struct GameState
     int newLevelPrevDir;
     bool gameOver;
     bool manualPause;
+    bool gameStart;
 };
 
 inline GameState g_state;

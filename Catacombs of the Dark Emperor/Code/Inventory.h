@@ -43,6 +43,7 @@ public:
 			tx[i].setOutlineColor(Color(210, 125, 44));
 			tx[i].setOutlineThickness(5);
 		}
+		playershield = &shieldEquipped;
 	}
 
 	void Update(Level* level, float elapsed) override;

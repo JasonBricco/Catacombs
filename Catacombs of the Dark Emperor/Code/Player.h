@@ -20,7 +20,7 @@ class Player : public DynamicEntity
 	Text scoreText;
 	Text topScoreText;
 	Assets* assets = Assets::Instance();
-	Font& font = assets->GetFont("Assets/Arial.ttf");
+	Font& font = assets->GetFont("Assets/Hylia.ttf");
 
 	AnimationClip bow[4];
 

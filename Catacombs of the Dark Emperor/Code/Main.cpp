@@ -31,6 +31,8 @@ int main(int, char**)
 	Clock clock;
 	Time elapsed;
 
+	state.gameStart = true;
+
 	// Game loop.
 	while (window.isOpen())
 	{

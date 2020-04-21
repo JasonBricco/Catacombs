@@ -62,9 +62,24 @@ void Level::Draw(Renderer& rend)
 		DrawGameOverScreen(rend);
 	}
 
-	if (getGameState().manualPause)
+	if (getGameState().gameStart)
+	{
+		getGameState().paused = true;
+		DrawGameStartScreen(rend);
+	}
+	else if (getGameState().manualPause)
 	{
 		DrawGamePauseScreen(rend);
+	}
+
+	if (Mouse::isButtonPressed(Mouse::Left) && getGameState().gameStart)
+	{
+		if (startGameButton.getGlobalBounds().contains(rend.getWindow()->mapPixelToCoords(Mouse::getPosition(*rend.getWindow()))))
+		{
+			getGameState().paused = false;
+			getGameState().gameStart = false;
+			Restart(0.0f);
+		}
 	}
 
 	if (Mouse::isButtonPressed(Mouse::Left) && getGameState().manualPause)
@@ -79,6 +94,10 @@ void Level::Draw(Renderer& rend)
 			Restart(0.0f);
 			getGameState().paused = false;
 			getGameState().manualPause = false;
+		}
+		else if (mainMenuButton.getGlobalBounds().contains(rend.getWindow()->mapPixelToCoords(Mouse::getPosition(*rend.getWindow()))))
+		{
+			getGameState().gameStart = true;
 		}
 	}
 }
@@ -171,4 +190,31 @@ void Level::DrawGameOverScreen(Renderer& rend)
 	rend.Draw(&restartText, 135);
 	rend.Draw(&gameOverText, 135);
 	rend.Draw(&blackscreen, 130);
+}
+
+void Level::DrawGameStartScreen(Renderer& rend)
+{
+	blackscreen.setSize(Vector2f(32 * 32, 19 * 32));
+	blackscreen.setPosition(0, 0);
+	blackscreen.setFillColor(Color::Black);
+
+	title = Text("Catacombs of the Dark Emperor", font, 40);
+	title.setFillColor(sf::Color::Yellow);
+	title.setPosition(15 * 32 / 2, 5 * 32 / 2);
+	title.setStyle(sf::Text::Bold);
+
+	startGameText = Text("Start Game", font, 25);
+	startGameText.setFillColor(sf::Color::Yellow);
+	startGameText.setPosition(30 * 32 / 2, 11 * 32 / 2);
+
+	startGameButton.setSize(Vector2f(8 * 32, 1 * 32));
+	startGameButton.setPosition(26 * 32 / 2, 11 * 32 / 2);
+	startGameButton.setOutlineColor(Color::Yellow);
+	startGameButton.setOutlineThickness(5);
+	startGameButton.setFillColor(Color::Transparent);
+
+	rend.Draw(&blackscreen, 130);
+	rend.Draw(&title, 135);
+	rend.Draw(&startGameButton, 135);
+	rend.Draw(&startGameText, 135);
 }

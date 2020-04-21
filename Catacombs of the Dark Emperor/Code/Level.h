@@ -22,15 +22,18 @@ class Level
 	sf::RectangleShape resumeButton;
 	sf::RectangleShape mainMenuButton;
 	sf::RectangleShape restartGameButton;
+	sf::RectangleShape startGameButton;
 
+	Text title;
 	Text gameOverText;
 	Text restartText;
 	Text gamePaused;
 	Text resume;
 	Text mainMenu;
 	Text restartButtonText;
+	Text startGameText;
 	Assets* assets = Assets::Instance();
-	Font& font = assets->GetFont("Assets/Arial.ttf");
+	Font& font = assets->GetFont("Assets/Hylia.ttf");
 	int rest = 0;
 
 public:
@@ -89,6 +92,8 @@ public:
 	void DrawGamePauseScreen(Renderer& rend);
 
 	void DrawGameOverScreen(Renderer& rend);
+
+	void DrawGameStartScreen(Renderer& rend);
 
 };
 
