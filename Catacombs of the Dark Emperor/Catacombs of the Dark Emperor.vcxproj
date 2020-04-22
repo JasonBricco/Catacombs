@@ -176,6 +176,7 @@
     <ClCompile Include="Code\Main.cpp" />
     <ClCompile Include="Code\Player.cpp" />
     <ClCompile Include="Code\Room.cpp" />
+    <ClCompile Include="Code\SoundEffects.cpp" />
     <ClCompile Include="Code\Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -200,6 +201,7 @@
     <ClInclude Include="Code\Projectiles.h" />
     <ClInclude Include="Code\Renderer.h" />
     <ClInclude Include="Code\Room.h" />
+    <ClInclude Include="Code\SoundEffects.h" />
     <ClInclude Include="Code\Stdafx.h" />
     <ClInclude Include="Code\Tiles.h" />
     <ClInclude Include="Code\Utils.h" />

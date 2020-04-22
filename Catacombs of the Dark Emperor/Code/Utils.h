@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include "SoundEffects.h"
 
 struct GameState
 {
@@ -28,6 +29,9 @@ inline int score = 0;
 inline int topscore = 0;
 
 inline int floorNumber = 0;
+
+//LINKER ERROR HERE
+//inline SoundEffects sounds = SoundEffects();
 
 enum Direction
 {
