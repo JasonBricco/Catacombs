@@ -170,6 +170,9 @@ void Player::HandleOverlaps(Level* level)
 void Player::Kill(Level* level)
 {
 	Entity::Kill(level);
+	
+	floorNumber = 0;
+
 	level->Restart(3.0f);
 }
 
@@ -190,4 +193,8 @@ void Player::Draw(Renderer& rend)
 	scoreText.setString("Score: " + std::to_string(score));
 	scoreText.setPosition((float)(450.0), 575);
 	rend.Draw(&scoreText, 110);
+
+	floorNumberText.setString("Floor B" + std::to_string(floorNumber));
+	floorNumberText.setPosition((float)(955.0), 575);
+	rend.Draw(&floorNumberText, 110);
 }

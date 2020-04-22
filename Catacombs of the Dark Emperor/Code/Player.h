@@ -17,6 +17,7 @@ class Player : public DynamicEntity
 	HealthBar* healthBar;
 
 	Text scoreText;
+	Text floorNumberText;
 	Assets* assets = Assets::Instance();
 	Font& font = assets->GetFont("Assets/Arial.ttf");
 
@@ -71,6 +72,9 @@ public:
 
 		scoreText = Text("Score:", font, 15);
 		scoreText.setFillColor(sf::Color::Yellow);
+
+		floorNumberText = Text("Floor B" + std::to_string(floorNumber), font, 15);
+		floorNumberText.setFillColor(sf::Color::Yellow);
 	}
 
 	inline Inventory* GetInventory()

@@ -613,6 +613,8 @@ void LevelGenerator::Build(Level* level, bool firstLevel)
 	FillRooms(level);
 	SpawnPlayer();
 
+	floorNumber++;
+
 	branches.clear();
 	roomsAdded.clear();
 }
