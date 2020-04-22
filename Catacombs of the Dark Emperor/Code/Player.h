@@ -18,7 +18,11 @@ class Player : public DynamicEntity
 	HealthBar* healthBar;
 
 	Text scoreText;
+
+	Text floorNumberText;
+
 	Text topScoreText;
+
 	Assets* assets = Assets::Instance();
 	Font& font = assets->GetFont("Assets/Hylia.ttf");
 
@@ -87,6 +91,10 @@ public:
 
 		scoreText = Text("Score:", font, 15);
 		scoreText.setFillColor(sf::Color::Yellow);
+
+		floorNumberText = Text("Floor B" + std::to_string(floorNumber), font, 15);
+		floorNumberText.setFillColor(sf::Color::Yellow);
+
 		topScoreText = Text("Top Score: ", font, 15);
 		topScoreText.setFillColor(sf::Color::Yellow);
 

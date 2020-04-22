@@ -27,6 +27,8 @@ inline int score = 0;
 
 inline int topscore = 0;
 
+inline int floorNumber = 0;
+
 enum Direction
 {
     LEFT,
