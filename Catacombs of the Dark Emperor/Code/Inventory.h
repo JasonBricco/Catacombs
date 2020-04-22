@@ -25,6 +25,7 @@ class Inventory : public Entity
 	int increaseAttack = 0;
 	int increaseHealth = 0;
 	int weaponHealth = 0;
+	bool bowEquipped = false;
 
 public:
 
@@ -42,6 +43,7 @@ public:
 			tx[i].setOutlineColor(Color(210, 125, 44));
 			tx[i].setOutlineThickness(5);
 		}
+		playershield = &shieldEquipped;
 	}
 
 	void Update(Level* level, float elapsed) override;
@@ -51,6 +53,11 @@ public:
 	void Insert(int ItemNumber);
 
 	bool IsShieldEquipped();
+	
+	inline bool IsBowEquipped()
+	{
+		return bowEquipped;
+	}
 
 	int GetIncreasedAttack();
 

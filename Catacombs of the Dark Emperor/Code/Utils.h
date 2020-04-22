@@ -1,5 +1,8 @@
 #pragma once
 
+#include <iostream>
+#include <fstream>
+
 struct GameState
 {
     bool paused;
@@ -7,6 +10,9 @@ struct GameState
     bool restart;
     bool showOutlines, showPathGrid;
     int newLevelPrevDir;
+    bool gameOver;
+    bool manualPause;
+    bool gameStart;
 };
 
 inline GameState g_state;
@@ -18,6 +24,8 @@ inline Vector2f playerPosition;
 inline bool* playershield;
 
 inline int score = 0;
+
+inline int topscore = 0;
 
 enum Direction
 {
@@ -36,6 +44,12 @@ const Vector2i directions[] =
     Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(0, -1),
     Vector2i(-1, 1), Vector2i(1, 1), Vector2i(-1, -1), Vector2i(1, -1)
 };
+
+// Math constants.
+constexpr float PI = 3.1415926535f;
+constexpr float PI2 = PI * 2.0f;
+constexpr float DEG_TO_RAD = PI / 180.0f;
+constexpr float RAD_TO_DEG = 180.0f / PI;
 
 inline int GetOppositeDir(int dir)
 {
@@ -83,6 +97,11 @@ inline float Dot(Vector2f a, Vector2f b)
 inline float Length2(Vector2f v)
 {
     return Dot(v, v);
+}
+
+inline float AngleBetween(Vector2f x, Vector2f y)
+{
+    return acos(std::clamp(Dot(x, y), -1.0f, 1.0f)) * RAD_TO_DEG;
 }
 
 inline float Distance2(Vector2f a, Vector2f b)
@@ -152,5 +171,16 @@ struct Vector2iCompare
         return a.x == b.x && a.y == b.y;
     }
 };
+
+inline void setTopScore()
+{
+    ofstream savefile;
+    savefile.open("save.txt");
+    if (savefile.is_open())
+    {
+        savefile << topscore;
+        savefile.close();
+    }
+}
 
 typedef std::unordered_set<Vector2i, Vector2iHash, Vector2iCompare> Vector2iSet;

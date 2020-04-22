@@ -1,5 +1,6 @@
 #pragma once
 
+class Level;
 class DynamicEntity;
 
 enum CollisionFlags : uint32_t
@@ -40,7 +41,7 @@ struct AABB
 	}
 };
 
-void CollisionStep(DynamicEntity* entity, Vector2f delta, std::vector<AABB>& collides);
+void CollisionStep(Level* level, DynamicEntity* entity, Vector2f delta, std::vector<AABB>& collides);
 
 // Helper functions to create AABBs.
 // These are used instead of constructors since

@@ -48,6 +48,7 @@ void Level::Update(float elapsed)
 		{
 			getGameState().restart = true;
 			restartPending = false;
+			getGameState().gameOver = false;
 		}
 	}
 }
@@ -56,6 +57,49 @@ void Level::Draw(Renderer& rend)
 {
 	assert(currentRoom != nullptr);
 	currentRoom->Draw(rend);
+	if (getGameState().gameOver)
+	{
+		DrawGameOverScreen(rend);
+	}
+
+	if (getGameState().gameStart)
+	{
+		getGameState().paused = true;
+		DrawGameStartScreen(rend);
+	}
+	else if (getGameState().manualPause)
+	{
+		DrawGamePauseScreen(rend);
+	}
+
+	if (Mouse::isButtonPressed(Mouse::Left) && getGameState().gameStart)
+	{
+		if (startGameButton.getGlobalBounds().contains(rend.getWindow()->mapPixelToCoords(Mouse::getPosition(*rend.getWindow()))))
+		{
+			getGameState().paused = false;
+			getGameState().gameStart = false;
+			Restart(0.0f);
+		}
+	}
+
+	if (Mouse::isButtonPressed(Mouse::Left) && getGameState().manualPause)
+	{
+		if (resumeButton.getGlobalBounds().contains(rend.getWindow()->mapPixelToCoords(Mouse::getPosition(*rend.getWindow()))))
+		{
+			getGameState().paused = false;
+			getGameState().manualPause = false;
+		}
+		else if (restartGameButton.getGlobalBounds().contains(rend.getWindow()->mapPixelToCoords(Mouse::getPosition(*rend.getWindow()))))
+		{
+			Restart(0.0f);
+			getGameState().paused = false;
+			getGameState().manualPause = false;
+		}
+		else if (mainMenuButton.getGlobalBounds().contains(rend.getWindow()->mapPixelToCoords(Mouse::getPosition(*rend.getWindow()))))
+		{
+			getGameState().gameStart = true;
+		}
+	}
 }
 
 void Level::Destroy()
@@ -74,4 +118,103 @@ void Level::Destroy()
 			else delete entity;
 		}
 	}
+}
+
+void Level::DrawGamePauseScreen(Renderer& rend)
+{
+	gamePaused = Text("Game Paused", font, 50);
+	gamePaused.setFillColor(sf::Color::Yellow);
+	gamePaused.setPosition(24.5 * 32 / 2, 5 * 32 / 2);
+	gamePaused.setStyle(sf::Text::Bold);
+
+	blackscreen.setSize(Vector2f(32 * 32, 19 * 32));
+	blackscreen.setPosition(0, 0);
+	blackscreen.setFillColor(Color::Black);
+
+	resume = Text("Resume", font, 25);
+	resume.setFillColor(sf::Color::Yellow);
+	resume.setPosition(31 * 32 / 2, 11 * 32 / 2);
+
+	resumeButton.setSize(Vector2f(8 * 32, 1 * 32));
+	resumeButton.setPosition(26 * 32 / 2, 11 * 32 / 2);
+	resumeButton.setOutlineColor(Color::Yellow);
+	resumeButton.setOutlineThickness(5);
+	resumeButton.setFillColor(Color::Transparent);
+
+	restartButtonText = Text("Restart", font, 25);
+	restartButtonText.setFillColor(sf::Color::Yellow);
+	restartButtonText.setPosition(31 * 32 / 2, 15 * 32 / 2);
+
+	restartGameButton.setSize(Vector2f(8 * 32, 1 * 32));
+	restartGameButton.setPosition(26 * 32 / 2, 15 * 32 / 2);
+	restartGameButton.setOutlineColor(Color::Yellow);
+	restartGameButton.setOutlineThickness(5);
+	restartGameButton.setFillColor(Color::Transparent);
+
+	mainMenu = Text("Main Menu", font, 25);
+	mainMenu.setFillColor(sf::Color::Yellow);
+	mainMenu.setPosition(30 * 32 / 2, 19 * 32 / 2);
+
+	mainMenuButton.setSize(Vector2f(8 * 32, 1 * 32));
+	mainMenuButton.setPosition(26 * 32 / 2, 19 * 32 / 2);
+	mainMenuButton.setOutlineColor(Color::Yellow);
+	mainMenuButton.setOutlineThickness(5);
+	mainMenuButton.setFillColor(Color::Transparent);
+
+	rend.Draw(&mainMenu, 135);
+	rend.Draw(&resume, 135);
+	rend.Draw(&restartButtonText, 135);
+	rend.Draw(&mainMenuButton, 134);
+	rend.Draw(&resumeButton, 134);
+	rend.Draw(&restartGameButton, 134);
+	rend.Draw(&gamePaused, 135);
+	rend.Draw(&blackscreen, 130);
+}
+
+void Level::DrawGameOverScreen(Renderer& rend)
+{
+	gameOverText = Text("Game Over!", font, 40);
+	gameOverText.setFillColor(sf::Color::Yellow);
+	gameOverText.setPosition(25 * 32 / 2, 15 * 32 / 2);
+	gameOverText.setStyle(sf::Text::Bold);
+
+	restartText = Text("Restarting", font, 30);
+	restartText.setFillColor(sf::Color::Yellow);
+	restartText.setPosition(26 * 32 / 2, 18 * 32 / 2);
+	restartText.setString("Restarting . . .");
+
+	blackscreen.setSize(Vector2f(32 * 32, 19 * 32));
+	blackscreen.setPosition(0, 0);
+	blackscreen.setFillColor(Color::Black);
+
+	rend.Draw(&restartText, 135);
+	rend.Draw(&gameOverText, 135);
+	rend.Draw(&blackscreen, 130);
+}
+
+void Level::DrawGameStartScreen(Renderer& rend)
+{
+	blackscreen.setSize(Vector2f(32 * 32, 19 * 32));
+	blackscreen.setPosition(0, 0);
+	blackscreen.setFillColor(Color::Black);
+
+	title = Text("Catacombs of the Dark Emperor", font, 40);
+	title.setFillColor(sf::Color::Yellow);
+	title.setPosition(15 * 32 / 2, 25 * 32 / 2);
+	title.setStyle(sf::Text::Bold);
+
+	startGameText = Text("Start Game", font, 25);
+	startGameText.setFillColor(sf::Color::Yellow);
+	startGameText.setPosition(30 * 32 / 2, 31 * 32 / 2);
+
+	startGameButton.setSize(Vector2f(8 * 32, 1 * 32));
+	startGameButton.setPosition(26 * 32 / 2, 31 * 32 / 2);
+	startGameButton.setOutlineColor(Color::Yellow);
+	startGameButton.setOutlineThickness(5);
+	startGameButton.setFillColor(Color::Transparent);
+
+	rend.Draw(&blackscreen, 130);
+	rend.Draw(&title, 135);
+	rend.Draw(&startGameButton, 135);
+	rend.Draw(&startGameText, 135);
 }

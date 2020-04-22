@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Room.h"
+#include "Assets.h"
 
 class Level
 {
@@ -16,6 +17,24 @@ class Level
 
 	bool restartPending;
 	float restartTime = 0.0f;
+
+	sf::RectangleShape blackscreen;
+	sf::RectangleShape resumeButton;
+	sf::RectangleShape mainMenuButton;
+	sf::RectangleShape restartGameButton;
+	sf::RectangleShape startGameButton;
+
+	Text title;
+	Text gameOverText;
+	Text restartText;
+	Text gamePaused;
+	Text resume;
+	Text mainMenu;
+	Text restartButtonText;
+	Text startGameText;
+	Assets* assets = Assets::Instance();
+	Font& font = assets->GetFont("Assets/Hylia.ttf");
+	int rest = 0;
 
 public:
 	// Creates a new room at the given room coordinates.
@@ -47,17 +66,34 @@ public:
 
 	inline void DestroyEntity(Entity* entity)
 	{
-		pendingDestroy.push_back(entity);
+		if (!entity->pendingDestroy)
+		{
+			entity->pendingDestroy = true;
+			pendingDestroy.push_back(entity);
+		}
 	}
 
 	inline void Restart(float time)
 	{
+		if (score == topscore)
+		{
+			setTopScore();
+		}
 		restartTime = time;
 		restartPending = true;
+		score = 0;
 	}
 
 	void Update(float elapsed);
 	void Draw(Renderer& rend);
 
 	void Destroy();
+
+	void DrawGamePauseScreen(Renderer& rend);
+
+	void DrawGameOverScreen(Renderer& rend);
+
+	void DrawGameStartScreen(Renderer& rend);
+
 };
+

@@ -5,9 +5,15 @@
 #include "Room.h"
 #include "Level.h"
 #include "HealthBar.h"
+#include "Projectiles.h"
 
 void Player::Update(Level* level, float elapsed)
 {
+	if (topscore < score)
+	{
+		topscore = score;
+	}
+
 	health += inventory->GetIncreasedHealth();
 	inventory->SetIncreasedHealth(0);
 
@@ -75,24 +81,45 @@ void Player::Update(Level* level, float elapsed)
 	if (atkTimeLeft <= 0.0f && Keyboard::isKeyPressed(Keyboard::E))
 	{
 		Room* room = level->GetCurrentRoom();
-		for (Entity* e : room->GetEntities())
+
+		if (!inventory->IsBowEquipped())
 		{
-			if (Distance(e->GetPosition(), GetPosition()) < 3.0f)
+			for (Entity* e : room->GetEntities())
 			{
-				switch (e->ID())
+				if (Distance(e->GetPosition(), GetPosition()) < 3.0f)
 				{
-				case EntityID::Wolf:
-					Vector2 force = Normalize(e->GetPosition() - GetPosition()) * 30.0f;
-					e->Damage(level, attackI, force);
-					score++;
-					inventory->DecreaseWeaponhealth();
-					break;
+					switch (e->ID())
+					{
+					case EntityID::Enemy:
+						Vector2 force = Normalize(e->GetPosition() - GetPosition()) * 30.0f;
+						e->Damage(level, attackI, force);
+						score++;
+						inventory->DecreaseWeaponhealth();
+						break;
+					}
 				}
 			}
-		}
 
-		SetAnimation(&attack[facing]);
-		atkTimeLeft = atkFreq;
+			SetAnimation(&attack[facing]);
+			atkTimeLeft = atkFreq;
+		}
+		else
+		{
+			Vector2f dir = (Vector2f)directions[facing];
+			dir.y = -dir.y;
+		
+			Arrow* arrow = room->AddEntity<Arrow>(0.0f, 0.f, facing, 5.0f);
+
+			Vector2f next = BoundingBox().center + dir;
+
+			if (facing == LEFT || facing == RIGHT)
+				next.y -= 0.3f;
+
+			arrow->SetCentered(next.x, next.y);
+
+			SetAnimation(&bow[facing]);
+			atkTimeLeft = wpnAtkFreq;
+		}
 	}
 
 	// Ensure the movement vector is at most length 1,
@@ -173,6 +200,8 @@ void Player::Kill(Level* level)
 	
 	floorNumber = 0;
 
+	getGameState().gameOver = true;
+
 	level->Restart(3.0f);
 }
 
@@ -191,10 +220,14 @@ void Player::Draw(Renderer& rend)
 	}
 
 	scoreText.setString("Score: " + std::to_string(score));
-	scoreText.setPosition((float)(450.0), 575);
+	scoreText.setPosition((float)(400.0), 575);
 	rend.Draw(&scoreText, 110);
 
 	floorNumberText.setString("Floor B" + std::to_string(floorNumber));
 	floorNumberText.setPosition((float)(955.0), 575);
 	rend.Draw(&floorNumberText, 110);
+
+	topScoreText.setString("Top Score: " + std::to_string(topscore));
+	topScoreText.setPosition((float)(500.0), 575);
+	rend.Draw(&topScoreText, 110);
 }

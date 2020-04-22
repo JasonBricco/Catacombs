@@ -126,7 +126,7 @@ void Entity::Damage(Level* level, int amount, Vector2f knockback)
 // Default kill simply destroys the entity.
 void Entity::Kill(Level* level)
 {
-	if (this->ID() == EntityID::Wolf)
+	if (this->ID() == EntityID::Enemy)
 	{
 		score += 4;
 	}
@@ -246,7 +246,7 @@ void DynamicEntity::Move(Level* level, Vector2f accel, float elapsed)
 		return distA < distB;
 	});
 
-	CollisionStep(this, delta, collides);
+	CollisionStep(level, this, delta, collides);
 
 	HandleOverlaps(level);
 

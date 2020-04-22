@@ -45,11 +45,18 @@ struct Room
 	}
 
 	template <typename T, typename... Args>
-	inline void AddEntity(int x, int y, Args... args)
+	inline T* AddEntity(float x, float y, Args... args)
 	{
 		T* entity = new T(args...);
 		entity->SetPosition(x, y);
 		entities.push_back(entity);
+		return entity;
+	}
+
+	template <typename T, typename... Args>
+	inline T* AddEntity(int x, int y, Args... args)
+	{
+		return AddEntity<T>((float)x, (float)y, args...);
 	}
 
 	template <typename T, typename... Args>
@@ -91,6 +98,8 @@ struct Room
 	{
 		return pathGrid;
 	}
+
+	bool hasBlueChest;
 
 	void BuildPathGrid();
 	void Update(Level* level, float elapsed);

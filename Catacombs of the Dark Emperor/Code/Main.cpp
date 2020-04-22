@@ -31,6 +31,8 @@ int main(int, char**)
 	Clock clock;
 	Time elapsed;
 
+	state.gameStart = true;
+
 	// Game loop.
 	while (window.isOpen())
 	{
@@ -40,7 +42,10 @@ int main(int, char**)
 		while (window.pollEvent(event))
 		{
 			if (event.type == Event::Closed)
+			{
 				window.close();
+				setTopScore();
+			}
 			else if (event.type == Event::KeyPressed)
 			{
 				switch (event.key.code)
@@ -51,6 +56,11 @@ int main(int, char**)
 
 					case Keyboard::F2:
 						state.showPathGrid = !state.showPathGrid;
+						break;
+
+					case Keyboard::Escape:
+						state.paused = !state.paused;
+						state.manualPause = !state.manualPause;
 						break;
 				}
 			}
