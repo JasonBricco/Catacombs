@@ -49,6 +49,7 @@ void Level::Update(float elapsed)
 			getGameState().restart = true;
 			restartPending = false;
 			getGameState().gameOver = false;
+			getGameState().gameFinished = false;
 		}
 	}
 }
@@ -71,6 +72,10 @@ void Level::Draw(Renderer& rend)
 	{
 		DrawGamePauseScreen(rend);
 	}
+	else if (getGameState().gameFinished)
+	{
+		DrawGameFinishedScreen(rend);
+	}
 
 	if (Mouse::isButtonPressed(Mouse::Left) && getGameState().gameStart)
 	{
@@ -78,6 +83,7 @@ void Level::Draw(Renderer& rend)
 		{
 			getGameState().paused = false;
 			getGameState().gameStart = false;
+			getGameState().manualPause = false;
 			Restart(0.0f);
 		}
 	}
@@ -98,6 +104,15 @@ void Level::Draw(Renderer& rend)
 		else if (mainMenuButton.getGlobalBounds().contains(rend.getWindow()->mapPixelToCoords(Mouse::getPosition(*rend.getWindow()))))
 		{
 			getGameState().gameStart = true;
+		}
+	}
+
+	if (Mouse::isButtonPressed(Mouse::Left) && getGameState().gameFinished)
+	{
+		if (mainMenuButton.getGlobalBounds().contains(rend.getWindow()->mapPixelToCoords(Mouse::getPosition(*rend.getWindow()))))
+		{
+			getGameState().gameStart = true;
+			getGameState().gameFinished = false;
 		}
 	}
 }
@@ -178,10 +193,9 @@ void Level::DrawGameOverScreen(Renderer& rend)
 	gameOverText.setPosition(25 * 32 / 2, 15 * 32 / 2);
 	gameOverText.setStyle(sf::Text::Bold);
 
-	restartText = Text("Restarting", font, 30);
+	restartText = Text("Restarting . . .", font, 30);
 	restartText.setFillColor(sf::Color::Yellow);
-	restartText.setPosition(26 * 32 / 2, 18 * 32 / 2);
-	restartText.setString("Restarting . . .");
+	restartText.setPosition(26 * 32 / 2, 21 * 32 / 2);
 
 	blackscreen.setSize(Vector2f(32 * 32, 19 * 32));
 	blackscreen.setPosition(0, 0);
@@ -217,4 +231,42 @@ void Level::DrawGameStartScreen(Renderer& rend)
 	rend.Draw(&title, 135);
 	rend.Draw(&startGameButton, 135);
 	rend.Draw(&startGameText, 135);
+}
+
+void Level::DrawGameFinishedScreen(Renderer& rend)
+{
+	youDidIt = Text("You Did It!", font, 40);
+	youDidIt.setFillColor(sf::Color::Yellow);
+	youDidIt.setPosition(25 * 32 / 2, 15 * 32 / 2);
+	youDidIt.setStyle(Text::Bold);
+
+	defeated = Text("The Dark Emperor was Defeated.", font, 30);
+	defeated.setFillColor(sf::Color::Yellow);
+	defeated.setPosition(18 * 32 / 2, 18 * 32 / 2);
+
+	scoreText = Text("Your Score: ", font, 30);
+	scoreText.setFillColor(sf::Color::Yellow);
+	scoreText.setPosition(25 * 32 / 2, 21 * 32 / 2);
+	scoreText.setString("Your Score: " + std::to_string(score));
+
+	mainMenu = Text("Main Menu", font, 25);
+	mainMenu.setFillColor(sf::Color::Yellow);
+	mainMenu.setPosition(28 * 32 / 2, 28 * 32 / 2);
+	
+	mainMenuButton.setSize(Vector2f(8 * 32, 1 * 32));
+	mainMenuButton.setPosition(24 * 32 / 2, 28 * 32 / 2);
+	mainMenuButton.setOutlineColor(Color::Yellow);
+	mainMenuButton.setOutlineThickness(5);
+	mainMenuButton.setFillColor(Color::Transparent);
+
+	blackscreen.setSize(Vector2f(32 * 32, 19 * 32));
+	blackscreen.setPosition(0, 0);
+	blackscreen.setFillColor(Color::Black);
+
+	rend.Draw(&defeated, 135);
+	rend.Draw(&mainMenu, 135);
+	rend.Draw(&mainMenuButton, 134);
+	rend.Draw(&youDidIt, 135);
+	rend.Draw(&scoreText, 135);
+	rend.Draw(&blackscreen, 130);
 }
