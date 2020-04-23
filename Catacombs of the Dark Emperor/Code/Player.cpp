@@ -82,6 +82,8 @@ void Player::Update(Level* level, float elapsed)
 	{
 		Room* room = level->GetCurrentRoom();
 
+		sounds->playSound();
+
 		if (!inventory->IsBowEquipped())
 		{
 			for (Entity* e : room->GetEntities())

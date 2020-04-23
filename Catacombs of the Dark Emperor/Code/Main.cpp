@@ -19,6 +19,8 @@ int main(int, char**)
 
 	Renderer rend(&window);
 
+	sounds = new SoundEffects();
+
 	Level* level = new Level();
 
 	LevelGenerator* generator = new LevelGenerator();

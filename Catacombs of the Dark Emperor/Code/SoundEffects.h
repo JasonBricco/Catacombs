@@ -4,17 +4,18 @@ class SoundEffects
 {
 public:
 
-	sf::Sound sound;
+	Sound sound;
 
 	SoundEffects() {
 
 		sf::SoundBuffer buffer;
-		if (!buffer.loadFromFile("Assets/bark.wav"))
-		{
+		buffer.loadFromFile("Assets/bark.wav");
 
-		}
 		sound = sf::Sound::Sound();
 		sound.setBuffer(buffer);
+		
+		
+		
 	}
 
 	void playSound() {

@@ -28,10 +28,9 @@ inline int score = 0;
 
 inline int topscore = 0;
 
-inline int floorNumber = 0;
+inline int floorNumber = -1;
 
-//LINKER ERROR HERE
-inline SoundEffects sounds = SoundEffects();
+inline SoundEffects* sounds = nullptr;
 
 enum Direction
 {
