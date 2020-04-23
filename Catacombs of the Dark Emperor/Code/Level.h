@@ -32,6 +32,9 @@ class Level
 	Text mainMenu;
 	Text restartButtonText;
 	Text startGameText;
+	Text scoreText;
+	Text youDidIt;
+	Text defeated;
 	Assets* assets = Assets::Instance();
 	Font& font = assets->GetFont("Assets/Hylia.ttf");
 	int rest = 0;
@@ -94,6 +97,8 @@ public:
 	void DrawGameOverScreen(Renderer& rend);
 
 	void DrawGameStartScreen(Renderer& rend);
+
+	void DrawGameFinishedScreen(Renderer& rend);
 
 };
 

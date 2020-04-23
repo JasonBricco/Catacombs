@@ -14,6 +14,7 @@ struct GameState
     bool gameOver;
     bool manualPause;
     bool gameStart;
+    bool gameFinished;
 };
 
 inline GameState g_state;
