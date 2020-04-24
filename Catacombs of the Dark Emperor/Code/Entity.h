@@ -57,6 +57,8 @@ protected:
 	RectangleShape outline;
 
 	int health = 16;
+	int maxHealth = 16;
+
 	float invincibleTime = 0.0f;
 
 	// For modifying entity colors.
@@ -69,6 +71,8 @@ protected:
 	// entity would have a size here of 1x1. Offset is the relative position 
 	// from the entity's pivot point for the collision box to be.
 	Vector2f size, position;
+
+	bool resistKnockback = false;
 
 	// Rendering layer. Entities with a higher layer draw in front of 
 	// entities with a lower layer.
@@ -93,6 +97,11 @@ public:
 	inline EntityID ID()
 	{
 		return id;
+	}
+
+	inline void FullyHeal()
+	{
+		health = maxHealth;
 	}
 
 	inline AABB BoundingBox()

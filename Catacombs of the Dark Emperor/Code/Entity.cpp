@@ -110,7 +110,7 @@ void Entity::Damage(Level* level, int amount, Vector2f knockback)
 			tint = Color(255, 0, 0, 255);
 			tintTime = 0.05f;
 
-			if (knockback.x != 0.0f || knockback.y != 0.0f)
+			if (!resistKnockback && (knockback.x != 0.0f || knockback.y != 0.0f))
 			{
 				// If this entity is a dynamic entity, apply knockback
 				// based on the force passed in.

@@ -13,7 +13,8 @@ class Level
 	// The currently loaded room that is displayed.
 	Room* currentRoom;
 
-	vector<Entity*> pendingDestroy;
+	int destroyCount = 0;
+	Entity* pendingDestroy[256000];
 
 	bool restartPending;
 	float restartTime = 0.0f;
@@ -72,7 +73,7 @@ public:
 		if (!entity->pendingDestroy)
 		{
 			entity->pendingDestroy = true;
-			pendingDestroy.push_back(entity);
+			pendingDestroy[destroyCount++] = entity;
 		}
 	}
 

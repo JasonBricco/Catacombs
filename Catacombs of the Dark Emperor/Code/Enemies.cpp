@@ -182,3 +182,96 @@ void FireSkull::HandleOverlaps(Level* level)
 		}
 	}
 }
+
+void Minotaur::ShootFireball(Level* level, Vector2f dir)
+{
+	Fireball* fire = level->GetCurrentRoom()->AddEntity<Fireball>(0.0f, 0.0f, dir, 5.0f);
+
+	Vector2f next = BoundingBox().center + dir;
+	fire->SetCentered(next.x, next.y);
+}
+
+void Minotaur::Update(Level* level, float elapsed)
+{
+	Entity::Update(level, elapsed);
+
+	Vector2f diff = playerPosition - BoundingBox().center;
+	Vector2f accel = Normalize(diff);
+
+	if (fabsf(accel.x) > fabsf(accel.y))
+	{
+		if (accel.x > 0.0f)
+			facing = RIGHT;
+		else facing = LEFT;
+	}
+	else
+	{
+		if (accel.y > 0.0f)
+			facing = DOWN;
+		else facing = UP;
+	}
+
+	switch (facing)
+	{
+	case LEFT: SetAnimation(&move[LEFT]); break;
+	case RIGHT: SetAnimation(&move[RIGHT]); break;
+	case DOWN: SetAnimation(&move[DOWN]); break;
+	case UP: SetAnimation(&move[UP]); break;
+	}
+
+	fireTime -= elapsed;
+
+	if (fireTime <= 0.0f)
+	{
+		ShootFireball(level, Vector2f(-1.0f, 0.0f));
+		ShootFireball(level, Vector2f(1.0f, 0.0f));
+		ShootFireball(level, Vector2f(0.0f, -1.0f));
+		ShootFireball(level, Vector2f(0.0f, 1.0f));
+
+		ShootFireball(level, Normalize(Vector2f(-1.0f, -1.0f)));
+		ShootFireball(level, Normalize(Vector2f(-1.0f, 1.0f)));
+		ShootFireball(level, Normalize(Vector2f(1.0f, -1.0f)));
+		ShootFireball(level, Normalize(Vector2f(1.0f, 1.0f)));
+
+		fireTime = 4.0f;
+	}
+
+	Move(level, accel, elapsed);
+	ComputeAnimation(elapsed);
+}
+
+void Minotaur::HandleOverlaps(Level* level)
+{
+	for (std::pair<Entity*, AABB> pair : overlaps)
+	{
+		Entity* e = pair.first;
+
+		switch (e->ID())
+		{
+		case EntityID::Player:
+			Vector2 force = Normalize(e->GetCenter() - GetCenter()) * 150.0f;
+
+			if (*playershield)
+			{
+				e->Damage(level, 0, force);
+				*playershield = false;
+			}
+			else
+			{
+				e->Damage(level, 6, force);
+			}
+			break;
+		}
+	}
+}
+
+void Minotaur::Kill(Level* level)
+{
+	Entity::Kill(level);
+
+	if (score > topscore)
+		topscore = score;
+
+	getGameState().gameFinished = true;
+	getGameState().paused = true;
+}

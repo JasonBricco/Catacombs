@@ -75,3 +75,41 @@ public:
 	void HandleOverlaps(Level* level) override;
 	void Update(Level* level, float elapsed) override;
 };
+
+class Minotaur : public DynamicEntity
+{
+	float fireTime = 4.0f;
+
+public:
+	Minotaur(int x, int y)
+	{
+		Sprite moveSprites[4];
+		LoadTexture(moveSprites[LEFT], "Assets/MinoLeft.png");
+		LoadTexture(moveSprites[RIGHT], "Assets/MinoRight.png");
+		LoadTexture(moveSprites[UP], "Assets/MinoBack.png");
+		LoadTexture(moveSprites[DOWN], "Assets/MinoFront.png");
+
+		CreateClip(move, LEFT, moveSprites[LEFT], Vector2i(48, 64), 3, 6.0f, false);
+		CreateClip(move, RIGHT, moveSprites[RIGHT], Vector2i(48, 64), 3, 6.0f, false);
+		CreateClip(move, DOWN, moveSprites[DOWN], Vector2i(48, 64), 3, 6.0f, false);
+		CreateClip(move, UP, moveSprites[UP], Vector2i(48, 64), 3, 6.0f, false);
+
+		resistKnockback = true;
+
+		health = 64;
+		collideType = CollideType::Overlap;
+		id = EntityID::Enemy;
+
+		layer = 45;
+		speed = 70.0f;
+
+		size = Vector2f(1.5f, 2.0f);
+
+		this->SetPosition(x, y);
+	}
+
+	void Kill(Level* level) override;
+	void HandleOverlaps(Level* level) override;
+	void ShootFireball(Level* level, Vector2f dir);
+	void Update(Level* level, float elapsed) override;
+};

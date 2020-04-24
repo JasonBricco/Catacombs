@@ -78,7 +78,6 @@ public:
 		sprite = sprites[facing];
 		layer = 50;
 
-		speed = 100.0f;
 		size = Vector2f(0.95f, 0.5f);
 		offset = Vector2f(0.525f, 1.5f);
 
@@ -92,7 +91,7 @@ public:
 		scoreText = Text("Score:", font, 15);
 		scoreText.setFillColor(sf::Color::Yellow);
 
-		floorNumberText = Text("Floor B" + std::to_string(floorNumber), font, 15);
+		floorNumberText = Text("Floor B" + std::to_string(GameState().floor), font, 15);
 		floorNumberText.setFillColor(sf::Color::Yellow);
 
 		topScoreText = Text("Top Score: ", font, 15);

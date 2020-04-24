@@ -7,6 +7,7 @@
 
 enum class RoomFeatures
 {
+	None,
 	Rocks,
 	Blocks
 };
@@ -156,9 +157,13 @@ static void SpawnEnemies(Room* room)
 	}
 }
 
-static void FillRoom(Room* room)
+static void FillRoom(Room* room, bool empty = false)
 {
-	RoomFeatures features = randomInRange(0, 2) == 0 ? RoomFeatures::Blocks : RoomFeatures::Rocks;
+	RoomFeatures features;
+	
+	if (empty) features = RoomFeatures::None;
+	else features = randomInRange(0, 2) == 0 ? RoomFeatures::Blocks : RoomFeatures::Rocks;
+
 	bool addPots = false;
 
 	if (features == RoomFeatures::Rocks)
@@ -267,7 +272,7 @@ static void FillRoom(Room* room)
 	// Add floor tiles.
 	room->AddRect<FloorTile>(2, 2, Room::Width - 3, Room::Height - 3);
 
-	SpawnEnemies(room);
+	if (!empty) SpawnEnemies(room);
 
 	if (features == RoomFeatures::Rocks)
 	{
@@ -557,8 +562,36 @@ void LevelGenerator::GeneratePath(Level* level, Vector2i start, Vector2i end, Pa
 	}
 }
 
+void LevelGenerator::GenerateBossRoom(Level* level)
+{
+	Room* room = level->GetOrCreateRoom(0, 0);
+	room->SetDoor(DOWN, Room::Width / 2, DoorType::Barred);
+	FillRoom(room, true);
+
+	float spawnX = Room::Width / 2 - 0.5f;
+	float spawnY = Room::Height - 4 - 0.25f;
+	player->SetPosition(spawnX, spawnY);
+	player->FullyHeal();
+
+	room->AddEntity(player);
+
+	room->AddEntity(new Minotaur(Room::Width / 2, 6));
+
+	level->SetCurrentRoom(room);
+}
+
 void LevelGenerator::Build(Level* level, bool firstLevel)
 {
+	GameState& state = getGameState();
+	++state.floor;
+
+	// Generate boss room on floor 4.
+	if (state.floor == 4)
+	{
+		GenerateBossRoom(level);
+		return;
+	}
+
 	if (firstLevel)
 	{
 		// If this isn't the first level, the player already 
@@ -583,7 +616,7 @@ void LevelGenerator::Build(Level* level, bool firstLevel)
 	PathDirection initpd;
 
 	if (!firstLevel)
-		initpd = { DoorType::None, getGameState().newLevelPrevDir, 0 };
+		initpd = { DoorType::None, state.newLevelPrevDir, 0 };
 	else initpd = { DoorType::None, -1, 0 };
 
 	GeneratePath(level, start, end, initpd, true);
@@ -617,8 +650,6 @@ void LevelGenerator::Build(Level* level, bool firstLevel)
 
 	FillRooms(level);
 	SpawnPlayer();
-
-	floorNumber++;
 
 	branches.clear();
 	roomsAdded.clear();

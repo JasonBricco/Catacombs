@@ -38,6 +38,7 @@ struct LevelGenerator : public Generator
 	void Build(Level*, bool firstLevel) override;
 
 private:
+	void GenerateBossRoom(Level* level);
 	void GeneratePath(Level* level, Vector2i start, Vector2i end, PathDirection prevDir, bool mainPath = false);
 	void SpawnPlayer();
 };

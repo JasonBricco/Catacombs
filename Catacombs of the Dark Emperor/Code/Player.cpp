@@ -14,7 +14,7 @@ void Player::Update(Level* level, float elapsed)
 		topscore = score;
 	}
 
-	health += inventory->GetIncreasedHealth();
+	health = std::min(health + inventory->GetIncreasedHealth(), maxHealth);
 	inventory->SetIncreasedHealth(0);
 
 	Entity::Update(level, elapsed);
@@ -131,6 +131,10 @@ void Player::Update(Level* level, float elapsed)
 	if (accel != Vector2f(0.0f, 0.0f))
 		accel = Normalize(accel);
 
+	if (Keyboard::isKeyPressed(Keyboard::LShift))
+		speed = 200.0f;
+	else speed = 100.0f;
+
 	Move(level, accel, elapsed);
 
 	inventory->Update(level, elapsed);
@@ -202,8 +206,6 @@ void Player::Kill(Level* level)
 {
 	Entity::Kill(level);
 	
-	floorNumber = 0;
-
 	getGameState().gameOver = true;
 
 	level->Restart(3.0f);
@@ -227,7 +229,7 @@ void Player::Draw(Renderer& rend)
 	scoreText.setPosition((float)(400.0), 575);
 	rend.Draw(&scoreText, 110);
 
-	floorNumberText.setString("Floor B" + std::to_string(floorNumber));
+	floorNumberText.setString("Floor B" + std::to_string(getGameState().floor));
 	floorNumberText.setPosition((float)(955.0), 575);
 	rend.Draw(&floorNumberText, 110);
 

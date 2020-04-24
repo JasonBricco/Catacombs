@@ -32,13 +32,14 @@ void Level::Update(float elapsed)
 
 	// Destroy entities after updating is done,
 	// so we don't destroy mid-iteration.
-	for (Entity* entity : pendingDestroy)
+	for (int i = 0; i < destroyCount; ++i)
 	{
+		Entity* entity = pendingDestroy[i];
 		currentRoom->RemoveEntity(entity);
 		delete entity;
 	}
 
-	pendingDestroy.clear();
+	destroyCount = 0;
 
 	if (restartPending)
 	{
@@ -130,9 +131,18 @@ void Level::Destroy()
 			// which will place it in the new level.
 			if (entity->ID() == EntityID::Player)
 				pair.second->RemoveEntity(entity);
-			else delete entity;
+			else DestroyEntity(entity);
 		}
 	}
+
+	for (int i = 0; i < destroyCount; ++i)
+	{
+		Entity* entity = pendingDestroy[i];
+		currentRoom->RemoveEntity(entity);
+		delete entity;
+	}
+
+	destroyCount = 0;
 }
 
 void Level::DrawGamePauseScreen(Renderer& rend)

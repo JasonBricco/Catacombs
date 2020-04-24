@@ -77,6 +77,10 @@ int main(int, char**)
 
 			if (state.newLevel || state.restart)
 			{
+				// Reset the floor count on game restart.
+				if (state.restart)
+					state.floor = 0;
+
 				level->Destroy();
 				delete level;
 				level = new Level();

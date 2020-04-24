@@ -15,6 +15,7 @@ struct GameState
     bool manualPause;
     bool gameStart;
     bool gameFinished;
+    int floor = 0;
 };
 
 inline GameState g_state;
@@ -28,8 +29,6 @@ inline bool* playershield;
 inline int score = 0;
 
 inline int topscore = 0;
-
-inline int floorNumber = -1;
 
 inline SoundEffects* sounds = nullptr;
 
