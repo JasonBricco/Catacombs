@@ -4,22 +4,25 @@ class SoundEffects
 {
 public:
 
-	Sound sound;
+	Sound swordSound;
+	SoundBuffer swordBuffer;
 
 	SoundEffects() {
 
-		sf::SoundBuffer buffer;
-		buffer.loadFromFile("Assets/bark.wav");
+		swordBuffer = SoundBuffer();
 
-		sound = sf::Sound::Sound();
-		sound.setBuffer(buffer);
-		
-		
-		
+		if (!swordBuffer.loadFromFile("Assets/swordSlash.wav"))
+		{
+	
+		}
+
+		swordSound = Sound();
+		swordSound.setBuffer(swordBuffer);
+
 	}
 
-	void playSound() {
-		sound.play();
+	void playSwordSound() {
+		swordSound.play();
 	}
 
 

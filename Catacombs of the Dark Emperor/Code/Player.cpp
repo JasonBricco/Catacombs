@@ -82,10 +82,10 @@ void Player::Update(Level* level, float elapsed)
 	{
 		Room* room = level->GetCurrentRoom();
 
-		sounds->playSound();
-
 		if (!inventory->IsBowEquipped())
 		{
+			sounds->playSwordSound();
+
 			for (Entity* e : room->GetEntities())
 			{
 				if (Distance(e->GetPosition(), GetPosition()) < 3.0f)
