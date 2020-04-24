@@ -1,4 +1,4 @@
-TEST_PLAYER
+﻿TEST_PLAYER
 	TEST_PLAYER_MOVEMENT
 		TEST_UP: Press W (Up player movement)
 			Pass: Player Sprite turns into the Sprite that has their back to you AND Player moves Vertically UP
@@ -126,15 +126,15 @@ TEST_SOUNDS
 		TEST_CHEST_OPENING: Open a chest	
 			Pass: A creak sound is emitted when opened (The swing sound may be heard due to the same button being pressed which is fine)
 			Fail: No sound or the incorrect sound is emitted 
-		TEST_FIREBALL_ATTACK:
-			Pass: A "Pssu" sound is emitted when used
-			Fail: No sound or the incorrect sound is used
 		TEST_ARROW_SOUND: Press E
 			Pass: A "Wang" sound is emitted when used
 			Fail: No sound or the incorrect sound is used
-		TEST_BOSS_LAUGH:
-			Pass: When the Dark Emperor fires off his 6 fireballs, a evil laugh sound is emitted
-			Fail: When the Dark Emperor fires off his 6 fireballs, no sound or the incorrect sound is emitted
+	TEST_BOSS_LAUGH:
+		Pass: When the Dark Emperor fires off his 6 fireballs, a evil laugh sound is emitted
+		Fail: When the Dark Emperor fires off his 6 fireballs, no sound or the incorrect sound is emitted
+	TEST_FIREBALL_ATTACK:
+		Pass: A "Pssu" sound is emitted when used
+		Fail: No sound or the incorrect sound is used
 TEST_MENU
 	TEST_TITLE_MENU: start the game
 		Pass: Title menu with "Catacombs of the Dark Emperor" and "Start Game" appear	
