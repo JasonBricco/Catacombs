@@ -79,24 +79,22 @@ void Inventory::Draw(Renderer& rend)
 								bowEquipped = true;
 								break;
 							case 2:
-								break;
-							case 3:
 								increaseHealth += 1;
 								break;
-							case 4:
+							case 3:
 								increaseHealth += 2;
 								break;
-							case 5:
+							case 4:
 								increaseHealth += 3;
 								break;
-							case 6:
+							case 5:
 								increaseHealth += 4;
 								break;
-							case 7:
+							case 6:
 								increaseAttack = 12;
 								weaponHealth = 4;
 								break;
-							case 8:
+							case 7:
 								increaseAttack = 4;
 								weaponHealth = 6;
 								break;
