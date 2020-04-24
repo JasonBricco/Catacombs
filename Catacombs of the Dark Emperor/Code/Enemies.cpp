@@ -271,8 +271,8 @@ void Minotaur::Kill(Level* level)
 {
 	Entity::Kill(level);
 
-	if (score > topscore)
-		topscore = score;
+	if (score >= topscore)
+		setTopScore();
 
 	getGameState().gameFinished = true;
 	getGameState().paused = true;
