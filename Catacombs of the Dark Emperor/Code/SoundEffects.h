@@ -19,6 +19,9 @@ public:
 	Sound fireballSound;
 	SoundBuffer fireballBuffer;
 
+	Sound bossSound;
+	SoundBuffer bossBuffer;
+
 	SoundEffects() {
 
 		//Initialize sound and sound buffer pairing for each sound effect
@@ -63,6 +66,14 @@ public:
 		}
 		fireballSound = Sound();
 		fireballSound.setBuffer(fireballBuffer);
+
+		bossBuffer = SoundBuffer();
+		if (!bossBuffer.loadFromFile("Assets/bossLaugh.wav"))
+		{
+
+		}
+		bossSound = Sound();
+		bossSound.setBuffer(bossBuffer);
 	}
 	//Methods to play every sound effect
 
@@ -89,6 +100,11 @@ public:
 	void playFireball()
 	{
 		fireballSound.play();
+	}
+
+	void playBossSound() 
+	{
+		bossSound.play();
 	}
 
 };

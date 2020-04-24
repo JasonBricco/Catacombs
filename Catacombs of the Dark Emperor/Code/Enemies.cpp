@@ -223,6 +223,8 @@ void Minotaur::Update(Level* level, float elapsed)
 
 	if (fireTime <= 0.0f)
 	{
+		sounds->playBossSound();
+
 		ShootFireball(level, Vector2f(-1.0f, 0.0f));
 		ShootFireball(level, Vector2f(1.0f, 0.0f));
 		ShootFireball(level, Vector2f(0.0f, -1.0f));
