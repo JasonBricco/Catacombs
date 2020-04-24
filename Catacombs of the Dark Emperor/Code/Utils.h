@@ -19,7 +19,7 @@ struct GameState
 
 inline GameState g_state;
 
-inline const int totalItemsInInventory = 9;
+inline const int totalItemsInInventory = 8;
 
 inline Vector2f playerPosition;
 
