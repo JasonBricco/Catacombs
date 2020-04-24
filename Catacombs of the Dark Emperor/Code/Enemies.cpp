@@ -79,6 +79,7 @@ void Slime::HandleOverlaps(Level* level)
 			}
 			else
 			{
+				sounds->playDamageSound();
 				e->Damage(level, 4, force);
 			}
 			break;
@@ -141,6 +142,8 @@ void FireSkull::Update(Level* level, float elapsed)
 			Vector2f dir = Normalize(playerPosition - position);
 			Fireball* fire = level->GetCurrentRoom()->AddEntity<Fireball>(0.0f, 0.0f, dir, 5.0f);
 
+			sounds->playFireball();
+
 			Vector2f next = BoundingBox().center + dir;
 
 			if (facing == LEFT || facing == RIGHT)
@@ -172,6 +175,7 @@ void FireSkull::HandleOverlaps(Level* level)
 			}
 			else
 			{
+				sounds->playDamageSound();
 				e->Damage(level, 4, force);
 			}
 			break;

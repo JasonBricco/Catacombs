@@ -52,6 +52,7 @@ void Fireball::HandleOverlaps(Level* level)
 			{
 				Vector2 force = Normalize(e->GetCenter() - GetCenter()) * 30.0f;
 				e->Damage(level, 4, force);
+				sounds->playDamageSound();
 				Kill(level);
 			}
 

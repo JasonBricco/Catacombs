@@ -107,6 +107,8 @@ void Player::Update(Level* level, float elapsed)
 		}
 		else
 		{
+			sounds->playBowSound();
+
 			Vector2f dir = (Vector2f)directions[facing];
 			dir.y = -dir.y;
 		

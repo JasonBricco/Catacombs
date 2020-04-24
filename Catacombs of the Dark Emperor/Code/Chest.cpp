@@ -53,6 +53,7 @@ void Chest::Update(Level*, float)
 
 void Chest::open()
 {
+	sounds->playChestSound();
 	IsChestOpen = true;
 	sprite = sprites[UP];
 }
